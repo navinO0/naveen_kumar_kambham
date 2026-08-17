@@ -28,6 +28,9 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6 font-mono text-xs md:text-sm font-medium">
+          <a href="#engineering" className="hover:bg-[#ffe866] px-2 py-1 rounded transition-colors text-[#ff5e5b] font-bold">
+            engineering
+          </a>
           <a href="#work" className="hover:bg-[#ffe866] px-2 py-1 rounded transition-colors">
             work
           </a>
@@ -70,6 +73,13 @@ export default function Header() {
           <div className="font-hand text-xs text-[#ff5e5b] mb-1">
             /* yes, the API is probably broken somewhere */
           </div>
+          <a
+            href="#engineering"
+            onClick={() => setMobileMenuOpen(false)}
+            className="hover:bg-[#ffe866] px-2 py-1 rounded text-[#ff5e5b] font-bold"
+          >
+            [0] engineering pipeline
+          </a>
           <a
             href="#work"
             onClick={() => setMobileMenuOpen(false)}

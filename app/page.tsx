@@ -1,6 +1,7 @@
 import Header from "@/components/ui/Header";
 import HeroSection from "@/components/sections/HeroSection";
 import HowIThinkSection from "@/components/sections/HowIThinkSection";
+import RequirementsToCodeSection from "@/components/sections/requirementsToCode/RequirementsToCodeSection";
 import SelectedWorkSection from "@/components/sections/SelectedWorkSection";
 import ToolWallSection from "@/components/sections/ToolWallSection";
 import SecurityPlayground from "@/components/sections/SecurityPlayground";
@@ -37,7 +38,10 @@ export default function Home() {
         {/* 2. How I Think Principles */}
         <HowIThinkSection />
 
-        {/* 3. Selected Work & Technical Post-Mortems */}
+        {/* 3. Major Engineering Section: How Requirements Become Code */}
+        <RequirementsToCodeSection />
+
+        {/* 4. Selected Work & Technical Post-Mortems */}
         <SelectedWorkSection projects={projects} />
 
         {/* 4. Tool Wall & JMeter Load Simulator */}
