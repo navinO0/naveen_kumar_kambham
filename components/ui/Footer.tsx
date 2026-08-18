@@ -45,7 +45,7 @@ export default function Footer() {
 
         {/* Right Graffiti Signature */}
         <div className="font-hand text-sm text-[#ff5e5b] font-bold transform -rotate-1">
-          ~ alex vance (2026)
+          ~ navin (2026)
         </div>
       </div>
     </footer>

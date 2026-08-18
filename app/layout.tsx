@@ -22,10 +22,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Alex Vance // Backend Engineer Notebook & Portfolio",
+  title: "navin // Backend Engineer Notebook & Portfolio",
   description: "Backend-focused full-stack developer portfolio. Systems, APIs, database design, load testing, security, and real production engineering.",
   keywords: ["Backend Engineer", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "SQLite", "Redis", "Security", "RBAC", "JMeter", "Postman", "Burp Suite"],
-  authors: [{ name: "Alex Vance" }],
+  authors: [{ name: "navin" }],
   viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   icons: {
     icon: [

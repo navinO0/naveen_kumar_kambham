@@ -2,7 +2,25 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Mail, FileText, Send, AlertTriangle, CheckCircle2, ShieldAlert, Zap, Code, Globe } from "lucide-react";
+import { Mail, FileText, Send, AlertTriangle, CheckCircle2, ShieldAlert, Zap, Code } from "lucide-react";
+
+function LinkedinIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className || "w-5 h-5 fill-current"} viewBox="0 0 24 24">
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26z"/>
+    </svg>
+  );
+}
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className || "w-5 h-5 fill-none stroke-current stroke-2"} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    </svg>
+  );
+}
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({ senderName: "", email: "", message: "" });
@@ -101,7 +119,7 @@ export default function ContactSection() {
                   placeholder="e.g. Lead Frontend Dev"
                   value={formData.senderName}
                   onChange={(e) => setFormData({ ...formData, senderName: e.target.value })}
-                  className="w-full p-2.5 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm focus:outline-none focus:bg-white"
+                  className="w-full p-2.5 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm focus:outline-none focus:bg-white text-[#1e1d1b]"
                 />
               </div>
 
@@ -115,7 +133,7 @@ export default function ContactSection() {
                   placeholder="dev@company.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full p-2.5 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm focus:outline-none focus:bg-white"
+                  className="w-full p-2.5 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm focus:outline-none focus:bg-white text-[#1e1d1b]"
                 />
               </div>
 
@@ -129,7 +147,7 @@ export default function ContactSection() {
                   placeholder="Describe your API latency, database lock, authentication, or architecture challenge..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full p-2.5 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm focus:outline-none focus:bg-white"
+                  className="w-full p-2.5 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm focus:outline-none focus:bg-white text-[#1e1d1b]"
                 />
               </div>
 
@@ -185,57 +203,58 @@ export default function ContactSection() {
 
           {/* Social / Direct Contacts Col (2 cols) */}
           <div className="lg:col-span-2 p-5 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border flex flex-col justify-between">
-            <div className="space-y-4">
+            <div className="space-y-3">
               <span className="font-mono text-xs font-bold uppercase text-[#57534e] block border-b border-[#1e1d1b] pb-2">
                 DIRECT CONNECT CHANNELS:
               </span>
 
               <a
-                href="mailto:alex@vance.dev"
+                href="mailto:naveenkumarkambham1@gmail.com"
                 className="sketch-card p-3 bg-white flex items-center space-x-3 hover:bg-[#ffe866] transition-colors"
               >
                 <Mail className="w-5 h-5 text-[#ff5e5b]" />
-                <div>
+                <div className="min-w-0">
                   <span className="font-mono text-xs font-bold block text-[#1e1d1b]">Email</span>
-                  <span className="font-mono text-[11px] text-[#57534e]">alex@vance.dev</span>
+                  <span className="font-mono text-[11px] text-[#57534e] truncate block">naveenkumarkambham1@gmail.com</span>
                 </div>
               </a>
 
               <a
-                href="https://github.com"
+                href="https://github.com/navinO0"
                 target="_blank"
                 rel="noreferrer"
                 className="sketch-card p-3 bg-white flex items-center space-x-3 hover:bg-[#ffe866] transition-colors"
               >
                 <Code className="w-5 h-5 text-[#1e1d1b]" />
-                <div>
+                <div className="min-w-0">
                   <span className="font-mono text-xs font-bold block text-[#1e1d1b]">GitHub</span>
-                  <span className="font-mono text-[11px] text-[#57534e]">github.com/vance-backend</span>
+                  <span className="font-mono text-[11px] text-[#57534e] truncate block">github.com/navinO0</span>
                 </div>
               </a>
 
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/naveen-kumar-kambham/"
                 target="_blank"
                 rel="noreferrer"
                 className="sketch-card p-3 bg-white flex items-center space-x-3 hover:bg-[#ffe866] transition-colors"
               >
-                <Globe className="w-5 h-5 text-[#3498db]" />
-                <div>
+                <LinkedinIcon className="w-5 h-5 text-[#0077b5]" />
+                <div className="min-w-0">
                   <span className="font-mono text-xs font-bold block text-[#1e1d1b]">LinkedIn</span>
-                  <span className="font-mono text-[11px] text-[#57534e]">linkedin.com/in/vance-backend</span>
+                  <span className="font-mono text-[11px] text-[#57534e] truncate block">linkedin.com/in/naveen-kumar-kambham</span>
                 </div>
               </a>
 
               <a
-                href="/resume.pdf"
+                href="https://www.instagram.com/stillix_io"
                 target="_blank"
+                rel="noreferrer"
                 className="sketch-card p-3 bg-white flex items-center space-x-3 hover:bg-[#ffe866] transition-colors"
               >
-                <FileText className="w-5 h-5 text-[#2ecc71]" />
-                <div>
-                  <span className="font-mono text-xs font-bold block text-[#1e1d1b]">Resume PDF</span>
-                  <span className="font-mono text-[11px] text-[#57534e]">Download 1-page spec</span>
+                <InstagramIcon className="w-5 h-5 text-[#e1306c]" />
+                <div className="min-w-0">
+                  <span className="font-mono text-xs font-bold block text-[#1e1d1b]">Instagram</span>
+                  <span className="font-mono text-[11px] text-[#57534e] truncate block">instagram.com/stillix_io</span>
                 </div>
               </a>
             </div>

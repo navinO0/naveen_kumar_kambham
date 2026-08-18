@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { UserRole, Action, Resource, RbacEvaluationResult } from "@/lib/rbac/evaluator";
 import { ShieldCheck, ShieldAlert, Lock, Key, AlertOctagon, Terminal, ArrowRight, Check, X } from "lucide-react";
 
@@ -20,6 +19,28 @@ export default function SecurityPlayground() {
     auditMessage: "[SECURITY AUDIT] Timestamp=2026-08-17T14:50:00.000Z Role=EDITOR Action=UPDATE Resource=Project Outcome=ALLOWED_200",
   });
   const [loading, setLoading] = useState(false);
+
+  const roleEmojiMap: Record<UserRole, string> = {
+    ADMIN: "👑",
+    MANAGER: "💼",
+    EDITOR: "✏️",
+    VIEWER: "👁️"
+  };
+
+  const actionEmojiMap: Record<Action, string> = {
+    READ: "📖",
+    CREATE: "➕",
+    UPDATE: "📝",
+    DELETE: "🗑️",
+    DROP_TABLE: "💥"
+  };
+
+  const resourceEmojiMap: Record<Resource, string> = {
+    Project: "📁",
+    Database: "🗄️",
+    UserAccount: "👤",
+    AuditLog: "📋"
+  };
 
   const runEvaluation = async (r: UserRole, a: Action, res: Resource) => {
     setRole(r);
@@ -47,9 +68,9 @@ export default function SecurityPlayground() {
     <section id="security" className="py-12 md:py-16 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto border-b-2 border-dashed border-[#1e1d1b]">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
         <div>
-          <span className="sticker-tag-red mb-2 uppercase font-bold">DEFENSIVE ARCHITECTURE</span>
+          <span className="sticker-tag-red mb-2 uppercase font-bold">🛡️ DEFENSIVE ARCHITECTURE</span>
           <h2 className="text-2xl sm:text-3xl font-black text-[#1e1d1b]">
-            things attackers notice before users do <span className="font-hand text-xl text-[#ff5e5b] font-normal ml-2">(security learning)</span>
+            things attackers notice before users do <span className="font-hand text-xl text-[#ff5e5b] font-normal ml-2">(security learning 🕵️‍♂️)</span>
           </h2>
         </div>
         <p className="text-xs font-mono text-[#57534e] mt-2 md:mt-0">
@@ -63,11 +84,11 @@ export default function SecurityPlayground() {
           <div className="flex items-center space-x-2">
             <ShieldCheck className="w-5 h-5 text-[#2ecc71]" />
             <h3 className="font-bold font-mono text-lg text-[#1e1d1b]">
-              INTERACTIVE RBAC MATRIX EVALUATOR
+              🔐 INTERACTIVE RBAC MATRIX EVALUATOR
             </h3>
           </div>
           <span className="font-hand text-xs text-[#ff5e5b] font-bold">
-            // roles are not vibes
+            // roles are not vibes 🙅‍♂️
           </span>
         </div>
 
@@ -77,18 +98,19 @@ export default function SecurityPlayground() {
             {/* Role Select */}
             <div>
               <span className="font-mono text-xs font-bold text-[#57534e] block mb-2">
-                1. SELECT USER ROLE:
+                1. SELECT USER ROLE (IDENTITY 👤):
               </span>
               <div className="flex flex-wrap gap-2">
                 {(["ADMIN", "MANAGER", "EDITOR", "VIEWER"] as UserRole[]).map((r) => (
                   <button
                     key={r}
                     onClick={() => runEvaluation(r, action, resource)}
-                    className={`px-3 py-1.5 font-mono text-xs sketch-button ${
+                    className={`px-3 py-1.5 font-mono text-xs sketch-button flex items-center gap-1.5 ${
                       role === r ? "bg-[#ffe866] font-bold" : "bg-white text-[#1e1d1b]"
                     }`}
                   >
-                    {r}
+                    <span>{roleEmojiMap[r]}</span>
+                    <span>{r}</span>
                   </button>
                 ))}
               </div>
@@ -97,18 +119,19 @@ export default function SecurityPlayground() {
             {/* Action Select */}
             <div>
               <span className="font-mono text-xs font-bold text-[#57534e] block mb-2">
-                2. SELECT ACTION INTENT:
+                2. SELECT ACTION INTENT (PERMISSION ⚡):
               </span>
               <div className="flex flex-wrap gap-2">
                 {(["READ", "CREATE", "UPDATE", "DELETE", "DROP_TABLE"] as Action[]).map((a) => (
                   <button
                     key={a}
                     onClick={() => runEvaluation(role, a, resource)}
-                    className={`px-3 py-1.5 font-mono text-xs sketch-button ${
+                    className={`px-3 py-1.5 font-mono text-xs sketch-button flex items-center gap-1.5 ${
                       action === a ? "bg-[#ff5e5b] text-white font-bold" : "bg-white text-[#1e1d1b]"
                     }`}
                   >
-                    {a}
+                    <span>{actionEmojiMap[a]}</span>
+                    <span>{a}</span>
                   </button>
                 ))}
               </div>
@@ -117,18 +140,19 @@ export default function SecurityPlayground() {
             {/* Resource Select */}
             <div>
               <span className="font-mono text-xs font-bold text-[#57534e] block mb-2">
-                3. SELECT TARGET RESOURCE:
+                3. SELECT TARGET RESOURCE (DATABASE OBJECT 🗄️):
               </span>
               <div className="flex flex-wrap gap-2">
                 {(["Project", "Database", "UserAccount", "AuditLog"] as Resource[]).map((res) => (
                   <button
                     key={res}
                     onClick={() => runEvaluation(role, action, res)}
-                    className={`px-3 py-1.5 font-mono text-xs sketch-button ${
+                    className={`px-3 py-1.5 font-mono text-xs sketch-button flex items-center gap-1.5 ${
                       resource === res ? "bg-[#3498db] text-white font-bold" : "bg-white text-[#1e1d1b]"
                     }`}
                   >
-                    {res}
+                    <span>{resourceEmojiMap[res]}</span>
+                    <span>{res}</span>
                   </button>
                 ))}
               </div>
@@ -139,29 +163,29 @@ export default function SecurityPlayground() {
           <div className="p-4 bg-[#1e1d1b] text-white rounded sketch-border flex flex-col justify-between font-mono text-xs">
             <div>
               <div className="flex items-center justify-between border-b border-[#57534e] pb-2 mb-3">
-                <span className="text-[10px] text-[#ffe866]">BACKEND RBAC EVALUATOR</span>
+                <span className="text-[10px] text-[#ffe866] flex items-center gap-1">
+                  <span>🛡️</span> BACKEND RBAC EVALUATOR
+                </span>
                 <span className="text-[10px] text-gray-400">HTTP {evalResult?.statusCode}</span>
               </div>
 
-              <div className="my-3 text-center p-3 rounded bg-[#292524] border border-[#57534e] flex flex-col items-center">
-                <div className="w-20 h-20 relative mb-2">
-                  <Image
-                    src={evalResult?.allowed ? "/developer_avatar_security.png" : "/developer_avatar_stressed.png"}
-                    alt="Security Vector Avatar"
-                    fill
-                    sizes="80px"
-                    className="object-contain drop-shadow"
-                  />
+              <div className="my-3 text-center p-4 rounded bg-[#292524] border border-[#57534e] flex flex-col items-center justify-center">
+                {/* Pure EMOJI Outcome Expression (No Avatar Image) */}
+                <div className="mb-2">
+                  {evalResult?.allowed ? (
+                    <span className="text-5xl select-none">🛡️😎</span>
+                  ) : (
+                    <span className="text-5xl select-none animate-pulse">🚨😱</span>
+                  )}
                 </div>
+
                 <span className="text-[10px] text-gray-400 block mb-1">EVALUATION OUTCOME</span>
                 {evalResult?.allowed ? (
                   <div className="flex items-center justify-center space-x-2 text-[#2ecc71] font-bold text-lg">
-                    <Check className="w-5 h-5" />
                     <span>ALLOWED ✅</span>
                   </div>
                 ) : (
                   <div className="flex items-center justify-center space-x-2 text-[#ff5e5b] font-bold text-lg">
-                    <X className="w-5 h-5" />
                     <span>DENIED ❌</span>
                   </div>
                 )}
@@ -173,7 +197,7 @@ export default function SecurityPlayground() {
             </div>
 
             <div className="mt-3 pt-2 border-t border-[#57534e] text-[9px] text-gray-400 break-all">
-              {evalResult?.auditMessage}
+              📜 {evalResult?.auditMessage}
             </div>
           </div>
         </div>
@@ -185,7 +209,7 @@ export default function SecurityPlayground() {
         <div className="sketch-card p-5 bg-white flex flex-col justify-between">
           <div>
             <div className="flex items-center space-x-2 text-[#ff5e5b] font-mono font-bold text-sm mb-2">
-              <AlertOctagon className="w-4 h-4" />
+              <span>💉</span>
               <span>SQL INJECTION (SQLi)</span>
             </div>
             <p className="text-xs text-[#57534e] mb-3">
@@ -197,7 +221,7 @@ export default function SecurityPlayground() {
             </div>
           </div>
           <span className="font-hand text-xs text-[#ff5e5b] font-bold mt-4">
-            // parameterize everything
+            // parameterize everything 🔒
           </span>
         </div>
 
@@ -205,7 +229,7 @@ export default function SecurityPlayground() {
         <div className="sketch-card p-5 bg-white flex flex-col justify-between">
           <div>
             <div className="flex items-center space-x-2 text-[#3498db] font-mono font-bold text-sm mb-2">
-              <Key className="w-4 h-4" />
+              <span>🔑</span>
               <span>AUTHENTICATION VS AUTHORIZATION</span>
             </div>
             <p className="text-xs text-[#57534e] mb-3">
@@ -217,7 +241,7 @@ export default function SecurityPlayground() {
             </div>
           </div>
           <span className="font-hand text-xs text-[#ff5e5b] font-bold mt-4">
-            // knowing who you are != touching everything
+            // knowing who you are != touching everything 🚫
           </span>
         </div>
 
@@ -225,7 +249,7 @@ export default function SecurityPlayground() {
         <div className="sketch-card p-5 bg-white flex flex-col justify-between">
           <div>
             <div className="flex items-center space-x-2 text-[#2ecc71] font-mono font-bold text-sm mb-2">
-              <Lock className="w-4 h-4" />
+              <span>🚦</span>
               <span>RATE LIMITING & THROTTLING</span>
             </div>
             <p className="text-xs text-[#57534e] mb-3">
@@ -237,7 +261,7 @@ export default function SecurityPlayground() {
             </div>
           </div>
           <span className="font-hand text-xs text-[#ff5e5b] font-bold mt-4">
-            // rate limits save servers from bot waves
+            // rate limits save servers from bot waves 🤖
           </span>
         </div>
       </div>

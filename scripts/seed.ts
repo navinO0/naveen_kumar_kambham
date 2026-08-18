@@ -605,20 +605,7 @@ const tools = [
     whyItExists: "Scripting, computer vision, and AI processing",
     problemItSolves: "Handling complex image processing, computer vision algorithms, and AI scripting with ease."
   },
-  {
-    id: "golang",
-    name: "Go (Golang)",
-    category: "languages",
-    explanation: [
-      "Lightweight goroutines for concurrency",
-      "Statically compiled binaries with sub-millisecond boot times",
-      "Low-latency API gateway proxy servers"
-    ],
-    humanExplanation: "Compiled systems language built for fast, concurrent microservices and high-throughput proxy layers.",
-    sarcasticJoke: "No class inheritance, no async/await clutter—just fast goroutines and `if err != nil`.",
-    whyItExists: "High-concurrency systems programming language",
-    problemItSolves: "Building ultra-low latency proxy gateways and microservices handling 50k+ requests/sec."
-  },
+
   {
     id: "graphql",
     name: "GraphQL",

@@ -20,7 +20,7 @@ export default function Header() {
             <div className="w-7 h-7 relative rounded-full border border-[#1e1d1b] bg-[#ffe866] p-0.5 overflow-hidden flex items-center justify-center shrink-0">
               <Image src="/favicon.png" alt="Vector Avatar Favicon" fill sizes="28px" className="object-contain" />
             </div>
-            <span>alex_vance // backend engineer</span>
+            <span>navin // backend engineer</span>
           </Link>
 
           {/* Graffiti annotation beside brand */}

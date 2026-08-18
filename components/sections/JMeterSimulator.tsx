@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { Activity, AlertTriangle, Flame, Gauge, Zap } from "lucide-react";
 
 export default function JMeterSimulator() {
   const [concurrency, setConcurrency] = useState<number>(1000);
@@ -14,10 +12,9 @@ export default function JMeterSimulator() {
     dbPoolUtilization: 28,
     errorRatePercent: 0,
     serverState: "WARMING" as "CHILLING" | "WARMING" | "SWEATING" | "MELTDOWN",
-    statusNote: "Thread pool active. Database indexes doing heavy lifting cleanly.",
+    emotionEmoji: "🙂",
+    statusNote: "Thread pool active. Database indexes operating smoothly.",
   });
-
-  const [loading, setLoading] = useState(false);
 
   // Recalculate metrics on concurrency slider change
   useEffect(() => {
@@ -28,19 +25,24 @@ export default function JMeterSimulator() {
     let err = concurrency > 3500 ? Number(((concurrency - 3500) / 120).toFixed(1)) : 0;
 
     let state: "CHILLING" | "WARMING" | "SWEATING" | "MELTDOWN" = "CHILLING";
+    let emoji = "😎";
     let note = "";
 
     if (concurrency < 500) {
       state = "CHILLING";
-      note = "Server is sipping iced coffee. Socket pool happy.";
+      emoji = "😎 ☕";
+      note = "Server is sipping iced coffee. Socket pool super happy!";
     } else if (concurrency < 1500) {
       state = "WARMING";
+      emoji = "🙂 ⚙️";
       note = "Thread pool active. DB indexes operating smoothly.";
     } else if (concurrency < 3500) {
       state = "SWEATING";
-      note = "CPU fan spinning fast! DB connection pool saturating. CPU: 'Please stop.'";
+      emoji = "😅 💦";
+      note = "CPU fan spinning fast! DB connection pool saturating. CPU: 'Please stop!'";
     } else {
       state = "MELTDOWN";
+      emoji = "😱 🔥";
       note = "Socket exhaustion! p99 latency spiking. Production users don't politely take turns!";
     }
 
@@ -51,12 +53,14 @@ export default function JMeterSimulator() {
       dbPoolUtilization: db,
       errorRatePercent: err,
       serverState: state,
+      emotionEmoji: emoji,
       statusNote: note,
     });
   }, [concurrency]);
 
   return (
     <div className="sketch-card p-6 bg-[#fffefc] border-2 border-[#1e1d1b] my-6">
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
         <div>
           <div className="flex items-center space-x-2">
@@ -67,8 +71,12 @@ export default function JMeterSimulator() {
             "What happens when 5,000 people hit the API at once?"
           </h3>
         </div>
-        <div className="font-hand text-sm text-[#ff5e5b] font-bold mt-2 md:mt-0">
-          // because production users don't politely take turns
+        <div className="flex items-center space-x-2 mt-2 md:mt-0 font-mono text-xs">
+          <span className="sketch-button bg-[#ffe866] text-[#1e1d1b] px-3 py-1 font-bold flex items-center gap-1.5">
+            <span>STATE:</span>
+            <span className="text-sm">{metrics.emotionEmoji}</span>
+            <span className="uppercase">{metrics.serverState}</span>
+          </span>
         </div>
       </div>
 
@@ -78,7 +86,10 @@ export default function JMeterSimulator() {
           {/* Slider Control */}
           <div className="p-4 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm">
             <div className="flex items-center justify-between mb-2 font-mono text-xs md:text-sm font-bold">
-              <span>CONCURRENT USERS WAVE:</span>
+              <span className="flex items-center gap-1.5">
+                <span>CONCURRENT USERS WAVE:</span>
+                <span className="text-base">{metrics.emotionEmoji}</span>
+              </span>
               <span className="text-[#ff5e5b] text-base">{concurrency.toLocaleString()} req/sec</span>
             </div>
             <input
@@ -91,10 +102,10 @@ export default function JMeterSimulator() {
               className="w-full h-3 bg-[#e8e4d9] rounded-lg appearance-none cursor-pointer accent-[#ff5e5b]"
             />
             <div className="flex justify-between text-[10px] font-mono text-[#57534e] mt-1">
-              <span>100 users (quiet)</span>
-              <span>1,500 users (busy)</span>
-              <span>3,500 users (heavy)</span>
-              <span>5,000 users (STRESS TEST)</span>
+              <span>😎 100 (Chilling)</span>
+              <span>🙂 1,500 (Cruising)</span>
+              <span>😅 3,500 (Sweating)</span>
+              <span>😱 5,000 (MELTDOWN!)</span>
             </div>
           </div>
 
@@ -156,7 +167,7 @@ export default function JMeterSimulator() {
           </div>
         </div>
 
-        {/* Right Col: Sweating Server Cartoony SVG */}
+        {/* Right Col: Sweating Server Cartoony Box with EMOJI */}
         <div className="flex flex-col items-center justify-center p-5 bg-[#f6f4ee] border-2 border-[#1e1d1b] sketch-border relative overflow-hidden">
           {/* Animated Sweating Server Box */}
           <motion.div
@@ -180,43 +191,36 @@ export default function JMeterSimulator() {
               <span className="text-[9px] font-mono text-[#ffe866]">NODE_01</span>
             </div>
 
-            {/* Cartoony Server & Vector Avatar Face */}
-            <div className="flex flex-col items-center justify-center my-auto w-full h-20 relative">
+            {/* Pure EMOJI Server Face Expression (No Avatar Image) */}
+            <div className="flex items-center justify-center my-auto w-full h-20">
               {metrics.serverState === "CHILLING" && (
-                <div className="w-full h-full relative">
-                  <Image src="/developer_avatar_success.png" alt="Success Avatar" fill sizes="128px" className="object-contain drop-shadow" />
-                </div>
+                <span className="text-5xl select-none">😎</span>
               )}
               {metrics.serverState === "WARMING" && (
-                <div className="w-full h-full relative">
-                  <Image src="/developer_avatar.png" alt="Default Avatar" fill sizes="128px" className="object-contain drop-shadow" />
-                </div>
+                <span className="text-5xl select-none">🙂</span>
               )}
               {metrics.serverState === "SWEATING" && (
-                <div className="w-full h-full relative">
-                  <Image src="/developer_avatar_thinking.png" alt="Thinking Avatar" fill sizes="128px" className="object-contain drop-shadow" />
-                </div>
+                <span className="text-5xl select-none animate-bounce">😅</span>
               )}
               {metrics.serverState === "MELTDOWN" && (
-                <div className="w-full h-full relative">
-                  <Image src="/developer_avatar_stressed.png" alt="Stressed Avatar" fill sizes="128px" className="object-contain drop-shadow animate-pulse" />
-                </div>
+                <span className="text-5xl select-none animate-pulse">😱</span>
               )}
             </div>
 
             {/* Sweat Drop or Flame annotation */}
             {metrics.serverState === "SWEATING" && (
-              <span className="absolute -top-2 -right-2 text-lg">💦</span>
+              <span className="absolute -top-2 -right-2 text-2xl animate-bounce">💦</span>
             )}
             {metrics.serverState === "MELTDOWN" && (
-              <span className="absolute -top-3 -right-3 text-xl">🔥</span>
+              <span className="absolute -top-3 -right-3 text-2xl animate-pulse">🔥</span>
             )}
           </motion.div>
 
-          {/* Speech bubble */}
+          {/* Speech bubble with Emotion Emoji */}
           <div className="mt-3 p-2 bg-white border border-[#1e1d1b] sketch-border-sm text-center">
-            <span className="font-hand text-xs text-[#1e1d1b] font-bold block">
-              "{metrics.statusNote}"
+            <span className="font-hand text-xs text-[#1e1d1b] font-bold block flex items-center justify-center gap-1">
+              <span className="text-base">{metrics.emotionEmoji}</span>
+              <span>"{metrics.statusNote}"</span>
             </span>
           </div>
         </div>

@@ -1,50 +1,79 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { 
   ArrowDown, 
-  Cpu, 
-  Database, 
   Flame, 
   Server, 
-  ShieldCheck, 
-  Terminal, 
-  Activity, 
-  Zap, 
-  CheckCircle2, 
-  Play
+  Code, 
+  Mail, 
+  Copy, 
+  Check, 
+  ExternalLink,
+  Share2
 } from "lucide-react";
 
-const commandConsoleList = [
+function LinkedinIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className || "w-4 h-4 fill-current"} viewBox="0 0 24 24">
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.74a1.63 1.63 0 1 0 0 3.26 1.63 1.63 0 0 0 0-3.26z"/>
+    </svg>
+  );
+}
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className || "w-4 h-4 fill-none stroke-current stroke-2"} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    </svg>
+  );
+}
+
+const socialLinks = [
   {
-    cmd: "curl -I https://api.naveen.dev/health",
-    out: "HTTP/2 200 OK (0.42ms)",
-    tag: "REST API HEALTH",
-    detail: "Fastify route handler response with zero-allocation payload compilation."
+    id: "github",
+    name: "GitHub",
+    handle: "github.com/navinO0",
+    url: "https://github.com/navinO0",
+    icon: Code,
+    color: "bg-[#1e1d1b] text-white hover:bg-[#ff5e5b]",
+    badge: "REPOS & SOURCE CODE"
   },
   {
-    cmd: "redis-cli SETNX lock:inventory:sku-90210 1 EX 30",
-    out: "(integer) 1 [LOCK ACQUIRED]",
-    tag: "CONCURRENCY LOCK",
-    detail: "Prevents duplicate checkout overselling during flash flash-sale rushes."
+    id: "linkedin",
+    name: "LinkedIn",
+    handle: "naveen-kumar-kambham",
+    url: "https://www.linkedin.com/in/naveen-kumar-kambham/",
+    icon: LinkedinIcon,
+    color: "bg-[#0077b5] text-white hover:bg-[#005582]",
+    badge: "CAREER & NETWORK"
   },
   {
-    cmd: "psql -c 'EXPLAIN ANALYZE SELECT * FROM transactions...'",
-    out: "Index Scan using idx_ledger_acc (0.18ms)",
-    tag: "SQL OPTIMIZATION",
-    detail: "PostgreSQL query execution time optimized across 1M+ ledger rows."
+    id: "instagram",
+    name: "Instagram",
+    handle: "@stillix_io",
+    url: "https://www.instagram.com/stillix_io",
+    icon: InstagramIcon,
+    color: "bg-[#e1306c] text-white hover:bg-[#b92b55]",
+    badge: "BEHIND THE SCENES"
   },
   {
-    cmd: "docker stats banking-microservice --no-stream",
-    out: "MEM: 42.1MiB / CPU: 0.12%",
-    tag: "CONTAINER PERFORMANCE",
-    detail: "Minimal runtime memory overhead for non-blocking Node.js event loop."
+    id: "email",
+    name: "Email",
+    handle: "naveenkumarkambham1@gmail.com",
+    url: "mailto:naveenkumarkambham1@gmail.com",
+    icon: Mail,
+    color: "bg-[#ffe866] text-[#1e1d1b] hover:bg-[#ebd555]",
+    badge: "DIRECT DISPATCH"
   }
 ];
 
 const avatarModes = [
+  { id: "sunglasses", label: "Cool Shades", src: "/user_avatar_sunglasses.png", tag: "SHADES_MODE" },
   { id: "default", label: "200 OK", src: "/developer_avatar.png", tag: "DEFAULT_MODE" },
   { id: "base", label: "Transparent", src: "/user_avatar_base.png", tag: "CUTOUT_BASE" },
   { id: "security", label: "Security", src: "/developer_avatar_security.png", tag: "SEC_MODE" },
@@ -55,13 +84,14 @@ const avatarModes = [
 
 export default function HeroSection() {
   const [activeAvatarIndex, setActiveAvatarIndex] = useState(0);
-  const [activeCmdIndex, setActiveCmdIndex] = useState(0);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const currentAvatar = avatarModes[activeAvatarIndex];
-  const activeCommand = commandConsoleList[activeCmdIndex];
 
-  const cycleCommand = () => {
-    setActiveCmdIndex((prev) => (prev + 1) % commandConsoleList.length);
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("naveenkumarkambham1@gmail.com");
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2500);
   };
 
   return (
@@ -115,69 +145,65 @@ export default function HeroSection() {
             </span>
           </motion.div>
 
-          {/* CREATIVE REPLACEMENT: Live System Telemetry & Interactive Terminal Command Console */}
+          {/* REPLACEMENT: Interactive Social Links & Direct Connect Bar */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 }}
-            className="sketch-card p-4 bg-white border-2 border-[#1e1d1b] mb-6 max-w-3xl"
+            className="sketch-card p-4 md:p-5 bg-white border-2 border-[#1e1d1b] mb-6 max-w-3xl"
           >
-            {/* Console Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b-2 border-dashed border-[#1e1d1b] mb-3">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b-2 border-dashed border-[#1e1d1b] mb-4">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
-                <span className="font-mono text-xs font-bold text-[#1e1d1b] uppercase tracking-wider flex items-center gap-1.5">
-                  <Terminal className="w-3.5 h-3.5 text-[#ff5e5b]" />
-                  LIVE SYSTEM TELEMETRY & GUARANTEES
+                <Share2 className="w-4 h-4 text-[#ff5e5b]" />
+                <span className="font-mono text-xs font-bold text-[#1e1d1b] uppercase tracking-wider">
+                  DIRECT SOCIAL & NETWORK CONNECT CHANNELS
                 </span>
               </div>
-              <span className="font-mono text-[10px] font-bold text-[#ff5e5b] bg-[#ff5e5b]/10 px-2 py-0.5 rounded border border-[#ff5e5b]/30">
-                {activeCommand.tag}
-              </span>
+              <button
+                onClick={handleCopyEmail}
+                className="sketch-button px-2.5 py-1 text-[10px] font-mono font-bold bg-[#f6f4ee] flex items-center gap-1.5 hover:bg-[#ffe866] transition-colors"
+              >
+                {copiedEmail ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3 text-[#ff5e5b]" />}
+                <span>{copiedEmail ? "EMAIL COPIED!" : "COPY EMAIL"}</span>
+              </button>
             </div>
 
-            {/* Live Metrics Quick Badges Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
-              <div className="bg-[#f6f4ee] p-2 border border-[#1e1d1b] sketch-border-sm text-center">
-                <span className="font-mono text-[9px] text-[#57534e] block uppercase">P99 LATENCY</span>
-                <span className="font-mono text-xs font-bold text-[#ff5e5b]">&lt; 0.5ms (Redis)</span>
-              </div>
-              <div className="bg-[#f6f4ee] p-2 border border-[#1e1d1b] sketch-border-sm text-center">
-                <span className="font-mono text-[9px] text-[#57534e] block uppercase">INGESTION BURST</span>
-                <span className="font-mono text-xs font-bold text-[#1e1d1b]">10k req / 5s Batch</span>
-              </div>
-              <div className="bg-[#f6f4ee] p-2 border border-[#1e1d1b] sketch-border-sm text-center">
-                <span className="font-mono text-[9px] text-[#57534e] block uppercase">RACE PREVENTION</span>
-                <span className="font-mono text-xs font-bold text-[#1e1d1b]">SETNX 30s TTL</span>
-              </div>
-              <div className="bg-[#f6f4ee] p-2 border border-[#1e1d1b] sketch-border-sm text-center">
-                <span className="font-mono text-[9px] text-[#57534e] block uppercase">TRANSACTIONS</span>
-                <span className="font-mono text-xs font-bold text-emerald-700">100% 2-Phase Commit</span>
-              </div>
+            {/* Social Cards Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {socialLinks.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <a
+                    key={item.id}
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group sketch-card p-3 bg-[#f6f4ee] border border-[#1e1d1b] flex items-center justify-between hover:bg-white hover:border-[#ff5e5b] transition-all"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className={`p-2 rounded sketch-border-sm ${item.color} shrink-0 transition-transform group-hover:scale-105`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-mono text-xs font-bold text-[#1e1d1b]">
+                            {item.name}
+                          </span>
+                          <span className="text-[9px] font-mono font-bold text-[#ff5e5b] uppercase">
+                            {item.badge}
+                          </span>
+                        </div>
+                        <span className="font-mono text-[11px] text-[#57534e] truncate block">
+                          {item.handle}
+                        </span>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#57534e] group-hover:text-[#ff5e5b] shrink-0 transition-colors" />
+                  </a>
+                );
+              })}
             </div>
-
-            {/* Interactive Terminal Line Box */}
-            <div className="bg-[#1e1d1b] text-white p-3 rounded font-mono text-xs sketch-border-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-x-auto">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="text-[#ffe866] font-bold">$</span>
-                <span className="text-[#2ecc71] truncate">{activeCommand.cmd}</span>
-              </div>
-              <div className="flex items-center gap-2 shrink-0 justify-between sm:justify-end">
-                <span className="text-[#ffe866] text-[11px] font-bold bg-[#333] px-2 py-0.5 rounded">
-                  {activeCommand.out}
-                </span>
-                <button
-                  onClick={cycleCommand}
-                  className="px-2.5 py-1 text-[10px] font-mono font-bold bg-[#ff5e5b] text-white hover:bg-[#e04845] sketch-button flex items-center gap-1 transition-colors"
-                >
-                  <Play className="w-3 h-3 fill-current" />
-                  <span>NEXT CMD</span>
-                </button>
-              </div>
-            </div>
-            <p className="text-[11px] font-mono text-[#57534e] mt-2 italic">
-              /* {activeCommand.detail} */
-            </p>
           </motion.div>
         </div>
 
