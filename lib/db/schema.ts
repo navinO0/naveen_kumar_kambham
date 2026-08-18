@@ -17,7 +17,7 @@ export interface Project {
 export interface Tool {
   id: string;
   name: string;
-  category: 'api_testing' | 'security' | 'load_testing' | 'database' | 'caching' | 'infrastructure' | 'languages';
+  category: 'framework' | 'languages' | 'database' | 'caching' | 'infrastructure' | 'security' | 'load_testing' | 'api_testing' | 'ai_frontier' | string;
   explanation: string[];
   humanExplanation: string;
   sarcasticJoke: string;

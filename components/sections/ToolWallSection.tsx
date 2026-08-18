@@ -13,13 +13,16 @@ export default function ToolWallSection({ tools }: ToolWallProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   const categories = [
-    { id: "all", label: "All Backend Tools" },
-    { id: "api_testing", label: "API Testing" },
-    { id: "security", label: "Security & Burp" },
-    { id: "load_testing", label: "Load Testing" },
-    { id: "database", label: "Databases & SQL" },
-    { id: "caching", label: "Caching & Redis" },
-    { id: "infrastructure", label: "Docker & Infra" },
+    { id: "all", label: `All Tools (${tools.length})` },
+    { id: "framework", label: "Frameworks & Runtimes" },
+    { id: "languages", label: "Languages & Specs" },
+    { id: "database", label: "Databases & SQL/NoSQL" },
+    { id: "caching", label: "Caching & Queues" },
+    { id: "infrastructure", label: "Docker & Cloud Infra" },
+    { id: "security", label: "Defensive Security & Auth" },
+    { id: "load_testing", label: "Load & Stress Testing" },
+    { id: "api_testing", label: "API Verification & Schemas" },
+    { id: "ai_frontier", label: "AI & Agentic LLMs" },
   ];
 
   const filteredTools =
@@ -27,13 +30,28 @@ export default function ToolWallSection({ tools }: ToolWallProps) {
       ? tools
       : tools.filter((t) => t.category === selectedCategory);
 
+  const getCategoryLabel = (cat: string) => {
+    switch (cat) {
+      case "framework": return "FRAMEWORK";
+      case "languages": return "LANG & SPEC";
+      case "database": return "DATABASE";
+      case "caching": return "CACHE / QUEUE";
+      case "infrastructure": return "INFRA / DEVOPS";
+      case "security": return "SECURITY";
+      case "load_testing": return "LOAD TEST";
+      case "api_testing": return "API TOOLING";
+      case "ai_frontier": return "AI FRONTIER";
+      default: return cat.toUpperCase().replace("_", " ");
+    }
+  };
+
   return (
     <section id="toolbox" className="py-12 md:py-16 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto border-b-2 border-dashed border-[#1e1d1b]">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
         <div>
-          <span className="sticker-tag mb-2">TOOLING PHILOSOPHY</span>
+          <span className="sticker-tag mb-2">TOOLING PHILOSOPHY ({filteredTools.length} / {tools.length} SHOWING)</span>
           <h2 className="text-2xl sm:text-3xl font-black text-[#1e1d1b]">
-            things I learned the hard way <span className="font-hand text-xl text-[#ff5e5b] font-normal ml-2">(the backend tool wall)</span>
+            things I learned the hard way <span className="font-hand text-xl text-[#ff5e5b] font-normal ml-2">(the complete backend tool wall)</span>
           </h2>
         </div>
         <p className="text-xs font-mono text-[#57534e] mt-2 md:mt-0">
@@ -43,17 +61,27 @@ export default function ToolWallSection({ tools }: ToolWallProps) {
 
       {/* Category Filter Tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setSelectedCategory(cat.id)}
-            className={`px-3 py-1.5 text-xs font-mono sketch-button ${
-              selectedCategory === cat.id ? "bg-[#ff5e5b] text-white" : "bg-white text-[#1e1d1b]"
-            }`}
-          >
-            {cat.label}
-          </button>
-        ))}
+        {categories.map((cat) => {
+          const count = cat.id === "all" ? tools.length : tools.filter(t => t.category === cat.id).length;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-3 py-1.5 text-xs font-mono sketch-button flex items-center gap-1.5 ${
+                selectedCategory === cat.id ? "bg-[#ff5e5b] text-white" : "bg-white text-[#1e1d1b]"
+              }`}
+            >
+              <span>{cat.label}</span>
+              {cat.id !== "all" && (
+                <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold ${
+                  selectedCategory === cat.id ? "bg-white text-[#ff5e5b]" : "bg-[#f6f4ee] text-[#57534e]"
+                }`}>
+                  {count}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* Grid of Tool Cards */}
@@ -65,7 +93,7 @@ export default function ToolWallSection({ tools }: ToolWallProps) {
                 <h3 className="font-bold font-mono text-lg text-[#1e1d1b] flex items-center gap-2">
                   <span className="text-[#ff5e5b]">#</span> {tool.name}
                 </h3>
-                <span className="sticker-tag text-[10px] uppercase">{tool.category}</span>
+                <span className="sticker-tag text-[10px] uppercase font-bold">{getCategoryLabel(tool.category)}</span>
               </div>
 
               {/* Human explanation */}

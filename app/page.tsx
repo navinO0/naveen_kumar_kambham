@@ -1,5 +1,7 @@
 import Header from "@/components/ui/Header";
 import HeroSection from "@/components/sections/HeroSection";
+import AboutMeSection from "@/components/sections/AboutMeSection";
+import ExperienceResumeSection from "@/components/sections/ExperienceResumeSection";
 import HowIThinkSection from "@/components/sections/HowIThinkSection";
 import RequirementsToCodeSection from "@/components/sections/requirementsToCode/RequirementsToCodeSection";
 import SelectedWorkSection from "@/components/sections/SelectedWorkSection";
@@ -35,7 +37,13 @@ export default function Home() {
         {/* 1. Hero Section */}
         <HeroSection />
 
-        {/* 2. How I Think Principles */}
+        {/* 2. About Me (Philosophy, Vision, Complete Toolbelt) */}
+        <AboutMeSection />
+
+        {/* 3. Engineering Resume & Career Timeline */}
+        <ExperienceResumeSection />
+
+        {/* 4. How I Think Principles */}
         <HowIThinkSection />
 
         {/* 3. Major Engineering Section: How Requirements Become Code */}
