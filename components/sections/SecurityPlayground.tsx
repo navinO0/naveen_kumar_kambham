@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { UserRole, Action, Resource, RbacEvaluationResult } from "@/lib/rbac/evaluator";
 import { ShieldCheck, ShieldAlert, Lock, Key, AlertOctagon, Terminal, ArrowRight, Check, X } from "lucide-react";
 
@@ -43,7 +44,7 @@ export default function SecurityPlayground() {
   };
 
   return (
-    <section id="security" className="py-12 md:py-16 px-4 max-w-6xl mx-auto border-b-2 border-dashed border-[#1e1d1b]">
+    <section id="security" className="py-12 md:py-16 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto border-b-2 border-dashed border-[#1e1d1b]">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
         <div>
           <span className="sticker-tag-red mb-2 uppercase font-bold">DEFENSIVE ARCHITECTURE</span>
@@ -142,7 +143,16 @@ export default function SecurityPlayground() {
                 <span className="text-[10px] text-gray-400">HTTP {evalResult?.statusCode}</span>
               </div>
 
-              <div className="my-3 text-center p-3 rounded bg-[#292524] border border-[#57534e]">
+              <div className="my-3 text-center p-3 rounded bg-[#292524] border border-[#57534e] flex flex-col items-center">
+                <div className="w-20 h-20 relative mb-2">
+                  <Image
+                    src={evalResult?.allowed ? "/developer_avatar_security.png" : "/developer_avatar_stressed.png"}
+                    alt="Security Vector Avatar"
+                    fill
+                    sizes="80px"
+                    className="object-contain drop-shadow"
+                  />
+                </div>
                 <span className="text-[10px] text-gray-400 block mb-1">EVALUATION OUTCOME</span>
                 {evalResult?.allowed ? (
                   <div className="flex items-center justify-center space-x-2 text-[#2ecc71] font-bold text-lg">

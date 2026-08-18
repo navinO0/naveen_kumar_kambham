@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { CheckCircle2, Code2, Database, ShieldAlert, Zap } from "lucide-react";
 
 const principles = [
@@ -62,13 +63,18 @@ const principles = [
 
 export default function HowIThinkSection() {
   return (
-    <section className="py-12 md:py-16 px-4 max-w-6xl mx-auto border-b-2 border-dashed border-[#1e1d1b]">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
-        <div>
-          <span className="sticker-tag mb-2">ENGINEERING MENTAL MODEL</span>
-          <h2 className="text-2xl sm:text-3xl font-black text-[#1e1d1b]">
-            how I think <span className="font-hand text-xl text-[#ff5e5b] font-normal ml-2">(principles from the trenches)</span>
-          </h2>
+    <section className="py-12 md:py-16 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto border-b-2 border-dashed border-[#1e1d1b]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-4 border-b border-dashed border-[#1e1d1b]">
+        <div className="flex items-center space-x-4">
+          <div className="w-16 h-16 relative shrink-0 border-2 border-[#1e1d1b] rounded bg-white p-1 sketch-border-sm">
+            <Image src="/developer_avatar_thinking.png" alt="Architect Vector Avatar" fill sizes="64px" className="object-contain" />
+          </div>
+          <div>
+            <span className="sticker-tag mb-1">ENGINEERING MENTAL MODEL</span>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#1e1d1b]">
+              how I think <span className="font-hand text-xl text-[#ff5e5b] font-normal ml-2">(principles from the trenches)</span>
+            </h2>
+          </div>
         </div>
         <p className="text-xs font-mono text-[#57534e] mt-2 md:mt-0">
           /* 9 rules I live by when building backends */

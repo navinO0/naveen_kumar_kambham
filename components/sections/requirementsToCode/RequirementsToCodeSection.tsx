@@ -1,11 +1,16 @@
 "use client";
 
 import RequirementTransformation from "./RequirementTransformation";
+import MoneyTransferCaseStudy from "./MoneyTransferCaseStudy";
 import RequirementAnalysis from "./RequirementAnalysis";
 import FunctionalVsNonFunctional from "./FunctionalVsNonFunctional";
 import DomainAndArchitecture from "./DomainAndArchitecture";
 import AdrAndCodingPrinciples from "./AdrAndCodingPrinciples";
+import AdvancedApiAndProtocols from "./AdvancedApiAndProtocols";
+import DatabaseInternalsAndOptimization from "./DatabaseInternalsAndOptimization";
 import ApiAndDatabaseEngineering from "./ApiAndDatabaseEngineering";
+import EventDrivenAndDistributedSystems from "./EventDrivenAndDistributedSystems";
+import CloudContainersAndObservability from "./CloudContainersAndObservability";
 import TestingAndObservability from "./TestingAndObservability";
 import SecurityByDesignAndReview from "./SecurityByDesignAndReview";
 import { ArrowDown, Code2, Cpu, GitBranch, Layers, ShieldCheck, Terminal, Workflow } from "lucide-react";
@@ -31,7 +36,7 @@ export default function RequirementsToCodeSection() {
   ];
 
   return (
-    <section id="engineering" className="py-12 md:py-16 px-4 max-w-6xl mx-auto border-b-2 border-dashed border-[#1e1d1b]">
+    <section id="engineering" className="py-12 md:py-16 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto border-b-2 border-dashed border-[#1e1d1b]">
       {/* 1. Main Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
         <div>
@@ -87,8 +92,11 @@ export default function RequirementsToCodeSection() {
       </div>
 
       {/* Subsections Flow */}
-      <div className="space-y-4">
-        {/* Real Requirement Transformation */}
+      <div className="space-y-6">
+        {/* Money Transfer ₹10,000 Case Study */}
+        <MoneyTransferCaseStudy />
+
+        {/* Real Requirement Transformation Stepper */}
         <RequirementTransformation />
 
         {/* Pre-Keyboard Requirement Analysis */}
@@ -97,16 +105,28 @@ export default function RequirementsToCodeSection() {
         {/* Functional vs Non-Functional & Acceptance Criteria */}
         <FunctionalVsNonFunctional />
 
+        {/* Advanced APIs & Protocol Matrix */}
+        <AdvancedApiAndProtocols />
+
         {/* Domain Modeling & Architecture Patterns */}
         <DomainAndArchitecture />
 
         {/* ADRs & Coding Principles */}
         <AdrAndCodingPrinciples />
 
-        {/* API Design & Database Engineering */}
+        {/* Database Internals & EXPLAIN ANALYZE */}
+        <DatabaseInternalsAndOptimization />
+
+        {/* API Contracts & Transaction Failure Simulator */}
         <ApiAndDatabaseEngineering />
 
-        {/* Testing Pyramid, DoD & Observability */}
+        {/* Messaging Systems & Event Driven Architecture */}
+        <EventDrivenAndDistributedSystems />
+
+        {/* Cloud Topology, Docker/K8s & Security Pipeline */}
+        <CloudContainersAndObservability />
+
+        {/* Testing Pyramid, DoD & Telemetry */}
         <TestingAndObservability />
 
         {/* Security by Design, Review & Final Statement */}

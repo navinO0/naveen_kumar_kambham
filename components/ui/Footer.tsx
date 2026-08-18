@@ -19,7 +19,7 @@ export default function Footer() {
 
   return (
     <footer className="mt-auto py-10 px-4 bg-[#f6f4ee] border-t-2 border-[#1e1d1b]">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-xs text-[#57534e]">
+      <div className="w-full max-w-[1700px] mx-auto px-2 sm:px-4 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-xs text-[#57534e]">
         {/* Left Copy */}
         <div className="flex items-center space-x-2">
           <Terminal className="w-4 h-4 text-[#ff5e5b]" />

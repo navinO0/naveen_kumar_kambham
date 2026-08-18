@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Terminal, Menu, X, ShieldAlert } from "lucide-react";
 
@@ -9,14 +10,16 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-[#f6f4ee]/90 backdrop-blur-md border-b-2 border-[#1e1d1b] px-4 py-3">
-      <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <div className="w-full max-w-[1700px] mx-auto px-2 sm:px-4 lg:px-8 flex items-center justify-between">
         {/* Left Branding */}
-        <div className="flex items-baseline space-x-2">
+        <div className="flex items-center space-x-2">
           <Link
             href="/"
             className="flex items-center space-x-2 font-mono font-bold text-base md:text-lg text-[#1e1d1b] hover:opacity-80 transition-opacity"
           >
-            <Terminal className="w-5 h-5 text-[#ff5e5b]" />
+            <div className="w-7 h-7 relative rounded-full border border-[#1e1d1b] bg-[#ffe866] p-0.5 overflow-hidden flex items-center justify-center shrink-0">
+              <Image src="/favicon.png" alt="Vector Avatar Favicon" fill sizes="28px" className="object-contain" />
+            </div>
             <span>alex_vance // backend engineer</span>
           </Link>
 

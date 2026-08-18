@@ -27,6 +27,14 @@ export const metadata: Metadata = {
   keywords: ["Backend Engineer", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "SQLite", "Redis", "Security", "RBAC", "JMeter", "Postman", "Burp Suite"],
   authors: [{ name: "Alex Vance" }],
   viewport: "width=device-width, initial-scale=1, maximum-scale=5",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" }
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({

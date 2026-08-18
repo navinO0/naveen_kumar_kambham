@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Mail, FileText, Send, AlertTriangle, CheckCircle2, ShieldAlert, Zap, Code, Globe } from "lucide-react";
 
 export default function ContactSection() {
@@ -67,7 +68,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-12 md:py-16 px-4 max-w-5xl mx-auto border-b-2 border-dashed border-[#1e1d1b]">
+    <section id="contact" className="py-12 md:py-16 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto border-b-2 border-dashed border-[#1e1d1b]">
       <div className="sketch-card p-6 md:p-8 bg-white border-2 border-[#1e1d1b] relative">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b-2 border-dashed border-[#1e1d1b] mb-6">
@@ -239,7 +240,10 @@ export default function ContactSection() {
               </a>
             </div>
 
-            <div className="mt-6 pt-3 border-t border-dashed border-[#1e1d1b]">
+            <div className="mt-6 pt-3 border-t border-dashed border-[#1e1d1b] flex items-center gap-3">
+              <div className="w-14 h-14 relative shrink-0">
+                <Image src="/developer_avatar_success.png" alt="Contact Vector Avatar" fill sizes="56px" className="object-contain drop-shadow" />
+              </div>
               <span className="font-hand text-xs text-[#ff5e5b] font-bold block">
                 "I respond faster to detailed stack logs than vague hellos."
               </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Activity, AlertTriangle, Flame, Gauge, Zap } from "lucide-react";
 
@@ -179,30 +180,26 @@ export default function JMeterSimulator() {
               <span className="text-[9px] font-mono text-[#ffe866]">NODE_01</span>
             </div>
 
-            {/* Cartoony Server Face */}
-            <div className="flex flex-col items-center justify-center my-auto">
+            {/* Cartoony Server & Vector Avatar Face */}
+            <div className="flex flex-col items-center justify-center my-auto w-full h-20 relative">
               {metrics.serverState === "CHILLING" && (
-                <div className="text-center text-white">
-                  <div className="text-xl">😎</div>
-                  <span className="text-[10px] font-mono text-green-400">CHILLING</span>
+                <div className="w-full h-full relative">
+                  <Image src="/developer_avatar_success.png" alt="Success Avatar" fill sizes="128px" className="object-contain drop-shadow" />
                 </div>
               )}
               {metrics.serverState === "WARMING" && (
-                <div className="text-center text-white">
-                  <div className="text-xl">😐</div>
-                  <span className="text-[10px] font-mono text-yellow-400">WARMING UP</span>
+                <div className="w-full h-full relative">
+                  <Image src="/developer_avatar.png" alt="Default Avatar" fill sizes="128px" className="object-contain drop-shadow" />
                 </div>
               )}
               {metrics.serverState === "SWEATING" && (
-                <div className="text-center text-white">
-                  <div className="text-2xl animate-bounce">😰</div>
-                  <span className="text-[10px] font-mono text-orange-400 font-bold">SWEATING</span>
+                <div className="w-full h-full relative">
+                  <Image src="/developer_avatar_thinking.png" alt="Thinking Avatar" fill sizes="128px" className="object-contain drop-shadow" />
                 </div>
               )}
               {metrics.serverState === "MELTDOWN" && (
-                <div className="text-center text-white">
-                  <div className="text-3xl animate-spin">😱</div>
-                  <span className="text-[10px] font-mono text-red-400 font-bold uppercase animate-pulse">MELTDOWN</span>
+                <div className="w-full h-full relative">
+                  <Image src="/developer_avatar_stressed.png" alt="Stressed Avatar" fill sizes="128px" className="object-contain drop-shadow animate-pulse" />
                 </div>
               )}
             </div>

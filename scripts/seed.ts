@@ -23,6 +23,66 @@ const insertProject = db.prepare(`
 
 const projects = [
   {
+    id: "garment-production",
+    name: "Garment Production & B2B/B2C Invoice Generator",
+    oneLine: "B2B bulk order management, B2C invoice generation engine, automated tax rules, and fabric stock tracking.",
+    year: 2025,
+    backendResponsibilities: [
+      "Engineered multi-currency B2B bulk invoicing engine with automated tax / GST calculation routines",
+      "Built transactional garment production workflow tracker (cutting -> stitching -> QC -> packing)",
+      "Designed asynchronous PDF rendering worker queue using Redis & BullMQ for high-speed download links",
+      "Created audit-logged inventory ledger tracking raw fabric rolls, trim materials, and finished unit counts"
+    ],
+    stack: ["Node.js", "Express", "PostgreSQL", "Redis", "BullMQ", "Zod"],
+    interestingProblem: "B2B bulk invoices with 50+ line items and custom tax tiers were causing PDF rendering to timeout and block concurrent API requests.",
+    whatBroke: "Generating high-resolution 300DPI PDF invoices synchronously in the main HTTP route handler caused event loop lag spikes exceeding 2500ms.",
+    whatIChanged: "Offloaded PDF rendering to a background job worker queue using Redis & BullMQ. Invoices generate asynchronously and stream via presigned download URLs.",
+    whyIChoseIt: "Redis job queues guaranteed zero HTTP timeouts, and PostgreSQL decimal types ensured cent-exact accounting accuracy.",
+    whatILearned: "Never generate binary documents or heavy PDFs synchronously inside an HTTP API request route handler.",
+    githubUrl: "https://github.com/example/garment-production-invoice-engine",
+    liveUrl: "https://garment-api.vance.dev"
+  },
+  {
+    id: "hrms-lite",
+    name: "HRMS Lite (hrms-v1)",
+    oneLine: "Lightweight Human Resource Management System, employee attendance tracking, role-based access control, and payroll calculations.",
+    year: 2025,
+    backendResponsibilities: [
+      "Implemented granular RBAC middleware (Admin vs HR Manager vs Employee permission scopes)",
+      "Engineered biometric attendance log ingestion API with timestamp deduplication",
+      "Designed payroll engine calculating tax deductions, leaves, and net salary payouts",
+      "Built JWT session revocation system using Redis blacklists for instant user offboarding"
+    ],
+    stack: ["Fastify", "TypeScript", "PostgreSQL", "Prisma", "Redis", "JWT"],
+    interestingProblem: "Biometric punch-in devices burst 10,000 requests in a 15-minute window every morning at 9:00 AM, causing database locks on the attendance table.",
+    whatBroke: "Overlapping INSERT queries for employee attendance logs hit deadlocks and returned 500 server errors under peak morning rush.",
+    whatIChanged: "Switched to batching punch-in events in Redis lists and bulk-inserting into PostgreSQL in 5-second transactional batches (INSERT ... ON CONFLICT DO NOTHING).",
+    whyIChoseIt: "Fastify provided sub-millisecond route handling, and Redis buffering absorbed high-frequency burst traffic seamlessly.",
+    whatILearned: "Burst traffic shouldn't hit relational databases directly; buffer high-frequency writes in memory first.",
+    githubUrl: "https://github.com/example/hrms-v1-backend",
+    liveUrl: "https://hrms-v1.vance.dev"
+  },
+  {
+    id: "fashion-demostore",
+    name: "Fashion Demo Store (E-Commerce Platform)",
+    oneLine: "Modern fashion e-commerce backend platform featuring dynamic product catalog, multi-variant inventory, persistent cart, and checkout flow.",
+    year: 2025,
+    backendResponsibilities: [
+      "Designed multi-variant product catalog schema (size, color, material, SKU stock mapping)",
+      "Built resilient checkout API with session-bound inventory reservation locks",
+      "Implemented image URL resolution pipeline for variant thumbnails and cart items",
+      "Engineered webhook handlers for Stripe payment status updates and order fulfillment triggers"
+    ],
+    stack: ["Next.js 16", "Node.js", "PostgreSQL", "Prisma", "Stripe API", "Zod"],
+    interestingProblem: "Cart items lost image thumbnail URLs during checkout transitions due to mismatched nested product data structures.",
+    whatBroke: "Checkout payload omitted variant image associations, causing image fallback failures and broken checkout UI media.",
+    whatIChanged: "Created a standardized resolveImageUrl utility and schema validator guaranteeing image fallback resolution across persistent cart and instant 'Buy Now' paths.",
+    whyIChoseIt: "Prisma ORM provided strict relational mapping between products, SKUs, and variant assets, while Next.js Server Actions simplified state updates.",
+    whatILearned: "Data contract consistency between API responses and frontend components is crucial for flawless checkout experiences.",
+    githubUrl: "https://github.com/example/fashion-demostore-platform",
+    liveUrl: "https://fashion-demo.vance.dev"
+  },
+  {
     id: "restaurant-ordering",
     name: "Restaurant Ordering & Kitchen Engine",
     oneLine: "QR ordering, live kitchen workflow state machine, payment webhooks, and transactional API gateway.",
@@ -55,52 +115,12 @@ const projects = [
     ],
     stack: ["Node.js", "Express", "PostgreSQL", "Redis", "Docker", "Stripe API"],
     interestingProblem: "200 concurrent users clicked 'Buy Now' during a flash sale for 15 remaining items, resulting in a race condition that drove stock to -14.",
-    whatBroke: "Standard `UPDATE inventory SET count = count - 1` without lock guards allowed overlapping SELECT queries to pass validation simultaneously.",
-    whatIChanged: "Switched to atomic SQL `UPDATE inventory SET count = count - 1 WHERE id = $1 AND count >= 1 RETURNING count` combined with a Redis 30-second TTL lock queue.",
+    whatBroke: "Standard UPDATE inventory SET count = count - 1 without lock guards allowed overlapping SELECT queries to pass validation simultaneously.",
+    whatIChanged: "Switched to atomic SQL UPDATE inventory SET count = count - 1 WHERE id = $1 AND count >= 1 RETURNING count combined with a Redis 30-second TTL lock queue.",
     whyIChoseIt: "Redis atomic primitives allowed sub-millisecond stock reservations before hitting the relational database.",
     whatILearned: "Inventory isn't a static integer in a row; it's a concurrent queue of reservation intents under high traffic.",
     githubUrl: "https://github.com/example/ecommerce-core-engine",
     liveUrl: "https://ecommerce-api.vance.dev"
-  },
-  {
-    id: "insurance-policy-advisor",
-    name: "Document Vector Search & Ingestion Pipeline",
-    oneLine: "Asynchronous PDF ingestion, embedding generation, vector similarity search, and AI orchestration API.",
-    year: 2025,
-    backendResponsibilities: [
-      "Engineered asynchronous job pipeline using BullMQ and Redis",
-      "Built chunks & vector storage layer in PGVector",
-      "Designed streaming response handlers for chunked search queries",
-      "Created rate limiting abstraction per API key layer"
-    ],
-    stack: ["Fastify", "TypeScript", "PostgreSQL", "PGVector", "Redis", "BullMQ"],
-    interestingProblem: "Heavy PDF parsing and text chunking blocked the main Node.js event loop for 4 seconds during document uploads, dropping active HTTP connections.",
-    whatBroke: "Synchronous file extraction in the API handler caused high latency spikes (p99 > 4200ms) for all other users.",
-    whatIChanged: "Decoupled file ingestion from the web thread. Uploads immediately return a `202 Accepted` job ID, and worker processes handle parsing asynchronously.",
-    whyIChoseIt: "BullMQ + Redis provided persistent job retries, dead-letter queues, and concurrency throttling.",
-    whatILearned: "CPU-heavy processing tasks do not belong inside an HTTP request handler thread.",
-    githubUrl: "https://github.com/example/policy-ingestion-service",
-    liveUrl: "https://vector-advisor-api.vance.dev"
-  },
-  {
-    id: "cms-auth-platform",
-    name: "RBAC & Developer Content CMS Engine",
-    oneLine: "Role-based authorization platform, JWT session revocation, audit logging, and dynamic API key management.",
-    year: 2025,
-    backendResponsibilities: [
-      "Built custom RBAC middleware evaluating permissions per resource action",
-      "Engineered SQLite WAL database driver with migration management",
-      "Created audit trail logger recording administrative mutations",
-      "Designed secure session store using HTTP-only cookies with sliding refresh token rotation"
-    ],
-    stack: ["Next.js 16", "SQLite", "better-sqlite3", "TypeScript", "Zod", "Redis"],
-    interestingProblem: "Database query overhead grew exponentially as every API request triggered 3 SQL joins to verify user role and granular permission strings.",
-    whatBroke: "Database connection pool saturated under 500 req/sec during permission check loops.",
-    whatIChanged: "Implemented an in-memory bitmask permission cache in Redis with instant cache invalidation upon role updates.",
-    whyIChoseIt: "SQLite WAL mode provided ultra-fast zero-latency local disk reads for portfolio data while keeping server footprint light.",
-    whatILearned: "Auth checks run on 100% of routes. If your permission check takes 20ms, your entire API is capped at 50 req/sec per thread.",
-    githubUrl: "https://github.com/example/cms-backend-engine",
-    liveUrl: "https://vance.dev"
   }
 ];
 
@@ -123,7 +143,7 @@ const insertTool = db.prepare(`
 const tools = [
   {
     id: "postman",
-    name: "Postman",
+    name: "Postman & Insomnia",
     category: "api_testing",
     explanation: [
       "API route exploration & manual payload verification",
@@ -138,7 +158,7 @@ const tools = [
   },
   {
     id: "burp-suite",
-    name: "Burp Suite",
+    name: "Burp Suite & OWASP ZAP",
     category: "security",
     explanation: [
       "Intercepting and inspecting live HTTP request/response traffic",
@@ -153,7 +173,7 @@ const tools = [
   },
   {
     id: "jmeter",
-    name: "Apache JMeter",
+    name: "Apache JMeter & k6",
     category: "load_testing",
     explanation: [
       "High-concurrency load & stress testing execution",
@@ -168,7 +188,7 @@ const tools = [
   },
   {
     id: "sql",
-    name: "SQL & PostgreSQL",
+    name: "PostgreSQL & MySQL",
     category: "database",
     explanation: [
       "Index strategies (B-Tree, GIN, Partial indexes) for fast lookups",
@@ -197,19 +217,105 @@ const tools = [
     problemItSolves: "Why are we asking PostgreSQL the exact same query 900 times per minute?"
   },
   {
+    id: "kafka",
+    name: "Apache Kafka & RabbitMQ",
+    category: "messaging",
+    explanation: [
+      "Asynchronous event streaming and message queue decoupling",
+      "Topic partitioning, offsets, and consumer group scaling",
+      "Dead-letter queue isolation for poison pill payloads",
+      "Transactional outbox pattern implementation"
+    ],
+    humanExplanation: "Message queues let backend systems do heavy work in the background without making the HTTP request hang.",
+    sarcasticJoke: "Synchronous HTTP calls across 8 microservices is just a monolith connected by hope.",
+    whyItExists: "Asynchronous event streaming & queue decoupling",
+    problemItSolves: "Why should the user wait 4 seconds for slow email & PDF workers during checkout?"
+  },
+  {
     id: "docker",
-    name: "Docker",
+    name: "Docker & Kubernetes",
     category: "infrastructure",
     explanation: [
       "Containerizing application runtimes with precise node/OS dependencies",
       "Reproducible dev environments avoiding host configuration drift",
       "Local multi-container stack orchestration (App + PG + Redis) via Docker Compose",
-      "Service isolation & environment parity between local laptop and production"
+      "Kubernetes pod deployment, HPA autoscaling, and readiness/liveness probes"
     ],
     humanExplanation: "'Works on my machine' -> Docker -> 'your machine' -> 'server'... okay, now we all have the exact same problem.",
     sarcasticJoke: "Putting 'works on my machine' inside a Linux container.",
     whyItExists: "Environment consistency & container isolation",
     problemItSolves: "Why does it only run on your laptop?"
+  },
+  {
+    id: "aws",
+    name: "AWS Cloud (EC2, ECS, S3, RDS)",
+    category: "infrastructure",
+    explanation: [
+      "Scalable cloud infrastructure hosting and VPC network isolation",
+      "Managed databases with automated multi-AZ failover and backups",
+      "Object storage (S3) and CloudFront CDN distribution",
+      "IAM access control and KMS encryption key management"
+    ],
+    humanExplanation: "Cloud hosting lets us run resilient distributed applications without buying physical server racks.",
+    sarcasticJoke: "The cloud is just someone else's computer, but with hourly billing.",
+    whyItExists: "Scalable cloud hosting & infrastructure resilience",
+    problemItSolves: "How do we host elastic microservices with high availability and automated failover?"
+  },
+  {
+    id: "opentelemetry",
+    name: "OpenTelemetry & Jaeger",
+    category: "observability",
+    explanation: [
+      "Distributed request context propagation across microservice boundaries",
+      "End-to-end trace span collection and bottleneck detection",
+      "Correlation ID tracking from HTTP gateway to database queries"
+    ],
+    humanExplanation: "Distributed tracing gives you a X-ray scanner into multi-service request flows.",
+    sarcasticJoke: "Without distributed tracing, microservice debugging is just finger-pointing in Slack.",
+    whyItExists: "Distributed request tracing & telemetry",
+    problemItSolves: "Which microservice step failed when a payment request timed out midway?"
+  },
+  {
+    id: "prometheus",
+    name: "Prometheus & Grafana",
+    category: "observability",
+    explanation: [
+      "Time-series metric collection (request rate, p99 latency, error rate)",
+      "Real-time dashboard visualization and threshold alerting",
+      "Monitoring CPU utilization, memory pressure, and DB connection pools"
+    ],
+    humanExplanation: "Metrics show you system health before production users start filing bug reports.",
+    sarcasticJoke: "If you don't monitor p99 latency, your users will do it for you.",
+    whyItExists: "Metrics collection & latency dashboards",
+    problemItSolves: "How do we detect latency spikes before users start reporting crashes?"
+  },
+  {
+    id: "sqlite",
+    name: "SQLite (WAL Mode)",
+    category: "database",
+    explanation: [
+      "Zero-config embedded relational database engine",
+      "Write-Ahead Logging (WAL) for concurrent read performance",
+      "Single-file database storage for local applications & lightweight tools"
+    ],
+    humanExplanation: "SQLite is the fastest database because it lives in the same process memory space.",
+    sarcasticJoke: "Sometimes a single file is better than a 4-node database cluster.",
+    whyItExists: "Simple zero-config embedded data storage",
+    problemItSolves: "Do we really need a database cluster for lightweight local storage?"
+  },
+  {
+    id: "zod",
+    name: "Zod & OpenAPI",
+    category: "api_testing",
+    explanation: [
+      "Runtime schema validation for untrusted HTTP request payloads",
+      "Automated TypeScript type inference from validation schemas",
+      "Standardized OpenAPI/Swagger specification generation"
+    ],
+    humanExplanation: "Zod guarantees that untrusted input conforms to strict types before your backend touches it.",
+    sarcasticJoke: "Zod is the bouncer at the door of your HTTP request handler.",
+    whyItExists: "Boundary type-safety & contract validation",
+    problemItSolves: "How do we block invalid payloads before they hit our business logic?"
   }
 ];
 

@@ -9,7 +9,7 @@ interface TrenchNotesProps {
 
 export default function TrenchNotesSection({ notes }: TrenchNotesProps) {
   return (
-    <section className="py-12 md:py-16 px-4 max-w-6xl mx-auto border-b-2 border-dashed border-[#1e1d1b]">
+    <section className="py-12 md:py-16 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto border-b-2 border-dashed border-[#1e1d1b]">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
         <div>
           <span className="sticker-tag mb-2">RAW OBSERVATIONS</span>
