@@ -72,21 +72,8 @@ const socialLinks = [
   }
 ];
 
-const avatarModes = [
-  { id: "sunglasses", label: "Cool Shades", src: "/user_avatar_sunglasses.png", tag: "SHADES_MODE" },
-  { id: "default", label: "200 OK", src: "/developer_avatar.png", tag: "DEFAULT_MODE" },
-  { id: "base", label: "Transparent", src: "/user_avatar_base.png", tag: "CUTOUT_BASE" },
-  { id: "security", label: "Security", src: "/developer_avatar_security.png", tag: "SEC_MODE" },
-  { id: "stressed", label: "500 Error", src: "/developer_avatar_stressed.png", tag: "FIRE_MODE" },
-  { id: "thinking", label: "Thinking", src: "/developer_avatar_thinking.png", tag: "ARCH_MODE" },
-  { id: "success", label: "Deployed", src: "/developer_avatar_success.png", tag: "PASS_MODE" },
-];
-
 export default function HeroSection() {
-  const [activeAvatarIndex, setActiveAvatarIndex] = useState(0);
   const [copiedEmail, setCopiedEmail] = useState(false);
-
-  const currentAvatar = avatarModes[activeAvatarIndex];
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("naveenkumarkambham1@gmail.com");
@@ -216,49 +203,52 @@ export default function HeroSection() {
             className="relative sketch-card p-4 bg-[#fcfbfa] border-2 border-[#1e1d1b] max-w-sm w-full transform rotate-1 hover:rotate-0 transition-transform"
           >
             <span className="absolute -top-3 left-4 sticker-tag text-[10px] uppercase font-mono font-bold z-10">
-              AVATAR // {currentAvatar.tag}
+              DEV // SHADES_MODE
             </span>
 
             {/* Avatar Display Container - Transparent BG */}
             <div className="relative aspect-square w-full border-2 border-[#1e1d1b] rounded bg-paper-dots p-2 flex items-center justify-center overflow-hidden">
-              <motion.div
-                key={currentAvatar.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="w-full h-full relative"
-              >
+              <div className="w-full h-full relative">
                 <Image
-                  src={currentAvatar.src}
-                  alt={`Developer Vector Avatar - ${currentAvatar.label}`}
+                  src="/user_avatar_sunglasses.png"
+                  alt="Developer Vector Avatar - Cool Shades"
                   fill
                   sizes="(max-width: 768px) 100vw, 400px"
                   className="object-contain p-1 drop-shadow-md"
                   priority
                 />
-              </motion.div>
+              </div>
             </div>
 
-            {/* Avatar Mode State Selector Buttons */}
-            <div className="mt-3 pt-2 border-t border-dashed border-[#1e1d1b]">
-              <div className="flex justify-between items-center text-[10px] font-mono text-[#57534e] mb-1.5">
-                <span>AVATAR STATE:</span>
-                <span className="font-hand text-[#ff5e5b] font-bold">// Transparent Vector</span>
+            {/* Developer Telemetry & Live Status Box below Avatar */}
+            <div className="mt-3 pt-3 border-t-2 border-dashed border-[#1e1d1b]">
+              <div className="flex items-center justify-between font-mono text-[11px] text-[#1e1d1b] mb-2 font-bold">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#2ecc71] animate-pulse" />
+                  STATUS: ONLINE
+                </span>
+                <span className="font-hand text-[#ff5e5b] font-bold text-xs">// ready for backends</span>
               </div>
-              <div className="flex flex-wrap gap-1">
-                {avatarModes.map((mode, idx) => (
-                  <button
-                    key={mode.id}
-                    onClick={() => setActiveAvatarIndex(idx)}
-                    className={`px-2 py-0.5 text-[11px] font-mono border rounded transition-colors ${
-                      activeAvatarIndex === idx
-                        ? "bg-[#1e1d1b] text-[#ffe866] border-[#1e1d1b] font-bold"
-                        : "bg-white text-[#1e1d1b] border-[#1e1d1b] hover:bg-[#ffe866]"
-                    }`}
-                  >
-                    {mode.label}
-                  </button>
-                ))}
+
+              <div className="bg-[#f6f4ee] p-2.5 rounded border border-[#1e1d1b] font-mono text-xs space-y-1.5 sketch-border-sm">
+                <div className="flex justify-between items-center text-[11px]">
+                  <span className="text-[#57534e] font-medium">CORE STACK:</span>
+                  <span className="font-bold text-[#1e1d1b] bg-[#ffe866] px-1.5 py-0.5 rounded border border-[#1e1d1b]">
+                    Node • TS • Postgres • Redis
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-[11px]">
+                  <span className="text-[#57534e] font-medium">SPECIALTY:</span>
+                  <span className="font-bold text-[#ff5e5b]">
+                    High-Concurrency APIs ⚡
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-[11px]">
+                  <span className="text-[#57534e] font-medium">LOCATION:</span>
+                  <span className="font-bold text-[#1e1d1b]">
+                    India 🇮🇳 (Remote)
+                  </span>
+                </div>
               </div>
             </div>
           </motion.div>

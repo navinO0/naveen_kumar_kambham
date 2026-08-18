@@ -1,7 +1,11 @@
-import { getDb } from "../db";
 import { Tool } from "../db/schema";
+import { tools } from "../data/portfolioData";
 
-export function getAllTools(): Tool[] {
+// Commented SQLite DB imports & getters for zero-dependency / serverless deployments:
+/*
+import { getDb } from "../db";
+
+export function getAllToolsFromDb(): Tool[] {
   const db = getDb();
   try {
     const rows = db.prepare("SELECT * FROM tools").all() as any[];
@@ -18,4 +22,9 @@ export function getAllTools(): Tool[] {
   } finally {
     db.close();
   }
+}
+*/
+
+export function getAllTools(): Tool[] {
+  return tools;
 }

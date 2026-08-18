@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactSchema } from "@/lib/validation/contactSchema";
 import { checkRateLimit } from "@/lib/security/rateLimiter";
-import { getDb } from "@/lib/db";
 import crypto from "crypto";
+
+// Commented SQLite persistence for serverless/GitHub deployments:
+/*
+import { getDb } from "@/lib/db";
+*/
 
 export async function POST(req: NextRequest) {
   try {
@@ -51,7 +55,10 @@ export async function POST(req: NextRequest) {
 
     const { senderName, email, message } = parseResult.data;
 
-    // 3. Persist message to SQLite
+    // Log message safely for serverless environments
+    console.log(`[CONTACT DISPATCH] From=${senderName} (${email}): ${message}`);
+
+    /*
     const db = getDb();
     try {
       const id = crypto.randomUUID();
@@ -61,6 +68,7 @@ export async function POST(req: NextRequest) {
     } finally {
       db.close();
     }
+    */
 
     return NextResponse.json({
       success: true,

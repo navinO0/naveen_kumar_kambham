@@ -1,7 +1,11 @@
-import { getDb } from "../db";
 import { LearningTopic, TrenchNote } from "../db/schema";
+import { learningTopics, trenchNotes } from "../data/portfolioData";
 
-export function getAllLearningTopics(): LearningTopic[] {
+// Commented SQLite DB imports & getters for zero-dependency / serverless deployments:
+/*
+import { getDb } from "../db";
+
+export function getAllLearningTopicsFromDb(): LearningTopic[] {
   const db = getDb();
   try {
     const rows = db.prepare("SELECT * FROM learning_topics ORDER BY order_index ASC").all() as any[];
@@ -19,7 +23,7 @@ export function getAllLearningTopics(): LearningTopic[] {
   }
 }
 
-export function getAllTrenchNotes(): TrenchNote[] {
+export function getAllTrenchNotesFromDb(): TrenchNote[] {
   const db = getDb();
   try {
     const rows = db.prepare("SELECT * FROM trench_notes").all() as any[];
@@ -32,4 +36,13 @@ export function getAllTrenchNotes(): TrenchNote[] {
   } finally {
     db.close();
   }
+}
+*/
+
+export function getAllLearningTopics(): LearningTopic[] {
+  return learningTopics;
+}
+
+export function getAllTrenchNotes(): TrenchNote[] {
+  return trenchNotes;
 }
