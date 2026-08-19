@@ -206,7 +206,7 @@ export default function RequirementTransformation() {
   const current = STAGES[activeStep];
 
   return (
-    <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b] my-8">
+    <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b] my-6 sm:my-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
         <div>
           <span className="sticker-tag-red text-xs uppercase font-bold mb-1">INTERACTIVE STEPPER</span>
@@ -223,12 +223,12 @@ export default function RequirementTransformation() {
       </div>
 
       {/* Stepper Buttons Bar */}
-      <div className="flex overflow-x-auto gap-1.5 pb-3 mb-6 scrollbar-thin">
+      <div className="flex overflow-x-auto no-scrollbar gap-1.5 pb-3 mb-6 -mx-1 px-1">
         {STAGES.map((s, idx) => (
           <button
             key={s.step}
             onClick={() => setActiveStep(idx)}
-            className={`px-3 py-1.5 text-xs font-mono sketch-button whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 text-xs font-mono sketch-button whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
               activeStep === idx
                 ? "bg-[#ff5e5b] text-white font-bold"
                 : idx < activeStep
@@ -248,7 +248,7 @@ export default function RequirementTransformation() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25 }}
-        className={`p-6 sketch-card border-2 border-[#1e1d1b] ${current.color}`}
+        className={`p-4 sm:p-6 sketch-card border-2 border-[#1e1d1b] ${current.color} min-w-0 max-w-full overflow-hidden`}
       >
         <div className="flex items-center justify-between border-b-2 border-dashed border-[#1e1d1b] pb-3 mb-4">
           <div className="flex items-center space-x-3">
@@ -256,7 +256,7 @@ export default function RequirementTransformation() {
               #{current.step}
             </span>
             <div>
-              <h4 className="text-lg font-bold font-mono text-[#1e1d1b]">
+              <h4 className="text-lg font-bold font-mono text-[#1e1d1b] break-words">
                 {current.title}
               </h4>
               <span className="text-xs font-sans text-[#57534e]">
@@ -308,9 +308,11 @@ export default function RequirementTransformation() {
           )}
 
           {current.content.type === "code" && (
-            <pre className="p-4 bg-[#1e1d1b] text-[#ffe866] font-mono text-xs rounded border border-[#57534e] overflow-x-auto">
-              {current.content.code}
-            </pre>
+            <div className="min-w-0 max-w-full overflow-hidden">
+              <pre className="p-3 sm:p-4 bg-[#1e1d1b] text-[#ffe866] font-mono text-[11px] sm:text-xs leading-relaxed rounded border border-[#57534e] overflow-x-auto whitespace-pre-wrap break-all sm:whitespace-pre">
+                {current.content.code}
+              </pre>
+            </div>
           )}
 
           {current.content.type === "flow" && (
@@ -330,11 +332,11 @@ export default function RequirementTransformation() {
         </div>
 
         {/* Footer Note */}
-        <div className="pt-3 border-t border-dashed border-[#1e1d1b] flex items-center justify-between text-xs">
+        <div className="pt-3 border-t border-dashed border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
           <span className="font-hand text-xs text-[#ff5e5b] font-bold">
             {current.content.note}
           </span>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 self-end sm:self-auto">
             <button
               disabled={activeStep === 0}
               onClick={() => setActiveStep(activeStep - 1)}

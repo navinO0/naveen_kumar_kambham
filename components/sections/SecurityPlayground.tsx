@@ -79,11 +79,11 @@ export default function SecurityPlayground() {
       </div>
 
       {/* Interactive RBAC Playground Card */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b] mb-10">
-        <div className="flex items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b] mb-10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6 gap-2">
           <div className="flex items-center space-x-2">
-            <ShieldCheck className="w-5 h-5 text-[#2ecc71]" />
-            <h3 className="font-bold font-mono text-lg text-[#1e1d1b]">
+            <ShieldCheck className="w-5 h-5 text-[#2ecc71] shrink-0" />
+            <h3 className="font-bold font-mono text-base sm:text-lg text-[#1e1d1b]">
               🔐 INTERACTIVE RBAC MATRIX EVALUATOR
             </h3>
           </div>
@@ -100,12 +100,12 @@ export default function SecurityPlayground() {
               <span className="font-mono text-xs font-bold text-[#57534e] block mb-2">
                 1. SELECT USER ROLE (IDENTITY 👤):
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1 -mx-1 px-1">
                 {(["ADMIN", "MANAGER", "EDITOR", "VIEWER"] as UserRole[]).map((r) => (
                   <button
                     key={r}
                     onClick={() => runEvaluation(r, action, resource)}
-                    className={`px-3 py-1.5 font-mono text-xs sketch-button flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 font-mono text-xs sketch-button whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
                       role === r ? "bg-[#ffe866] font-bold" : "bg-white text-[#1e1d1b]"
                     }`}
                   >
@@ -121,12 +121,12 @@ export default function SecurityPlayground() {
               <span className="font-mono text-xs font-bold text-[#57534e] block mb-2">
                 2. SELECT ACTION INTENT (PERMISSION ⚡):
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1 -mx-1 px-1">
                 {(["READ", "CREATE", "UPDATE", "DELETE", "DROP_TABLE"] as Action[]).map((a) => (
                   <button
                     key={a}
                     onClick={() => runEvaluation(role, a, resource)}
-                    className={`px-3 py-1.5 font-mono text-xs sketch-button flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 font-mono text-xs sketch-button whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
                       action === a ? "bg-[#ff5e5b] text-white font-bold" : "bg-white text-[#1e1d1b]"
                     }`}
                   >
@@ -142,12 +142,12 @@ export default function SecurityPlayground() {
               <span className="font-mono text-xs font-bold text-[#57534e] block mb-2">
                 3. SELECT TARGET RESOURCE (DATABASE OBJECT 🗄️):
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex overflow-x-auto no-scrollbar gap-2 pb-1 -mx-1 px-1">
                 {(["Project", "Database", "UserAccount", "AuditLog"] as Resource[]).map((res) => (
                   <button
                     key={res}
                     onClick={() => runEvaluation(role, action, res)}
-                    className={`px-3 py-1.5 font-mono text-xs sketch-button flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 font-mono text-xs sketch-button whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
                       resource === res ? "bg-[#3498db] text-white font-bold" : "bg-white text-[#1e1d1b]"
                     }`}
                   >
@@ -160,7 +160,7 @@ export default function SecurityPlayground() {
           </div>
 
           {/* Column 3: Live Evaluation Decision Output */}
-          <div className="p-4 bg-[#1e1d1b] text-white rounded sketch-border flex flex-col justify-between font-mono text-xs">
+          <div className="p-4 bg-[#1e1d1b] text-white rounded-lg sketch-border flex flex-col justify-between font-mono text-xs min-w-0 max-w-full overflow-hidden">
             <div>
               <div className="flex items-center justify-between border-b border-[#57534e] pb-2 mb-3">
                 <span className="text-[10px] text-[#ffe866] flex items-center gap-1">

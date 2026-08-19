@@ -54,9 +54,9 @@ export default function AdvancedApiAndProtocols() {
   const currentProto = PROTOCOLS[selectedProtocol];
 
   return (
-    <div className="space-y-8 my-8">
+    <div className="space-y-6 sm:space-y-8 my-6 sm:my-8">
       {/* 1. Protocol Selection Matrix */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
+      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">API ARCHITECTURE</span>
@@ -67,18 +67,18 @@ export default function AdvancedApiAndProtocols() {
               Knowing when to use REST, GraphQL, gRPC, WebSockets, SSE, or Webhooks.
             </p>
           </div>
-          <span className="font-hand text-xs text-[#ff5e5b] font-bold">
+          <span className="font-hand text-xs text-[#ff5e5b] font-bold mt-2 md:mt-0">
             // right protocol for the right boundary
           </span>
         </div>
 
-        {/* Protocol Selector Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        {/* Protocol Selector Tabs - Touch Scrollable */}
+        <div className="flex overflow-x-auto no-scrollbar gap-2 pb-2 mb-6 -mx-1 px-1">
           {PROTOCOLS.map((p, idx) => (
             <button
               key={p.name}
               onClick={() => setSelectedProtocol(idx)}
-              className={`px-3 py-1.5 font-mono text-xs sketch-button ${
+              className={`px-3 py-1.5 font-mono text-xs sketch-button whitespace-nowrap shrink-0 ${
                 selectedProtocol === idx ? "bg-[#ff5e5b] text-white font-bold" : "bg-white text-[#1e1d1b]"
               }`}
             >
@@ -88,7 +88,7 @@ export default function AdvancedApiAndProtocols() {
         </div>
 
         {/* Selected Protocol Card */}
-        <div className="p-5 sketch-card bg-[#f6f4ee] border-2 border-[#1e1d1b] space-y-4 font-mono text-xs">
+        <div className="p-4 sm:p-5 sketch-card bg-[#f6f4ee] border-2 border-[#1e1d1b] space-y-4 font-mono text-xs">
           <div className="border-b-2 border-dashed border-[#1e1d1b] pb-2 flex justify-between items-center">
             <h4 className="text-lg font-black text-[#1e1d1b]">{currentProto.name}</h4>
             <span className="sticker-tag text-[10px] uppercase font-bold">DECISION MATRIX</span>
@@ -113,7 +113,7 @@ export default function AdvancedApiAndProtocols() {
       </div>
 
       {/* 2. Advanced HTTP Mechanisms */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
+      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">HTTP MECHANISMS</span>
@@ -121,18 +121,18 @@ export default function AdvancedApiAndProtocols() {
               Advanced HTTP & Resiliency Patterns
             </h3>
           </div>
-          <span className="font-hand text-xs text-[#ff5e5b] font-bold">
+          <span className="font-hand text-xs text-[#ff5e5b] font-bold mt-2 md:mt-0">
             // beyond basic GET / POST
           </span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
           {/* Idempotency & Optimistic Concurrency */}
-          <div className="p-4 bg-[#1e1d1b] text-white rounded sketch-border">
+          <div className="p-3.5 sm:p-4 bg-[#1e1d1b] text-white rounded-lg border-2 border-[#1e1d1b] min-w-0 max-w-full overflow-hidden shadow-md">
             <span className="text-[#ffe866] font-bold text-xs block mb-2 border-b border-[#57534e] pb-1">
               IDEMPOTENCY & OPTIMISTIC LOCKING
             </span>
-            <pre className="text-[#2ecc71] text-[11px] leading-relaxed">
+            <pre className="text-[#2ecc71] text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap break-all sm:whitespace-pre p-1">
 {`// 1. Idempotent Deduplication (Redis key 24h TTL)
 const idempotencyKey = req.headers["x-idempotency-key"];
 const cachedResponse = await redis.get(\`idemp:\${idempotencyKey}\`);
@@ -148,11 +148,11 @@ if (updatedRows === 0) throw new ConcurrentUpdateConflictError();`}
           </div>
 
           {/* AbortSignal Timeout & ETags */}
-          <div className="p-4 bg-[#1e1d1b] text-white rounded sketch-border">
+          <div className="p-3.5 sm:p-4 bg-[#1e1d1b] text-white rounded-lg border-2 border-[#1e1d1b] min-w-0 max-w-full overflow-hidden shadow-md">
             <span className="text-[#ffe866] font-bold text-xs block mb-2 border-b border-[#57534e] pb-1">
               ABORTSIGNAL TIMEOUTS & ETAG CACHING
             </span>
-            <pre className="text-[#2ecc71] text-[11px] leading-relaxed">
+            <pre className="text-[#2ecc71] text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap break-all sm:whitespace-pre p-1">
 {`// 1. Timeout external requests after 5000ms
 const response = await fetch("https://gateway.payment.com", {
   signal: AbortSignal.timeout(5000)

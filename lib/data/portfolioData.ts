@@ -48,7 +48,7 @@ export const projects: Project[] = [
     year: 2025,
     backendResponsibilities: [
       "Implemented granular RBAC middleware (Admin vs HR Manager vs Employee permission scopes)",
-      "Engineered biometric attendance log ingestion API with timestamp deduplication",
+      "Engineered attendance log ingestion API with timestamp deduplication",
       "Designed payroll engine calculating tax deductions, leaves, and net salary payouts",
       "Built JWT session revocation system using Redis blacklists for instant user offboarding"
     ],
@@ -102,64 +102,24 @@ export const projects: Project[] = [
     liveUrl: "https://bloodlinkhelp.netlify.app/"
   },
   {
-    id: "ai-interview-coach",
-    name: "AI Interview Coach (LLMs / Antigravity / Ollama)",
-    oneLine: "Generative AI technical interview simulator with architect-level feedback, local LLM backup, and real-time streaming analysis.",
+    id: "smart-kitchen-ordering",
+    name: "Smart Kitchen Ordering System & Live Order Tracking",
+    oneLine: "Real-time restaurant kitchen display system (KDS) & live order tracking pipeline, Fastify WebSockets, Redis queue prioritization, and order state machine.",
     year: 2025,
     backendResponsibilities: [
-      "Orchestrated Generative AI agent workflows using Antigravity and Gemini Pro APIs",
-      "Integrated local LLM backup fallback via Ollama / LMStudio for offline interview evaluations",
-      "Built streaming response parser analyzing candidate communication clarity and technical depth",
-      "Designed adaptive difficulty engine scaling question complexity based on real-time candidate answers"
+      "Engineered full-duplex WebSocket event pipeline (Socket.io / Fastify) broadcasting real-time order status updates across customer devices and Kitchen Display Systems (KDS)",
+      "Built Redis-backed priority queue engine handling peak restaurant rush ordering without dropouts",
+      "Implemented state machine validation guaranteeing sequential order status progression (Received -> Preparing -> Cooking -> Ready -> Delivered)",
+      "Designed order history analytics and completion metrics tracking in PostgreSQL"
     ],
-    stack: ["Next.js 14", "Antigravity", "Ollama", "Gemini Pro", "AWS Lambda", "TypeScript", "PostgreSQL"],
-    interestingProblem: "Cloud LLM API rate limits caused interview evaluation drops during peak user practice sessions.",
-    whatBroke: "External API quotas were exceeded, returning 429 Too Many Requests to active candidates midway through mock interviews.",
-    whatIChanged: "Implemented an automatic fallback pipeline to local Ollama LLM instances running on GPU nodes when cloud API quotas are exhausted.",
-    whyIChoseIt: "Antigravity enabled high-level prompt orchestration, while local Ollama guaranteed 100% uptime fallback.",
-    whatILearned: "Always build offline fallback pipelines for external AI models; cloud APIs will hit rate limits when you least expect it.",
-    githubUrl: "https://github.com/navinO0/ai-interview-coach",
-    liveUrl: "https://interviewguideai.netlify.app/"
-  },
-  {
-    id: "collaborative-whiteboard",
-    name: "Collaborative Whiteboard",
-    oneLine: "Real-time room-based whiteboard, Fastify WebSocket server, Redis room state persistence, and canvas sync.",
-    year: 2024,
-    backendResponsibilities: [
-      "Built room-based WebSocket server handling multi-user canvas drawing sync",
-      "Implemented Redis transient caching for instant whiteboard state recovery upon page reload",
-      "Engineered room access control using JWT tokens and room-level passcodes",
-      "Designed PostgreSQL long-term canvas snapshot archival service"
-    ],
-    stack: ["Fastify", "Next.js", "WebSockets", "Socket.io", "Redis", "PostgreSQL", "Docker", "PM2"],
-    interestingProblem: "Broadcast lag increased linearly as room participant count grew above 50 concurrent drawers.",
-    whatBroke: "Broadcasting full canvas history payloads on every mousemove event saturated WebSocket bandwidth.",
-    whatIChanged: "Switched to broadcasting delta vector coordinates instead of full canvas snapshots, reducing payload size by 94%.",
-    whyIChoseIt: "Fastify WebSockets delivered sub-5ms packet routing, and Redis in-memory storage handled 1,000+ stroke events/sec.",
-    whatILearned: "In real-time multiplayer systems, broadcast deltas, not full state frames.",
-    githubUrl: "https://github.com/navinO0/cbwb-server",
-    liveUrl: "https://cbwb.netlify.app/"
-  },
-  {
-    id: "qr-auth",
-    name: "Add Secondary Devices with QR Auth",
-    oneLine: "Multi-device authentication system using QR codes, 1-hour session timeout, 3-minute QR validity, and Redis session caching.",
-    year: 2024,
-    backendResponsibilities: [
-      "Designed multi-device linking protocol allowing up to 2 secondary devices per user session",
-      "Implemented short-lived 3-minute QR code validity with dynamic Redis TTL keys",
-      "Built CryptoJS payload encryption for secure device handshakes over public networks",
-      "Engineered JWT session manager enforcing strict 1-hour session expiration"
-    ],
-    stack: ["Next.js", "Node.js", "PostgreSQL", "CryptoJS", "JWT", "Redis", "Docker", "PM2"],
-    interestingProblem: "Replay attacks were possible if a generated QR code image was photographed and scanned after the primary user logged off.",
-    whatBroke: "Static QR tokens didn't invalidate immediately when the primary session ended.",
-    whatIChanged: "Added a single-use nonce stored in Redis with 3-minute TTL that auto-destructs upon first scan or session termination.",
-    whyIChoseIt: "Redis TTL keys provided automatic memory cleanup of expired QR nonces without background cron overhead.",
-    whatILearned: "QR codes for authentication are single-use nonces bound to active sessions, never static strings.",
-    githubUrl: "https://github.com/navinO0/qr-login-nextjs",
-    liveUrl: "https://qrauthnext.netlify.app/login"
+    stack: ["Fastify", "Next.js", "WebSockets", "Socket.io", "Redis", "PostgreSQL", "TailwindCSS"],
+    interestingProblem: "Concurrent order status updates caused out-of-order notifications on kitchen displays during high rush hours.",
+    whatBroke: "Asynchronous WebSocket dispatches arrived out of sequence, causing kitchen screens to mark orders 'Delivered' before 'Cooking'.",
+    whatIChanged: "Enforced strict state machine transitions with sequence numbering in Redis before broadcasting WebSocket events.",
+    whyIChoseIt: "Fastify + Socket.io ensured sub-50ms event latency critical for fast-paced kitchen displays.",
+    whatILearned: "Real-time state updates must always enforce explicit state transitions and message ordering.",
+    githubUrl: "https://github.com/navinO0/smart-kitchen-ordering",
+    liveUrl: "https://smartkitchenorder.netlify.app/"
   },
   {
     id: "marriage-registration",

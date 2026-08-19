@@ -35,20 +35,20 @@ export default function DatabaseInternalsAndOptimization() {
         </div>
 
         {/* Query & Explain Output Box */}
-        <div className="p-5 sketch-card bg-[#1e1d1b] text-white rounded border-2 border-[#1e1d1b] font-mono text-xs space-y-4">
-          <div>
+        <div className="p-4 sm:p-5 sketch-card bg-[#1e1d1b] text-white rounded-lg border-2 border-[#1e1d1b] font-mono text-xs space-y-4 min-w-0 max-w-full overflow-hidden">
+          <div className="min-w-0 max-w-full overflow-hidden">
             <span className="text-[#ffe866] font-bold block mb-1">EXECUTED SQL QUERY:</span>
-            <code className="text-[#2ecc71] font-mono text-xs">
+            <code className="text-[#2ecc71] font-mono text-[11px] sm:text-xs break-all block">
               SELECT * FROM orders WHERE customer_id = 'c_8810' AND status = 'PENDING' ORDER BY created_at DESC;
             </code>
           </div>
 
-          <div className="p-4 bg-[#292524] rounded border border-[#57534e]">
+          <div className="p-3 sm:p-4 bg-[#292524] rounded-lg border border-[#57534e] min-w-0 max-w-full overflow-hidden">
             <span className="text-[#ff5e5b] font-bold block mb-2">
               POSTGRES EXPLAIN ANALYZE OUTPUT:
             </span>
             {!isQueryOptimized ? (
-              <pre className="text-red-400 text-xs leading-relaxed overflow-x-auto">
+              <pre className="text-red-400 text-[11px] sm:text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap break-all sm:whitespace-pre p-1">
 {`Seq Scan on orders  (cost=0.00..18450.00 rows=420 width=128) (actual time=12.400..4185.320 ms)
   Filter: ((customer_id = 'c_8810'::uuid) AND ((status)::text = 'PENDING'::text))
   Rows Removed by Filter: 4,999,580
@@ -57,7 +57,7 @@ Sort  (cost=18490.12..18491.17 rows=420 width=128) (actual time=4198.100..4202.4
 Execution Time: 4205.80 ms   <-- ⚠️ 4.2 SECONDS (Table Scan across 5,000,000 rows!)`}
               </pre>
             ) : (
-              <pre className="text-green-400 text-xs leading-relaxed overflow-x-auto">
+              <pre className="text-green-400 text-[11px] sm:text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap break-all sm:whitespace-pre p-1">
 {`Index Scan using idx_orders_customer_status_created on orders  (cost=0.42..8.45 rows=420 width=128) (actual time=0.042..0.820 ms)
   Index Cond: ((customer_id = 'c_8810'::uuid) AND ((status)::text = 'PENDING'::text))
 Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index Scan!)`}
@@ -71,8 +71,8 @@ Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index S
                 ❌ <strong>Root Cause:</strong> Missing index forces PostgreSQL to read 5 Million disk blocks sequentially into RAM.
               </p>
             ) : (
-              <p className="text-green-300">
-                ✅ <strong>Senior Fix:</strong> Added composite index <code>CREATE INDEX idx_orders_customer_status_created ON orders (customer_id, status, created_at DESC);</code> reducing execution time by <strong>3,656x</strong>!
+              <p className="text-green-300 break-words">
+                ✅ <strong>Senior Fix:</strong> Added composite index <code className="break-all">CREATE INDEX idx_orders_customer_status_created ON orders (customer_id, status, created_at DESC);</code> reducing execution time by <strong>3,656x</strong>!
               </p>
             )}
           </div>
@@ -80,7 +80,7 @@ Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index S
       </div>
 
       {/* 2. Relational Database Concepts Grid */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
+      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">DATABASE INTERNALS</span>
@@ -88,7 +88,7 @@ Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index S
               PostgreSQL & Relational DB Mechanics
             </h3>
           </div>
-          <span className="font-hand text-xs text-[#ff5e5b] font-bold">
+          <span className="font-hand text-xs text-[#ff5e5b] font-bold mt-2 md:mt-0">
             // MVCC, PgBouncer, row locks & isolation levels
           </span>
         </div>
@@ -120,19 +120,19 @@ Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index S
       {/* 3. NoSQL Placement & Caching Strategies */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
         {/* NoSQL Matrix */}
-        <div className="sketch-card p-5 bg-white border-2 border-[#1e1d1b]">
+        <div className="sketch-card p-4 sm:p-5 bg-white border-2 border-[#1e1d1b]">
           <span className="sticker-tag text-[10px] uppercase font-bold mb-2">NOSQL LANDSCAPE</span>
           <h4 className="font-mono font-bold text-base text-[#1e1d1b] mb-3">NoSQL Placement Matrix</h4>
           <div className="space-y-2">
-            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex justify-between">
+            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <span className="font-bold text-[#ff5e5b]">Document (MongoDB)</span>
               <span className="text-[#57534e]">Flexible schema, JSON catalogs</span>
             </div>
-            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex justify-between">
+            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <span className="font-bold text-[#3498db]">Key-Value (Redis)</span>
               <span className="text-[#57534e]">Sub-ms caching, rate limits, sessions</span>
             </div>
-            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex justify-between">
+            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <span className="font-bold text-[#2ecc71]">Wide-Column (Cassandra)</span>
               <span className="text-[#57534e]">High write throughput, timeseries</span>
             </div>
@@ -140,15 +140,15 @@ Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index S
         </div>
 
         {/* Caching Patterns */}
-        <div className="sketch-card p-5 bg-white border-2 border-[#1e1d1b]">
+        <div className="sketch-card p-4 sm:p-5 bg-white border-2 border-[#1e1d1b]">
           <span className="sticker-tag-red text-[10px] uppercase font-bold mb-2">CACHING PATTERNS</span>
           <h4 className="font-mono font-bold text-base text-[#1e1d1b] mb-3">Redis Caching & Stampede Defense</h4>
           <div className="space-y-2">
-            <div className="p-2 bg-white border border-[#1e1d1b]">
+            <div className="p-2.5 bg-white border border-[#1e1d1b]">
               <span className="font-bold text-[#1e1d1b] block">Cache-Aside (Lazy Loading)</span>
               <span className="text-[11px] text-[#57534e]">App checks Redis → DB on miss → Populates Redis</span>
             </div>
-            <div className="p-2 bg-white border border-[#1e1d1b]">
+            <div className="p-2.5 bg-white border border-[#1e1d1b]">
               <span className="font-bold text-[#1e1d1b] block">Stampede Protection</span>
               <span className="text-[11px] text-[#57534e]">Distributed Mutex Lock / Probabilistic Early Expiration</span>
             </div>

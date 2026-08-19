@@ -79,7 +79,7 @@ export default function ArchitecturePlayground() {
       </div>
 
       {/* Flow Selection Tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex overflow-x-auto no-scrollbar gap-2 pb-2 mb-6 -mx-1 px-1">
         {FLOWS.map((f) => (
           <button
             key={f.id}
@@ -87,7 +87,7 @@ export default function ArchitecturePlayground() {
               setSelectedFlowId(f.id);
               setActiveStepIndex(0);
             }}
-            className={`px-3 py-1.5 font-mono text-xs sketch-button ${
+            className={`px-3 py-1.5 font-mono text-xs sketch-button whitespace-nowrap shrink-0 ${
               selectedFlowId === f.id ? "bg-[#ffe866] font-bold" : "bg-white text-[#1e1d1b]"
             }`}
           >
@@ -97,10 +97,10 @@ export default function ArchitecturePlayground() {
       </div>
 
       {/* Diagram Container */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b] mb-6">
-        <div className="flex items-center justify-between pb-3 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b] mb-6 min-w-0 max-w-full overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b-2 border-dashed border-[#1e1d1b] mb-6 gap-2">
           <div>
-            <h3 className="font-bold font-mono text-lg text-[#1e1d1b]">{activeFlow.title}</h3>
+            <h3 className="font-bold font-mono text-base sm:text-lg text-[#1e1d1b]">{activeFlow.title}</h3>
             <p className="text-xs text-[#57534e] font-sans">{activeFlow.tagline}</p>
           </div>
           <span className="font-hand text-xs text-[#ff5e5b] font-bold">
@@ -109,11 +109,11 @@ export default function ArchitecturePlayground() {
         </div>
 
         {/* Hand-Drawn Flow Diagram Nodes */}
-        <div className="flex flex-wrap items-center justify-center gap-3 my-6">
+        <div className="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-3 my-6 -mx-1 px-1 py-1">
           {activeFlow.steps.map((step, idx) => {
             const isActive = idx === activeStepIndex;
             return (
-              <div key={step.id} className="flex items-center">
+              <div key={step.id} className="flex items-center shrink-0">
                 <div
                   onClick={() => setActiveStepIndex(idx)}
                   className={`p-3 sketch-card cursor-pointer text-center min-w-[120px] max-w-[150px] transition-all ${

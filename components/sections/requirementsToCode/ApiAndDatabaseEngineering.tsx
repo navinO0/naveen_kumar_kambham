@@ -10,7 +10,7 @@ export default function ApiAndDatabaseEngineering() {
   return (
     <div className="space-y-8 my-8">
       {/* 1. API Design Practices ("An API is a contract") */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
+      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">API DESIGN & CONTRACTS</span>
@@ -21,29 +21,29 @@ export default function ApiAndDatabaseEngineering() {
               Predictable REST resource endpoints & uniform error payloads.
             </p>
           </div>
-          <span className="font-hand text-xs text-[#ff5e5b] font-bold">
+          <span className="font-hand text-xs text-[#ff5e5b] font-bold mt-2 md:mt-0">
             // predictable JSON schemas for client stability
           </span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
           {/* REST Routes */}
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
+          <div className="p-3.5 sm:p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
             <span className="font-bold text-[#ff5e5b] block mb-2">RESOURCE-ORIENTED ROUTES</span>
             <div className="space-y-2">
-              <div className="p-2 bg-white border border-[#1e1d1b] flex justify-between">
+              <div className="p-2 bg-white border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <span className="text-green-700 font-bold">POST /orders</span>
                 <span className="text-gray-500">Create new order (201)</span>
               </div>
-              <div className="p-2 bg-white border border-[#1e1d1b] flex justify-between">
+              <div className="p-2 bg-white border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <span className="text-blue-700 font-bold">GET /orders/:id</span>
                 <span className="text-gray-500">Retrieve order spec (200)</span>
               </div>
-              <div className="p-2 bg-white border border-[#1e1d1b] flex justify-between">
+              <div className="p-2 bg-white border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <span className="text-amber-700 font-bold">PATCH /orders/:id</span>
                 <span className="text-gray-500">Update status / address</span>
               </div>
-              <div className="p-2 bg-white border border-[#1e1d1b] flex justify-between">
+              <div className="p-2 bg-white border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <span className="text-red-700 font-bold">DELETE /orders/:id</span>
                 <span className="text-gray-500">Cancel pending order</span>
               </div>
@@ -51,11 +51,11 @@ export default function ApiAndDatabaseEngineering() {
           </div>
 
           {/* Consistent JSON Error Payload */}
-          <div className="p-4 bg-[#1e1d1b] text-white rounded sketch-border">
+          <div className="p-3.5 sm:p-4 bg-[#1e1d1b] text-white rounded-lg sketch-border min-w-0 max-w-full overflow-hidden">
             <span className="text-[#ffe866] font-bold text-xs block mb-2 border-b border-[#57534e] pb-1">
               PREDICTABLE ERROR FORMAT CONTRACT
             </span>
-            <pre className="text-[#2ecc71] text-xs leading-relaxed">
+            <pre className="text-[#2ecc71] text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap break-all sm:whitespace-pre p-1">
 {`{
   "code": "ORDER_NOT_FOUND",
   "message": "Order does not exist or has been deleted.",

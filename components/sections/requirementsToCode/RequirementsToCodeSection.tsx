@@ -54,7 +54,7 @@ export default function RequirementsToCodeSection() {
       </div>
 
       {/* 2. Visual Pipeline Flow Chart */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b] mb-8">
+      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b] mb-8">
         <div className="flex items-center justify-between pb-3 border-b-2 border-dashed border-[#1e1d1b] mb-4">
           <div className="flex items-center space-x-2">
             <Workflow className="w-5 h-5 text-[#ff5e5b]" />
@@ -68,10 +68,10 @@ export default function RequirementsToCodeSection() {
         </div>
 
         {/* Pipeline Horizontal / Responsive Flow */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 font-mono text-[11px] py-2">
+        <div className="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center justify-start sm:justify-center gap-1.5 font-mono text-[11px] py-2 -mx-1 px-1">
           {PIPELINE_STAGES.map((st, idx) => (
-            <div key={st} className="flex items-center">
-              <span className={`px-2.5 py-1 border border-[#1e1d1b] sketch-border-sm ${
+            <div key={st} className="flex items-center shrink-0 sm:shrink">
+              <span className={`px-2.5 py-1 border border-[#1e1d1b] sketch-border-sm whitespace-nowrap ${
                 idx === 0 || idx === 10 || idx === 13 ? "bg-[#ffe866] font-bold" : "bg-[#f6f4ee]"
               }`}>
                 {idx + 1}. {st}

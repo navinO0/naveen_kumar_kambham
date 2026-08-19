@@ -143,55 +143,21 @@ const experiencesData: ExperienceCompany[] = [
         liveUrl: "https://bloodlinkhelp.netlify.app/"
       },
       {
-        id: "freelance-ai-coach",
-        title: "🤖 AI Technical Interview Coach",
-        oneLiner: "Generative AI technical interview simulator with architect-level feedback, local LLM GPU fallback, and candidate communication analytics.",
-        overview: "An AI-powered interview simulator designed to conduct real-time technical and behavioral interview rounds, providing deep architect-level feedback on clarity, confidence, and system design.",
-        categoryTag: "ai_security",
-        keyMetric: "Ollama / GPU Node Fallback",
-        responsibilities: [
-          "Orchestrated Generative AI multi-agent workflows using Antigravity and Gemini Pro APIs for adaptive interview simulation",
-          "Integrated local LLM backup fallback via Ollama / LMStudio running on dedicated GPU nodes to ensure 100% operational uptime when cloud quotas exhaust",
-          "Built streaming response parser evaluating candidate answer clarity, technical depth, and communication nuances in real-time",
-          "Designed adaptive difficulty algorithms scaling question complexity dynamically based on candidate performance"
-        ],
-        technicalDetails: "Next.js 14, Antigravity, Ollama, Gemini Pro, AWS Lambda, TypeScript, PostgreSQL.",
-        github: "https://github.com/navinO0/ai-interview-coach",
-        liveUrl: "https://interviewguideai.netlify.app/"
-      },
-      {
-        id: "freelance-whiteboard",
-        title: "🎨 Collaborative Real-Time Whiteboard",
-        oneLiner: "Real-time room-based whiteboard application with Fastify WebSockets, Redis room state persistence, coordinate delta broadcasting, and canvas archives.",
-        overview: "A multiplayer canvas collaboration platform allowing isolated private rooms to draw, erase, chat, and store drawings without latency degradation.",
+        id: "freelance-smart-kitchen",
+        title: "🍳 Smart Kitchen Ordering System & Live Order Tracking",
+        oneLiner: "Real-time restaurant kitchen display system (KDS) & live order tracking pipeline with WebSockets, order state transition engine, and queue prioritization.",
+        overview: "A high-concurrency real-time restaurant ordering and kitchen display management platform designed for multi-station kitchen operations with instant status synchronization across customer devices, POS terminals, and kitchen displays.",
         categoryTag: "realtime",
-        keyMetric: "94% Payload Reduction via Vector Deltas",
+        keyMetric: "Sub-50ms WebSocket Order Dispatch",
         responsibilities: [
-          "Built Fastify WebSocket room server handling sub-5ms multi-user canvas drawing synchronization",
-          "Reduced WebSocket broadcast payload size by 94% by switching from full canvas frame snapshots to coordinate delta vector streams",
-          "Integrated Redis for in-memory room state storage, allowing instant canvas state recovery upon user page reload",
-          "Engineered long-term PostgreSQL snapshot archival service for preserving completed whiteboard sessions"
+          "Engineered full-duplex WebSocket event pipeline (Socket.io / Fastify) broadcasting real-time order updates (Received → Preparing → Cooking → Ready → Delivered) across customer UI and Kitchen Display System (KDS)",
+          "Built a Redis-backed priority queue engine handling peak restaurant rush ordering, isolating concurrent payment Webhooks and kitchen ticket updates",
+          "Implemented state machine validation ensuring strict sequential order progression and preventing illegal status leaps",
+          "Designed order history analytics & ticket completion time tracking metrics stored in PostgreSQL for kitchen performance optimization"
         ],
-        technicalDetails: "Fastify, Next.js, WebSockets, Socket.io, Redis, PostgreSQL, Docker, PM2.",
-        github: "https://github.com/navinO0/cbwb-server",
-        liveUrl: "https://cbwb.netlify.app/"
-      },
-      {
-        id: "freelance-qrauth",
-        title: "📱 Secondary Device Linking & QR Auth",
-        oneLiner: "Multi-device authentication system using QR codes, 1-hour session timeout, 3-minute single-use Redis nonces, and CryptoJS encryption.",
-        overview: "Designed to provide seamless multi-device linking for banking and secure enterprise applications by scanning single-use QR codes from primary mobile sessions.",
-        categoryTag: "ai_security",
-        keyMetric: "3-Min Single-Use Redis Nonce",
-        responsibilities: [
-          "Designed multi-device authentication protocol allowing users to securely pair up to 2 secondary devices per active session",
-          "Implemented short-lived 3-minute QR code validity powered by dynamic single-use Redis TTL nonces to prevent replay attacks",
-          "Built CryptoJS payload encryption for secure device handshake exchanges over public networks",
-          "Enforced strict 1-hour session expiration and automatic token revocation"
-        ],
-        technicalDetails: "Next.js, Node.js, PostgreSQL, CryptoJS, JWT, Redis, Docker, PM2.",
-        github: "https://github.com/navinO0/qr-login-nextjs",
-        liveUrl: "https://qrauthnext.netlify.app/login"
+        technicalDetails: "Next.js, Fastify, WebSockets, Socket.io, Node.js, PostgreSQL, Redis, TailwindCSS.",
+        github: "https://github.com/navinO0/smart-kitchen-ordering",
+        liveUrl: "https://smartkitchenorder.netlify.app/"
       }
     ]
   },
@@ -308,20 +274,6 @@ const experiencesData: ExperienceCompany[] = [
           "Optimized high-volume land record database queries using Knex.js and Redis temporary caching, handling peak loads of 1M+ active records"
         ],
         technicalDetails: "Node.js, Express.js, Knex.js, PostgreSQL, Redis caching, Cron schedulers, GIS APIs."
-      },
-      {
-        id: "quantela-ai-infra",
-        title: "🧠 Enterprise AI Search & IaC Infrastructure",
-        oneLiner: "Local LLM integration with Ollama and Terraform cloud automation for enterprise microservices.",
-        overview: "Integrated local LLMs (Ollama) into internal developer tools, reducing search time by 60% and automating infrastructure deployment across cloud environments.",
-        categoryTag: "ai_security",
-        keyMetric: "-60% Search Lead Time / Terraform IaC",
-        responsibilities: [
-          "Integrated local LLM runtime (Ollama) for internal code and documentation search, speeding up dev search by 60%",
-          "Automated infrastructure provisioning across AWS using Terraform, reducing deployment lead time significantly",
-          "Optimized PostgreSQL query layer for 40% improvement in AWS cloud resource utilization"
-        ],
-        technicalDetails: "Node.js, Fastify, Ollama, Terraform, AWS, PostgreSQL."
       }
     ]
   }
@@ -349,13 +301,13 @@ export default function ExperienceResumeSection() {
         {experiencesData.map((exp, expIdx) => (
           <div 
             key={exp.id} 
-            className={`sketch-card p-6 md:p-8 bg-white border-2 ${exp.color} relative overflow-hidden`}
+            className={`sketch-card p-4 sm:p-6 md:p-8 bg-white border-2 ${exp.color} relative overflow-hidden`}
           >
             {/* COMPANY HEADER BLOCK */}
             <div className="pb-6 border-b-2 border-dashed border-[#1e1d1b] mb-8">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <div>
-                  <div className="flex items-center gap-2 mb-1.5">
+                  <div className="flex flex-wrap items-center gap-2 mb-1.5">
                     <span className={`px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase rounded sketch-border-sm ${exp.badgeColor}`}>
                       {exp.badge}
                     </span>
@@ -365,8 +317,8 @@ export default function ExperienceResumeSection() {
                     </span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-black font-mono text-[#1e1d1b] flex items-center gap-2">
-                    <Building2 className="w-6 h-6 text-[#ff5e5b]" />
-                    {exp.company}
+                    <Building2 className="w-6 h-6 text-[#ff5e5b] shrink-0" />
+                    <span className="break-words">{exp.company}</span>
                   </h3>
                   <p className="text-base font-hand font-bold text-[#ff5e5b] mt-0.5">
                     // {exp.role}
@@ -374,10 +326,10 @@ export default function ExperienceResumeSection() {
                 </div>
 
                 {/* Company Stats Grid */}
-                <div className="grid grid-cols-3 gap-2 shrink-0 self-start md:self-auto">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-2 shrink-0 self-stretch md:self-auto">
                   {exp.stats.map((st, i) => (
-                    <div key={i} className="bg-[#f6f4ee] p-2 border border-[#1e1d1b] text-center sketch-border-sm">
-                      <span className="font-mono text-[9px] text-[#57534e] block uppercase font-semibold">{st.label}</span>
+                    <div key={i} className="bg-[#f6f4ee] p-1.5 sm:p-2 border border-[#1e1d1b] text-center sketch-border-sm">
+                      <span className="font-mono text-[8px] sm:text-[9px] text-[#57534e] block uppercase font-semibold leading-tight">{st.label}</span>
                       <span className="font-mono text-xs font-black text-[#1e1d1b]">{st.val}</span>
                     </div>
                   ))}
@@ -400,11 +352,11 @@ export default function ExperienceResumeSection() {
                 {exp.projects.map((proj) => (
                   <div
                     key={proj.id}
-                    className="sketch-card p-5 md:p-6 bg-white border-2 border-[#1e1d1b] flex flex-col justify-between relative"
+                    className="sketch-card p-4 sm:p-5 md:p-6 bg-white border-2 border-[#1e1d1b] flex flex-col justify-between relative"
                   >
-                    {/* Metric Badge */}
+                    {/* Responsive Metric Badge (In-flow on mobile, absolute top-right on desktop) */}
                     {proj.keyMetric && (
-                      <div className="absolute top-0 right-0 bg-[#ffe866] text-[#1e1d1b] text-[10px] font-mono font-bold px-3 py-1 border-b border-l border-[#1e1d1b] sketch-border-sm">
+                      <div className="sm:absolute sm:top-0 sm:right-0 inline-block self-start bg-[#ffe866] text-[#1e1d1b] text-[10px] font-mono font-bold px-2.5 py-1 border sm:border-b sm:border-l border-[#1e1d1b] sketch-border-sm mb-3 sm:mb-0">
                         ⚡ {proj.keyMetric}
                       </div>
                     )}
@@ -412,11 +364,11 @@ export default function ExperienceResumeSection() {
                     <div>
                       {/* Project Title & Links */}
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-3 gap-2 pt-1">
-                        <div>
+                        <div className="min-w-0 pr-0 sm:pr-2">
                           <span className="sticker-tag text-[9px] uppercase mb-1 font-bold">
                             {proj.categoryTag.replace("_", " ")}
                           </span>
-                          <h4 className="font-mono font-bold text-lg md:text-xl text-[#1e1d1b]">
+                          <h4 className="font-mono font-bold text-lg md:text-xl text-[#1e1d1b] break-words">
                             {proj.title}
                           </h4>
                           {proj.titleSub && (
@@ -426,7 +378,7 @@ export default function ExperienceResumeSection() {
                           )}
                         </div>
 
-                        <div className="flex items-center space-x-2 shrink-0">
+                        <div className="flex items-center space-x-2 shrink-0 self-start sm:self-auto">
                           {proj.github && (
                             <a
                               href={proj.github}

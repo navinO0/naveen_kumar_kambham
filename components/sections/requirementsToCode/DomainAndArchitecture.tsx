@@ -144,7 +144,7 @@ export default function DomainAndArchitecture() {
       </div>
 
       {/* 2. Industry Architecture Patterns */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
+      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">SYSTEM ARCHITECTURE</span>
@@ -152,18 +152,18 @@ export default function DomainAndArchitecture() {
               Architecture Is a Decision, Not a Buzzword
             </h3>
           </div>
-          <span className="font-hand text-xs text-[#ff5e5b] font-bold">
+          <span className="font-hand text-xs text-[#ff5e5b] font-bold mt-2 md:mt-0">
             // picking the right pattern for team scale & constraints
           </span>
         </div>
 
         {/* Pattern Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex overflow-x-auto no-scrollbar gap-2 pb-2 mb-6 -mx-1 px-1">
           {ARCH_PATTERNS.map((p) => (
             <button
               key={p.id}
               onClick={() => setActivePatternId(p.id)}
-              className={`px-3 py-1.5 font-mono text-xs sketch-button ${
+              className={`px-3 py-1.5 font-mono text-xs sketch-button whitespace-nowrap shrink-0 ${
                 activePatternId === p.id ? "bg-[#ff5e5b] text-white font-bold" : "bg-white text-[#1e1d1b]"
               }`}
             >
@@ -178,7 +178,7 @@ export default function DomainAndArchitecture() {
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="p-5 sketch-card bg-[#f6f4ee] border-2 border-[#1e1d1b]"
+          className="p-4 sm:p-5 sketch-card bg-[#f6f4ee] border-2 border-[#1e1d1b] min-w-0 max-w-full overflow-hidden"
         >
           <div className="flex flex-col md:flex-row md:items-center justify-between pb-3 border-b-2 border-dashed border-[#1e1d1b] mb-4">
             <div>
@@ -195,7 +195,7 @@ export default function DomainAndArchitecture() {
           </div>
 
           {/* Diagram Box */}
-          <div className="p-4 bg-[#1e1d1b] text-[#ffe866] font-mono text-xs rounded border border-[#57534e] mb-4 overflow-x-auto">
+          <div className="p-3.5 bg-[#1e1d1b] text-[#ffe866] font-mono text-xs rounded-lg border border-[#57534e] mb-4 overflow-x-auto whitespace-pre-wrap break-all sm:whitespace-pre">
             <code>{activePattern.diagram}</code>
           </div>
 

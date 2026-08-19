@@ -40,34 +40,66 @@
 /* Sketchy Hand-Drawn Borders & Shadows */
 .sketch-border {
   border: 2px solid #1e1d1b;
-  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  border-radius: 24px 12px 22px 14px / 14px 22px 12px 24px;
   box-shadow: 3px 3px 0px #1e1d1b;
+}
+
+@media (min-width: 640px) {
+  .sketch-border {
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  }
 }
 
 .sketch-border-sm {
   border: 1.5px solid #292524;
-  border-radius: 120px 10px 110px 8px / 8px 115px 10px 120px;
+  border-radius: 14px 8px 12px 8px / 8px 12px 8px 14px;
   box-shadow: 2px 2px 0px #292524;
+}
+
+@media (min-width: 640px) {
+  .sketch-border-sm {
+    border-radius: 120px 10px 110px 8px / 8px 115px 10px 120px;
+  }
 }
 
 .sketch-border-red {
   border: 2px solid #ff5e5b;
-  border-radius: 220px 12px 200px 15px / 14px 210px 12px 220px;
+  border-radius: 20px 10px 18px 12px / 12px 18px 10px 20px;
   box-shadow: 3px 3px 0px #ff5e5b;
+}
+
+@media (min-width: 640px) {
+  .sketch-border-red {
+    border-radius: 220px 12px 200px 15px / 14px 210px 12px 220px;
+  }
 }
 
 .sketch-border-green {
   border: 2px solid #2ecc71;
-  border-radius: 240px 10px 210px 16px / 12px 225px 10px 230px;
+  border-radius: 20px 10px 18px 12px / 12px 18px 10px 20px;
   box-shadow: 3px 3px 0px #2ecc71;
+}
+
+@media (min-width: 640px) {
+  .sketch-border-green {
+    border-radius: 240px 10px 210px 16px / 12px 225px 10px 230px;
+  }
 }
 
 .sketch-card {
   background-color: #fcfbfa;
   border: 2px solid #1e1d1b;
-  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  border-radius: 20px 12px 18px 12px / 12px 18px 12px 20px;
   box-shadow: 4px 4px 0px #1e1d1b;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .sketch-card {
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  }
 }
 
 .sketch-card:hover {
@@ -80,9 +112,16 @@
   color: #1e1d1b;
   font-weight: 600;
   border: 2px solid #1e1d1b;
-  border-radius: 240px 12px 210px 15px / 15px 225px 10px 240px;
+  border-radius: 18px 10px 16px 10px / 10px 16px 10px 18px;
   box-shadow: 3px 3px 0px #1e1d1b;
   transition: all 0.1s ease;
+  touch-action: manipulation;
+}
+
+@media (min-width: 640px) {
+  .sketch-button {
+    border-radius: 240px 12px 210px 15px / 15px 225px 10px 240px;
+  }
 }
 
 .sketch-button:hover {
@@ -93,6 +132,15 @@
 .sketch-button:active {
   transform: translate(2px, 2px);
   box-shadow: 1px 1px 0px #1e1d1b;
+}
+
+/* Touch-friendly Scrollbar Hiding Utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Marker Highlights & Annotations */

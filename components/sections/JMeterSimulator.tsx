@@ -59,11 +59,11 @@ export default function JMeterSimulator() {
   }, [concurrency]);
 
   return (
-    <div className="sketch-card p-6 bg-[#fffefc] border-2 border-[#1e1d1b] my-6">
+    <div className="sketch-card p-4 sm:p-6 bg-[#fffefc] border-2 border-[#1e1d1b] my-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
         <div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="sticker-tag-red text-xs uppercase font-bold">INTERACTIVE SIMULATOR</span>
             <span className="font-mono text-xs font-bold text-[#ff5e5b]">APACHE JMETER LOAD SUITE</span>
           </div>
@@ -72,9 +72,19 @@ export default function JMeterSimulator() {
           </h3>
         </div>
         <div className="flex items-center space-x-2 mt-2 md:mt-0 font-mono text-xs">
-          <span className="sketch-button bg-[#ffe866] text-[#1e1d1b] px-3 py-1 font-bold flex items-center gap-1.5">
+          <span className={`sketch-button px-3 py-1 font-bold flex items-center gap-1.5 transition-colors ${
+            metrics.serverState === "MELTDOWN" 
+              ? "bg-[#ff5e5b] text-white border-[#1e1d1b]" 
+              : "bg-[#ffe866] text-[#1e1d1b]"
+          }`}>
             <span>STATE:</span>
-            <span className="text-sm">{metrics.emotionEmoji}</span>
+            <motion.span
+              animate={metrics.serverState === "MELTDOWN" ? { rotate: 360 } : { rotate: 0 }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+              className="text-sm inline-block"
+            >
+              {metrics.emotionEmoji}
+            </motion.span>
             <span className="uppercase">{metrics.serverState}</span>
           </span>
         </div>
@@ -84,13 +94,19 @@ export default function JMeterSimulator() {
         {/* Left 2 Cols: Slider & Metrics */}
         <div className="lg:col-span-2 space-y-5">
           {/* Slider Control */}
-          <div className="p-4 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm">
-            <div className="flex items-center justify-between mb-2 font-mono text-xs md:text-sm font-bold">
+          <div className="p-3.5 sm:p-4 bg-[#f6f4ee] border-1.5 border-[#1e1d1b] sketch-border-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 font-mono text-xs md:text-sm font-bold gap-1">
               <span className="flex items-center gap-1.5">
                 <span>CONCURRENT USERS WAVE:</span>
-                <span className="text-base">{metrics.emotionEmoji}</span>
+                <motion.span 
+                  animate={metrics.serverState === "MELTDOWN" ? { rotate: [0, -15, 15, -15, 0] } : {}}
+                  transition={{ repeat: Infinity, duration: 0.3 }}
+                  className="text-base inline-block"
+                >
+                  {metrics.emotionEmoji}
+                </motion.span>
               </span>
-              <span className="text-[#ff5e5b] text-base">{concurrency.toLocaleString()} req/sec</span>
+              <span className="text-[#ff5e5b] text-sm sm:text-base">{concurrency.toLocaleString()} req/sec</span>
             </div>
             <input
               type="range"
@@ -101,11 +117,11 @@ export default function JMeterSimulator() {
               onChange={(e) => setConcurrency(Number(e.target.value))}
               className="w-full h-3 bg-[#e8e4d9] rounded-lg appearance-none cursor-pointer accent-[#ff5e5b]"
             />
-            <div className="flex justify-between text-[10px] font-mono text-[#57534e] mt-1">
+            <div className="grid grid-cols-2 sm:flex justify-between gap-1 text-[9px] sm:text-[10px] font-mono text-[#57534e] mt-1.5">
               <span>😎 100 (Chilling)</span>
               <span>🙂 1,500 (Cruising)</span>
               <span>😅 3,500 (Sweating)</span>
-              <span>😱 5,000 (MELTDOWN!)</span>
+              <span className="text-right sm:text-left">😱 5,000 (MELTDOWN!)</span>
             </div>
           </div>
 
@@ -169,17 +185,26 @@ export default function JMeterSimulator() {
 
         {/* Right Col: Sweating Server Cartoony Box with EMOJI */}
         <div className="flex flex-col items-center justify-center p-5 bg-[#f6f4ee] border-2 border-[#1e1d1b] sketch-border relative overflow-hidden">
-          {/* Animated Sweating Server Box */}
+          {/* Animated Sweating Server Box with Critical Rotation Effect */}
           <motion.div
             animate={
               metrics.serverState === "MELTDOWN"
-                ? { x: [-3, 3, -3, 3, 0], y: [-2, 2, -2, 2, 0] }
+                ? {
+                    x: [-4, 4, -4, 4, 0],
+                    y: [-3, 3, -3, 3, 0],
+                    rotate: [-8, 8, -8, 8, -4, 4, 0],
+                  }
                 : metrics.serverState === "SWEATING"
-                ? { x: [-1.5, 1.5, -1.5, 0] }
-                : {}
+                ? {
+                    x: [-1.5, 1.5, -1.5, 0],
+                    rotate: [-2, 2, -2, 0],
+                  }
+                : { rotate: 0 }
             }
-            transition={{ repeat: Infinity, duration: 0.2 }}
-            className="w-32 h-36 bg-[#1e1d1b] rounded-lg p-3 relative flex flex-col justify-between shadow-lg"
+            transition={{ repeat: Infinity, duration: 0.25 }}
+            className={`w-32 h-36 bg-[#1e1d1b] rounded-lg p-3 relative flex flex-col justify-between shadow-lg transition-colors ${
+              metrics.serverState === "MELTDOWN" ? "border-2 border-[#ff5e5b]" : ""
+            }`}
           >
             {/* Server Rack Status Lights */}
             <div className="flex justify-between items-center border-b border-[#57534e] pb-2">
@@ -191,7 +216,7 @@ export default function JMeterSimulator() {
               <span className="text-[9px] font-mono text-[#ffe866]">NODE_01</span>
             </div>
 
-            {/* Pure EMOJI Server Face Expression (No Avatar Image) */}
+            {/* Pure EMOJI Server Face Expression with Rotation on Critical Situation */}
             <div className="flex items-center justify-center my-auto w-full h-20">
               {metrics.serverState === "CHILLING" && (
                 <span className="text-5xl select-none">😎</span>
@@ -203,16 +228,28 @@ export default function JMeterSimulator() {
                 <span className="text-5xl select-none animate-bounce">😅</span>
               )}
               {metrics.serverState === "MELTDOWN" && (
-                <span className="text-5xl select-none animate-pulse">😱</span>
+                <motion.span 
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ repeat: Infinity, duration: 1.2, ease: "linear" }}
+                  className="text-5xl select-none inline-block"
+                >
+                  😱
+                </motion.span>
               )}
             </div>
 
-            {/* Sweat Drop or Flame annotation */}
+            {/* Sweat Drop or Rotating Flame annotation */}
             {metrics.serverState === "SWEATING" && (
               <span className="absolute -top-2 -right-2 text-2xl animate-bounce">💦</span>
             )}
             {metrics.serverState === "MELTDOWN" && (
-              <span className="absolute -top-3 -right-3 text-2xl animate-pulse">🔥</span>
+              <motion.span
+                animate={{ rotate: 360, scale: [1, 1.25, 1] }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                className="absolute -top-3 -right-3 text-2xl inline-block"
+              >
+                🔥
+              </motion.span>
             )}
           </motion.div>
 

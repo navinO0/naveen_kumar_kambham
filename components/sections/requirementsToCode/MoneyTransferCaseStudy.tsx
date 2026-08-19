@@ -205,7 +205,7 @@ export default function MoneyTransferCaseStudy() {
   const currentStep = CASE_STEPS.find((s) => s.id === activeStepId) || CASE_STEPS[0];
 
   return (
-    <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b] my-8">
+    <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b] my-6 sm:my-8">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
         <div>
@@ -225,12 +225,12 @@ export default function MoneyTransferCaseStudy() {
       </div>
 
       {/* Stepper Stage Tabs */}
-      <div className="flex overflow-x-auto gap-2 pb-3 mb-6 scrollbar-thin">
+      <div className="flex overflow-x-auto no-scrollbar gap-2 pb-3 mb-6 -mx-1 px-1">
         {CASE_STEPS.map((s) => (
           <button
             key={s.id}
             onClick={() => setActiveStepId(s.id)}
-            className={`px-3 py-1.5 text-xs font-mono sketch-button whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 text-xs font-mono sketch-button whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
               activeStepId === s.id
                 ? "bg-[#ff5e5b] text-white font-bold"
                 : s.id < activeStepId
@@ -249,26 +249,26 @@ export default function MoneyTransferCaseStudy() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="p-6 sketch-card border-2 border-[#1e1d1b] bg-[#f6f4ee]"
+        className="p-4 sm:p-6 sketch-card border-2 border-[#1e1d1b] bg-[#f6f4ee] min-w-0 max-w-full overflow-hidden"
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between border-b-2 border-dashed border-[#1e1d1b] pb-3 mb-4">
           <div>
             <span className="font-mono text-xs font-bold text-[#ff5e5b] block mb-1">
               {currentStep.phase}
             </span>
-            <h4 className="text-lg font-mono font-black text-[#1e1d1b]">
+            <h4 className="text-lg font-mono font-black text-[#1e1d1b] break-words">
               {currentStep.title}
             </h4>
           </div>
-          <span className={`sticker-tag text-[10px] font-mono uppercase mt-2 md:mt-0 ${currentStep.badgeColor}`}>
+          <span className={`sticker-tag text-[10px] font-mono uppercase mt-2 md:mt-0 self-start md:self-auto ${currentStep.badgeColor}`}>
             {currentStep.badge}
           </span>
         </div>
 
         {/* Code Snippet if present */}
         {currentStep.codeSnippet && (
-          <div className="mb-4">
-            <pre className="p-4 bg-[#1e1d1b] text-[#ffe866] font-mono text-xs rounded border border-[#57534e] overflow-x-auto">
+          <div className="mb-4 min-w-0 max-w-full overflow-hidden">
+            <pre className="p-3 sm:p-4 bg-[#1e1d1b] text-[#ffe866] font-mono text-[11px] sm:text-xs leading-relaxed rounded border border-[#57534e] overflow-x-auto whitespace-pre-wrap break-all sm:whitespace-pre">
               {currentStep.codeSnippet}
             </pre>
           </div>
@@ -289,7 +289,7 @@ export default function MoneyTransferCaseStudy() {
           <span className="font-hand text-xs text-[#ff5e5b] font-bold">
             {currentStep.quote}
           </span>
-          <div className="flex items-center space-x-2 shrink-0">
+          <div className="flex items-center space-x-2 shrink-0 self-end sm:self-auto">
             <button
               disabled={activeStepId === 1}
               onClick={() => setActiveStepId(activeStepId - 1)}
