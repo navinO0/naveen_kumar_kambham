@@ -684,6 +684,44 @@ export default function GravityPlayground() {
     };
   }, [roomCode, wsConnected, saveWhiteboardPathsToSession]);
 
+  // HTTP Room Sync Polling Engine for Netlify / Serverless Deployments
+  useEffect(() => {
+    if (!roomCode || wsConnected || typeof window === "undefined") return;
+
+    const pollInterval = setInterval(() => {
+      fetch(`/api/arcade/room?code=${encodeURIComponent(roomCode)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && Array.isArray(data.paths)) {
+            if (data.paths.length > whiteboardPathsRef.current.length) {
+              whiteboardPathsRef.current = data.paths;
+              saveWhiteboardPathsToSession(data.paths);
+              setStrokeCount((p) => p + 1);
+            }
+          }
+          if (data && Array.isArray(data.chat)) {
+            setChatMessages((prev) => {
+              if (data.chat.length > prev.length) {
+                return data.chat;
+              }
+              return prev;
+            });
+          }
+          if (data && data.cursors) {
+            Object.entries(data.cursors).forEach(([id, cursor]: [string, any]) => {
+              if (id !== playerIdRef.current) {
+                remoteCursorsRef.current[id] = cursor;
+              }
+            });
+            setStrokeCount((p) => p + 1);
+          }
+        })
+        .catch(() => {});
+    }, 1200);
+
+    return () => clearInterval(pollInterval);
+  }, [roomCode, wsConnected, saveWhiteboardPathsToSession]);
+
   // Auto-scroll Chat to bottom when new message arrives
   useEffect(() => {
     if (isChatOpen && chatScrollRef.current) {
