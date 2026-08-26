@@ -42,7 +42,10 @@ import {
   Send,
   X,
   Smile,
-  LogIn
+  LogIn,
+  ChevronDown,
+  ChevronUp,
+  SlidersHorizontal
 } from "lucide-react";
 
 interface PhysicsNode {
@@ -185,6 +188,7 @@ export default function GravityPlayground() {
   const [activeUsersCount, setActiveUsersCount] = useState<number>(2);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [copiedShareLink, setCopiedShareLink] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   // Room Chat State & Session Storage Persistence
   const [chatMessages, setChatMessages] = useState<RoomChatMessage[]>([]);
@@ -2300,156 +2304,218 @@ export default function GravityPlayground() {
         }`}
       >
         
-        {/* ROOM MANAGER & PLAYER IDENTITY BAR */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2 sm:mb-3 pb-2 sm:pb-3 border-b border-slate-200/80 font-mono text-[11px] sm:text-xs shrink-0">
-          {/* Room Name & Creator */}
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-            <div className="flex items-center gap-1.5 bg-slate-900 text-white px-2.5 py-1 rounded-full border border-slate-700 shadow-xs">
-              <Users className="w-3.5 h-3.5 text-emerald-400" />
-              {isEditingRoom ? (
+        {/* ROOM MANAGER & PLAYER IDENTITY BAR (MOBILE COLLAPSIBLE) */}
+        <div className="flex flex-col mb-2 sm:mb-3 pb-2 sm:pb-3 border-b border-slate-200/80 font-mono text-[11px] sm:text-xs shrink-0">
+          
+          {/* Mobile Compact Top Control Strip (Always Visible on Mobile < 768px) */}
+          <div className="flex items-center justify-between gap-1.5 md:hidden w-full pb-1">
+            <div className="flex items-center gap-1 overflow-hidden">
+              <div className="flex items-center gap-1 bg-slate-900 text-white px-2 py-0.5 rounded-full border border-slate-700 shadow-xs shrink-0">
+                <Users className="w-3 h-3 text-emerald-400" />
+                <span className="font-bold tracking-wider text-sky-300 text-[10px] truncate max-w-[110px]">
+                  #{roomCode}
+                </span>
+              </div>
+              <span className="text-emerald-600 font-bold bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full text-[9px] shrink-0">
+                🟢 {activeUsersCount}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                onClick={toggleChatOpen}
+                className={`px-2 py-0.5 rounded-full flex items-center gap-1 text-[10px] font-bold border relative ${
+                  isChatOpen
+                    ? "bg-purple-600 text-white border-purple-500 shadow-xs"
+                    : "bg-white text-purple-700 border-purple-200"
+                }`}
+              >
+                <MessageSquare className="w-3 h-3" />
+                <span>CHAT</span>
+                {unreadChatCount > 0 && !isChatOpen && (
+                  <span className="bg-rose-500 text-white text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center animate-pulse">
+                    {unreadChatCount}
+                  </span>
+                )}
+              </button>
+
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className={`px-2 py-0.5 rounded-full flex items-center gap-1 text-[10px] font-bold border transition-all ${
+                  isMobileMenuOpen
+                    ? "bg-sky-600 text-white border-sky-400 shadow-xs"
+                    : "bg-slate-900 text-white border-slate-700"
+                }`}
+                title="Toggle Room Settings Menu"
+              >
+                <SlidersHorizontal className="w-3 h-3 text-sky-300" />
+                <span>{isMobileMenuOpen ? "CLOSE" : "MENU"}</span>
+                {isMobileMenuOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </button>
+
+              {isFullscreen && (
+                <button
+                  onClick={toggleFullscreen}
+                  className="bg-rose-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full border border-rose-400 shadow-xs flex items-center gap-1"
+                >
+                  <X className="w-3 h-3" />
+                  <span>EXIT</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Desktop Full Bar & Mobile Collapsible Menu Drawer */}
+          <div className={`${isMobileMenuOpen ? "flex" : "hidden md:flex"} flex-col md:flex-row items-start md:items-center justify-between gap-2 mt-1 md:mt-0 pt-1 md:pt-0 animate-in fade-in slide-in-from-top-1 duration-150`}>
+            {/* Left Controls */}
+            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap w-full md:w-auto">
+              <div className="hidden md:flex items-center gap-1.5 bg-slate-900 text-white px-2.5 py-1 rounded-full border border-slate-700 shadow-xs">
+                <Users className="w-3.5 h-3.5 text-emerald-400" />
+                {isEditingRoom ? (
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="text"
+                      value={tempRoomInput}
+                      onChange={(e) => setTempRoomInput(e.target.value)}
+                      placeholder="ENTER ROOM CODE"
+                      className="bg-slate-800 text-white text-[10px] sm:text-xs font-mono uppercase px-2 py-0.5 rounded border border-slate-600 focus:outline-none w-32"
+                    />
+                    <button onClick={handleSaveRoomCode} className="text-emerald-400 hover:text-emerald-300 font-bold text-[10px]">SAVE</button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold tracking-wider text-sky-300 text-[10px] sm:text-xs">ROOM: {roomCode}</span>
+                    <button
+                      onClick={() => { setTempRoomInput(roomCode); setIsEditingRoom(true); }}
+                      className="text-slate-400 hover:text-white"
+                      title="Change or Join Custom Room Code"
+                    >
+                      <Edit3 className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* COPY ROOM ID BUTTON */}
+              <button
+                onClick={handleCopyRoomCode}
+                className="bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 px-2.5 py-1 rounded-full flex items-center gap-1 transition-all text-[10px] font-bold"
+                title="Copy Room ID to Clipboard"
+              >
+                {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-sky-600" />}
+                <span>{copiedLink ? "COPIED ROOM ID!" : "COPY ROOM ID"}</span>
+              </button>
+
+              {/* SHARE WHITEBOARD DIRECT LINK BUTTON */}
+              <button
+                onClick={handleShareDirectLink}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 px-3 py-1 rounded-full flex items-center gap-1.5 transition-all text-[10px] sm:text-xs font-bold shadow-xs animate-pulse hover:animate-none"
+                title="Copy Direct Shareable Whiteboard Room Link"
+              >
+                {copiedShareLink ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-200" />
+                    <span>LINK COPIED! 🚀</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="w-3.5 h-3.5 text-white" />
+                    <span>SHARE WHITEBOARD</span>
+                  </>
+                )}
+              </button>
+
+              {/* DIRECT JOIN ROOM CODE INPUT FIELD */}
+              <div className="flex items-center gap-1 bg-white border border-slate-300 rounded-full px-2 py-0.5 shadow-xs">
+                <input
+                  type="text"
+                  value={joinRoomInput}
+                  onChange={(e) => setJoinRoomInput(e.target.value.toUpperCase())}
+                  onKeyDown={(e) => e.key === "Enter" && handleDirectJoinRoom()}
+                  placeholder="JOIN ROOM CODE"
+                  className="bg-transparent text-slate-900 text-[10px] sm:text-xs font-mono font-bold uppercase px-1 focus:outline-none w-24 sm:w-28 placeholder:text-slate-400 placeholder:normal-case"
+                />
+                <button
+                  onClick={handleDirectJoinRoom}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-[9px] sm:text-[10px] font-bold px-2.5 py-0.5 rounded-full transition-all flex items-center gap-1 shadow-xs"
+                >
+                  <LogIn className="w-3 h-3" />
+                  <span>JOIN</span>
+                </button>
+              </div>
+
+              <span className="hidden md:inline-block text-emerald-600 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px]">
+                🟢 {activeUsersCount} ONLINE
+              </span>
+
+              {/* WEBSOCKET PROTOCOL STATUS BADGE */}
+              <span className={`font-bold border px-2.5 py-0.5 rounded-full text-[10px] flex items-center gap-1 transition-all ${
+                wsConnected
+                  ? "bg-emerald-500/10 text-emerald-600 border-emerald-300"
+                  : "bg-purple-500/10 text-purple-600 border-purple-300"
+              }`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${wsConnected ? "bg-emerald-500 animate-ping" : "bg-purple-500"}`} />
+                <span>{wsConnected ? "⚡ WEBSOCKET" : "⚡ SSE STREAM"}</span>
+              </span>
+
+              {/* ROOM CHAT TOGGLE BUTTON (DESKTOP) */}
+              <button
+                onClick={toggleChatOpen}
+                className={`hidden md:flex px-2.5 py-1 rounded-full items-center gap-1.5 transition-all text-[10px] font-bold border relative ${
+                  isChatOpen
+                    ? "bg-purple-600 text-white border-purple-500 shadow-xs"
+                    : "bg-white/90 hover:bg-purple-50 text-purple-700 border-purple-200"
+                }`}
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>ROOM CHAT</span>
+                {unreadChatCount > 0 && !isChatOpen && (
+                  <span className="bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
+                    {unreadChatCount}
+                  </span>
+                )}
+              </button>
+
+              {/* FLOATING DESKTOP EXIT FULLSCREEN BUTTON */}
+              {isFullscreen && (
+                <button
+                  onClick={toggleFullscreen}
+                  className="hidden md:flex bg-rose-600 hover:bg-rose-700 text-white font-mono text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full border border-rose-400 shadow-md items-center gap-1.5 transition-all hover:scale-105 active:scale-95 shrink-0"
+                  title="Exit Fullscreen Mode"
+                >
+                  <X className="w-3.5 h-3.5" />
+                  <span>EXIT FULLSCREEN ✕</span>
+                </button>
+              )}
+            </div>
+
+            {/* Player Codename Handle */}
+            <div className="flex items-center gap-1.5 self-end md:self-auto shrink-0 mt-1 md:mt-0">
+              <span className="text-slate-400 text-[10px] uppercase">Handle:</span>
+              {isEditingName ? (
                 <div className="flex items-center gap-1">
                   <input
                     type="text"
-                    value={tempRoomInput}
-                    onChange={(e) => setTempRoomInput(e.target.value)}
-                    placeholder="ENTER ROOM CODE"
-                    className="bg-slate-800 text-white text-[10px] sm:text-xs font-mono uppercase px-2 py-0.5 rounded border border-slate-600 focus:outline-none w-32"
+                    value={tempNameInput}
+                    onChange={(e) => setTempNameInput(e.target.value)}
+                    placeholder="YOUR NAME"
+                    className="bg-white text-slate-900 text-[10px] font-mono px-2 py-0.5 rounded border border-slate-300 focus:outline-none w-28"
                   />
-                  <button onClick={handleSaveRoomCode} className="text-emerald-400 hover:text-emerald-300 font-bold text-[10px]">SAVE</button>
+                  <button onClick={handleSavePlayerName} className="text-sky-600 font-bold text-[10px]">SAVE</button>
                 </div>
               ) : (
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold tracking-wider text-sky-300 text-[10px] sm:text-xs">ROOM: {roomCode}</span>
+                <div className="flex items-center gap-1 bg-white/80 border border-slate-300 px-2.5 py-0.5 rounded-full text-slate-800 font-bold text-[10px] sm:text-xs">
+                  <span>{playerName}</span>
                   <button
-                    onClick={() => { setTempRoomInput(roomCode); setIsEditingRoom(true); }}
-                    className="text-slate-400 hover:text-white"
-                    title="Change or Join Custom Room Code"
+                    onClick={() => { setTempNameInput(playerName); setIsEditingName(true); }}
+                    className="text-slate-400 hover:text-slate-700 ml-0.5"
+                    title="Change Player Codename"
                   >
                     <Edit3 className="w-3 h-3" />
                   </button>
                 </div>
               )}
             </div>
-
-            {/* COPY ROOM ID BUTTON */}
-            <button
-              onClick={handleCopyRoomCode}
-              className="bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 px-2.5 py-1 rounded-full flex items-center gap-1 transition-all text-[10px] font-bold"
-              title="Copy Room ID to Clipboard"
-            >
-              {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-sky-600" />}
-              <span>{copiedLink ? "COPIED ROOM ID!" : "COPY ROOM ID"}</span>
-            </button>
-
-            {/* SHARE WHITEBOARD DIRECT LINK BUTTON */}
-            <button
-              onClick={handleShareDirectLink}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-500 px-3 py-1 rounded-full flex items-center gap-1.5 transition-all text-[10px] sm:text-xs font-bold shadow-xs animate-pulse hover:animate-none"
-              title="Copy Direct Shareable Whiteboard Room Link"
-            >
-              {copiedShareLink ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-emerald-200" />
-                  <span>WHITEBOARD LINK COPIED! 🚀</span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="w-3.5 h-3.5 text-white" />
-                  <span>SHARE WHITEBOARD</span>
-                </>
-              )}
-            </button>
-
-            {/* DIRECT JOIN ROOM CODE INPUT FIELD */}
-            <div className="flex items-center gap-1 bg-white border border-slate-300 rounded-full px-2 py-0.5 shadow-xs">
-              <input
-                type="text"
-                value={joinRoomInput}
-                onChange={(e) => setJoinRoomInput(e.target.value.toUpperCase())}
-                onKeyDown={(e) => e.key === "Enter" && handleDirectJoinRoom()}
-                placeholder="JOIN ROOM CODE"
-                className="bg-transparent text-slate-900 text-[10px] sm:text-xs font-mono font-bold uppercase px-1 focus:outline-none w-24 sm:w-28 placeholder:text-slate-400 placeholder:normal-case"
-              />
-              <button
-                onClick={handleDirectJoinRoom}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white text-[9px] sm:text-[10px] font-bold px-2.5 py-0.5 rounded-full transition-all flex items-center gap-1 shadow-xs"
-              >
-                <LogIn className="w-3 h-3" />
-                <span>JOIN</span>
-              </button>
-            </div>
-
-            <span className="text-emerald-600 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px]">
-              🟢 {activeUsersCount} ONLINE
-            </span>
-
-            {/* WEBSOCKET PROTOCOL STATUS BADGE */}
-            <span className={`font-bold border px-2.5 py-0.5 rounded-full text-[10px] flex items-center gap-1 transition-all ${
-              wsConnected
-                ? "bg-emerald-500/10 text-emerald-600 border-emerald-300"
-                : "bg-purple-500/10 text-purple-600 border-purple-300"
-            }`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${wsConnected ? "bg-emerald-500 animate-ping" : "bg-purple-500"}`} />
-              <span>{wsConnected ? "⚡ WEBSOCKET (0 API OVERHEAD)" : "⚡ SSE EVENTSTREAM"}</span>
-            </span>
-
-            {/* Room Chat Drawer Toggle Button */}
-            <button
-              onClick={toggleChatOpen}
-              className={`px-2.5 py-1 rounded-full flex items-center gap-1.5 transition-all text-[10px] font-bold border relative ${
-                isChatOpen
-                  ? "bg-purple-600 text-white border-purple-500 shadow-xs"
-                  : "bg-white/90 hover:bg-purple-50 text-purple-700 border-purple-200"
-              }`}
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>ROOM CHAT</span>
-              {unreadChatCount > 0 && !isChatOpen && (
-                <span className="bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
-                  {unreadChatCount}
-                </span>
-              )}
-            </button>
-
-            {/* FLOATING MOBILE & DESKTOP EXIT FULLSCREEN BUTTON */}
-            {isFullscreen && (
-              <button
-                onClick={toggleFullscreen}
-                className="bg-rose-600 hover:bg-rose-700 text-white font-mono text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full border border-rose-400 shadow-md flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 shrink-0"
-                title="Exit Fullscreen Mode"
-              >
-                <X className="w-3.5 h-3.5" />
-                <span>EXIT FULLSCREEN ✕</span>
-              </button>
-            )}
-          </div>
-
-          {/* Player Codename Handle */}
-          <div className="flex items-center gap-1.5 self-end sm:self-auto shrink-0">
-            <span className="text-slate-400 text-[10px] uppercase">Handle:</span>
-            {isEditingName ? (
-              <div className="flex items-center gap-1">
-                <input
-                  type="text"
-                  value={tempNameInput}
-                  onChange={(e) => setTempNameInput(e.target.value)}
-                  placeholder="YOUR NAME"
-                  className="bg-white text-slate-900 text-[10px] font-mono px-2 py-0.5 rounded border border-slate-300 focus:outline-none w-28"
-                />
-                <button onClick={handleSavePlayerName} className="text-sky-600 font-bold text-[10px]">SAVE</button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1 bg-white/80 border border-slate-300 px-2.5 py-0.5 rounded-full text-slate-800 font-bold text-[10px] sm:text-xs">
-                <span>{playerName}</span>
-                <button
-                  onClick={() => { setTempNameInput(playerName); setIsEditingName(true); }}
-                  className="text-slate-400 hover:text-slate-700 ml-0.5"
-                  title="Change Player Codename"
-                >
-                  <Edit3 className="w-3 h-3" />
-                </button>
-              </div>
-            )}
           </div>
         </div>
 
