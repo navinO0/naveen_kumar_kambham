@@ -204,6 +204,34 @@ export default function GravityPlayground() {
 
   const [copiedShareLink, setCopiedShareLink] = useState<boolean>(false);
 
+  // Helper to switch rooms cleanly across all states and endpoints
+  const switchRoom = useCallback((newCode: string) => {
+    const cleanCode = newCode.trim().toUpperCase();
+    if (!cleanCode) return;
+    whiteboardPathsRef.current = [];
+    remoteCursorsRef.current = {};
+    remoteSnakesRef.current = {};
+    setChatMessages([]);
+    setUnreadChatCount(0);
+    setStrokeCount(0);
+    setRoomCode(cleanCode);
+
+    // Fetch initial room snapshot from server API
+    fetch(`/api/arcade/room?code=${encodeURIComponent(cleanCode)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && Array.isArray(data.paths)) {
+          whiteboardPathsRef.current = data.paths;
+          saveWhiteboardPathsToSession(data.paths);
+          setStrokeCount((p) => p + 1);
+        }
+        if (data && Array.isArray(data.chat)) {
+          setChatMessages(data.chat);
+        }
+      })
+      .catch(() => {});
+  }, [saveWhiteboardPathsToSession]);
+
   // Initialize Room Code, Player Handle & URL Direct Share Query Auto-Join
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -212,7 +240,7 @@ export default function GravityPlayground() {
       const urlTab = searchParams.get("mode") || searchParams.get("tab");
 
       if (urlRoom) {
-        setRoomCode(urlRoom.toUpperCase());
+        switchRoom(urlRoom);
         // Auto-open in fullscreen focus mode directly when visiting shared room link
         setIsFullscreen(true);
 
@@ -235,7 +263,7 @@ export default function GravityPlayground() {
       setPlayerName(generateRandomPlayerName());
       setActiveUsersCount(Math.floor(Math.random() * 3) + 2);
     }
-  }, []);
+  }, [switchRoom]);
 
   const handleShareDirectLink = () => {
     if (typeof window === "undefined") return;
@@ -576,6 +604,71 @@ export default function GravityPlayground() {
     };
   }, [roomCode, playerName, isChatOpen, triggerChatNotification, saveWhiteboardPathsToSession]);
 
+  // Real-Time Server-Sent Events (SSE) Stream Fallback when WebSocket is offline/unavailable
+  useEffect(() => {
+    if (!roomCode || wsConnected || typeof window === "undefined") return;
+
+    let es: EventSource | null = null;
+    try {
+      es = new EventSource(`/api/arcade/room/stream?code=${encodeURIComponent(roomCode)}`);
+      es.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          const { type, payload, room } = data;
+
+          if (type === "INIT_ROOM_STATE" || type === "CONNECTED") {
+            if (room && Array.isArray(room.paths)) {
+              whiteboardPathsRef.current = room.paths;
+              saveWhiteboardPathsToSession(room.paths);
+              setStrokeCount((p) => p + 1);
+            }
+            if (room && Array.isArray(room.chat)) {
+              setChatMessages(room.chat);
+            }
+          } else if (type === "WB_STROKE" && payload) {
+            whiteboardPathsRef.current.push(payload);
+            saveWhiteboardPathsToSession(whiteboardPathsRef.current);
+            setStrokeCount((p) => p + 1);
+          } else if (type === "WB_CLEAR") {
+            whiteboardPathsRef.current = [];
+            saveWhiteboardPathsToSession([]);
+            setStrokeCount((p) => p + 1);
+          } else if (type === "WB_UNDO") {
+            whiteboardPathsRef.current.pop();
+            saveWhiteboardPathsToSession(whiteboardPathsRef.current);
+            setStrokeCount((p) => p + 1);
+          } else if (type === "CHAT" && payload) {
+            setChatMessages((prev) => {
+              const updated = [...prev, payload];
+              if (roomCode && typeof window !== "undefined") {
+                sessionStorage.setItem(`arcade_chat_${roomCode}`, JSON.stringify(updated));
+              }
+              return updated;
+            });
+          } else if (type === "SNAKE_UPDATE" && payload) {
+            if (payload.playerId && payload.playerId !== playerIdRef.current) {
+              remoteSnakesRef.current[payload.playerId] = payload;
+              setStrokeCount((p) => p + 1);
+            }
+          } else if (type === "CURSOR_UPDATE" && payload) {
+            if (payload.playerId && payload.playerId !== playerIdRef.current) {
+              remoteCursorsRef.current[payload.playerId] = { ...payload, lastActive: Date.now() };
+              setStrokeCount((p) => p + 1);
+            }
+          }
+        } catch {
+          // Non-JSON stream message
+        }
+      };
+    } catch {
+      // SSE not supported
+    }
+
+    return () => {
+      if (es) es.close();
+    };
+  }, [roomCode, wsConnected, saveWhiteboardPathsToSession]);
+
   // Auto-scroll Chat to bottom when new message arrives
   useEffect(() => {
     if (isChatOpen && chatScrollRef.current) {
@@ -592,14 +685,14 @@ export default function GravityPlayground() {
 
   const handleDirectJoinRoom = () => {
     if (joinRoomInput.trim()) {
-      setRoomCode(joinRoomInput.trim().toUpperCase());
+      switchRoom(joinRoomInput.trim());
       setJoinRoomInput("");
     }
   };
 
   const handleSaveRoomCode = () => {
     if (tempRoomInput.trim()) {
-      setRoomCode(tempRoomInput.trim().toUpperCase());
+      switchRoom(tempRoomInput.trim());
     }
     setIsEditingRoom(false);
   };
