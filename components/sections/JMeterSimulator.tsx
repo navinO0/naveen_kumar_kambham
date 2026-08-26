@@ -81,7 +81,7 @@ export default function JMeterSimulator() {
   const [logs, setLogs] = useState<ScalingLogEvent[]>([
     {
       id: "log-0",
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: "INITIALIZED",
       type: "INFO",
       message: "Cluster initialized with 3 Active Nodes (30,000 RPS Capacity). 3 Static Standby Nodes.",
       strategy: "horizontal",

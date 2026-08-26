@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Architects_Daughter, JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -20,6 +20,12 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   title: "navin // Full-Stack Engineer Notebook & Portfolio",
@@ -53,7 +59,6 @@ export const metadata: Metadata = {
   authors: [{ name: "navin", url: "https://github.com/navinO0" }],
   creator: "navin",
   publisher: "navin",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   icons: {
     icon: [
       { url: "/favicon.png", type: "image/png" },
