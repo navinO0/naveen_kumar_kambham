@@ -37,7 +37,7 @@ export default function PlaygroundPage() {
       </header>
 
       {/* Main Full Page Playground Area */}
-      <main className="flex-1 p-2 sm:p-6 max-w-7xl w-full mx-auto flex flex-col justify-center">
+      <main className="flex-1 p-1 sm:p-4 w-full flex flex-col justify-center">
         <Suspense fallback={
           <div className="w-full h-[600px] bg-slate-900 rounded-3xl border border-slate-800 flex flex-col items-center justify-center gap-3 text-slate-400 font-mono">
             <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />

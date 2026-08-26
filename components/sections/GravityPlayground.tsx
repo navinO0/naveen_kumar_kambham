@@ -2295,7 +2295,7 @@ export default function GravityPlayground() {
         ref={containerRef}
         className={`bg-slate-50 border-y sm:border border-slate-200/80 p-2 sm:p-6 relative overflow-hidden shadow-xs w-full transition-all duration-300 ${
           isFullscreen
-            ? "fixed inset-0 top-0 left-0 right-0 bottom-0 z-[999999] rounded-none w-screen h-screen h-[100dvh] max-h-[100dvh] bg-slate-900 text-white flex flex-col justify-between p-2 sm:p-4 touch-none"
+            ? "fixed !inset-0 !top-0 !left-0 !right-0 !bottom-0 z-[99999999] rounded-none !w-screen !h-screen !h-[100dvh] !max-h-[100dvh] bg-slate-900 text-white flex flex-col justify-between p-2 sm:p-4 touch-none"
             : "rounded-none sm:rounded-3xl"
         }`}
       >
