@@ -214,6 +214,9 @@ export default function GravityPlayground() {
     whiteboardPathsRef.current = paths;
     if (roomCode && typeof window !== "undefined") {
       sessionStorage.setItem(`arcade_wb_paths_${roomCode}`, JSON.stringify(paths));
+      try {
+        localStorage.setItem(`arcade_wb_paths_${roomCode}`, JSON.stringify(paths));
+      } catch {}
     }
   }, [roomCode]);
 
@@ -237,8 +240,25 @@ export default function GravityPlayground() {
       .then((res) => res.json())
       .then((data) => {
         if (data && Array.isArray(data.paths)) {
-          whiteboardPathsRef.current = data.paths;
-          saveWhiteboardPathsToSession(data.paths);
+          if (data.paths.length > 0) {
+            whiteboardPathsRef.current = data.paths;
+            saveWhiteboardPathsToSession(data.paths);
+          } else if (typeof window !== "undefined") {
+            const localSaved = sessionStorage.getItem(`arcade_wb_paths_${cleanCode}`) || localStorage.getItem(`arcade_wb_paths_${cleanCode}`);
+            if (localSaved) {
+              try {
+                const parsed = JSON.parse(localSaved);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                  whiteboardPathsRef.current = parsed;
+                  fetch("/api/arcade/room", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code: cleanCode, type: "WB_RESTORE", payload: parsed }),
+                  }).catch(() => {});
+                }
+              } catch {}
+            }
+          }
           setStrokeCount((p) => p + 1);
         }
         if (data && Array.isArray(data.chat)) {
@@ -370,14 +390,26 @@ export default function GravityPlayground() {
   const nextPieceRef = useRef<{ shape: number[][]; color: string } | null>(null);
   const tetrisTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Fullscreen Toggle Handler (With iPhone / iOS Safari Support)
+  // Fullscreen Toggle Handler (With iPhone / iOS Safari Native & Overlay Support)
   const toggleFullscreen = () => {
     setIsFullscreen((prev) => {
       const nextState = !prev;
-      if (nextState && containerRef.current && containerRef.current.requestFullscreen) {
-        containerRef.current.requestFullscreen().catch(() => {});
-      } else if (!nextState && document.fullscreenElement && document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
+      if (typeof window !== "undefined") {
+        if (nextState) {
+          document.body.style.overflow = "hidden";
+          if (containerRef.current?.requestFullscreen) {
+            containerRef.current.requestFullscreen().catch(() => {});
+          } else if ((containerRef.current as any)?.webkitRequestFullscreen) {
+            (containerRef.current as any).webkitRequestFullscreen();
+          }
+        } else {
+          document.body.style.overflow = "";
+          if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+          } else if ((document as any).webkitExitFullscreen) {
+            (document as any).webkitExitFullscreen();
+          }
+        }
       }
       return nextState;
     });
@@ -385,13 +417,21 @@ export default function GravityPlayground() {
 
   useEffect(() => {
     const handleFullscreenChange = () => {
-      if (document.fullscreenElement) {
-        setIsFullscreen(true);
+      const isFs = Boolean(document.fullscreenElement || (document as any).webkitFullscreenElement);
+      setIsFullscreen(isFs);
+      if (typeof window !== "undefined") {
+        if (isFs) {
+          document.body.style.overflow = "hidden";
+        } else {
+          document.body.style.overflow = "";
+        }
       }
     };
     document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
     return () => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
     };
   }, []);
 

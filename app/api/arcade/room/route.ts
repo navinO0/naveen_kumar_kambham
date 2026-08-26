@@ -120,6 +120,8 @@ export async function POST(request: NextRequest) {
 
     if (type === "WB_STROKE" && payload) {
       room.paths.push(payload);
+    } else if (type === "WB_RESTORE" && Array.isArray(payload)) {
+      room.paths = payload;
     } else if (type === "WB_CLEAR") {
       room.paths = [];
     } else if (type === "WB_UNDO") {
