@@ -221,6 +221,9 @@ export default function GravityPlayground() {
   const switchRoom = useCallback((newCode: string) => {
     const cleanCode = newCode.trim().toUpperCase();
     if (!cleanCode) return;
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("arcade_current_room_code", cleanCode);
+    }
     whiteboardPathsRef.current = [];
     remoteCursorsRef.current = {};
     remoteSnakesRef.current = {};
@@ -251,6 +254,8 @@ export default function GravityPlayground() {
       const searchParams = new URLSearchParams(window.location.search);
       const urlRoom = searchParams.get("room") || searchParams.get("roomCode");
       const urlTab = searchParams.get("mode") || searchParams.get("tab");
+      const savedRoom = sessionStorage.getItem("arcade_current_room_code");
+      const savedPlayer = sessionStorage.getItem("arcade_player_name");
 
       if (urlRoom) {
         switchRoom(urlRoom);
@@ -263,8 +268,20 @@ export default function GravityPlayground() {
             containerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
           }
         }, 200);
+      } else if (savedRoom) {
+        setRoomCode(savedRoom);
       } else {
-        setRoomCode(generateRandomRoomCode());
+        const newRoom = generateRandomRoomCode();
+        sessionStorage.setItem("arcade_current_room_code", newRoom);
+        setRoomCode(newRoom);
+      }
+
+      if (savedPlayer) {
+        setPlayerName(savedPlayer);
+      } else {
+        const newPlayer = generateRandomPlayerName();
+        sessionStorage.setItem("arcade_player_name", newPlayer);
+        setPlayerName(newPlayer);
       }
 
       if (urlTab === "whiteboard" || urlTab === "wb" || window.location.hash.includes("whiteboard")) {
@@ -273,7 +290,6 @@ export default function GravityPlayground() {
         setActiveTab(urlTab as any);
       }
 
-      setPlayerName(generateRandomPlayerName());
       setActiveUsersCount(Math.floor(Math.random() * 3) + 2);
     }
   }, [switchRoom]);
@@ -698,7 +714,11 @@ export default function GravityPlayground() {
 
   const handleSavePlayerName = () => {
     if (tempNameInput.trim()) {
-      setPlayerName(tempNameInput.trim());
+      const cleanName = tempNameInput.trim();
+      setPlayerName(cleanName);
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("arcade_player_name", cleanName);
+      }
     }
     setIsEditingName(false);
   };
