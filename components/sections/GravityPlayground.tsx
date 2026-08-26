@@ -213,12 +213,23 @@ export default function GravityPlayground() {
 
       if (urlRoom) {
         setRoomCode(urlRoom.toUpperCase());
+        // Auto-open in fullscreen focus mode directly when visiting shared room link
+        setIsFullscreen(true);
+
+        // Smooth scroll directly to the playground
+        setTimeout(() => {
+          if (containerRef.current) {
+            containerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 200);
       } else {
         setRoomCode(generateRandomRoomCode());
       }
 
       if (urlTab === "whiteboard" || urlTab === "wb" || window.location.hash.includes("whiteboard")) {
         setActiveTab("whiteboard");
+      } else if (urlTab) {
+        setActiveTab(urlTab as any);
       }
 
       setPlayerName(generateRandomPlayerName());
@@ -228,7 +239,7 @@ export default function GravityPlayground() {
 
   const handleShareDirectLink = () => {
     if (typeof window === "undefined") return;
-    const shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomCode}&mode=whiteboard#playground`;
+    const shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomCode}&mode=whiteboard&fullscreen=true#playground`;
     navigator.clipboard.writeText(shareUrl);
     setCopiedShareLink(true);
     setTimeout(() => setCopiedShareLink(false), 2500);
