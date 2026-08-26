@@ -387,14 +387,21 @@ export default function GravityPlayground() {
     }
   }, [roomCode]);
 
-  // Server API Sync Helper for Cross-Incognito & Multi-Browser Windows
+  const socketRef = useRef<WebSocket | null>(null);
+  const [wsConnected, setWsConnected] = useState<boolean>(false);
+
+  // Bi-Directional Full-Duplex WebSocket Frame Emitter (0 HTTP API Overhead)
   const postRoomEventToServer = useCallback((type: string, payload?: unknown) => {
     if (!roomCode) return;
-    fetch("/api/arcade/room", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code: roomCode, type, payload }),
-    }).catch(() => {});
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify({ type, payload, roomCode }));
+    } else {
+      fetch("/api/arcade/room", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: roomCode, type, payload }),
+      }).catch(() => {});
+    }
   }, [roomCode]);
 
   // Real-Time Multi-Window Room Communication Channel (Strokes & Chat)
@@ -451,95 +458,100 @@ export default function GravityPlayground() {
     };
   }, [roomCode, isChatOpen, saveWhiteboardPathsToSession, playerName, triggerChatNotification]);
 
-  // REAL-TIME SERVER-SENT EVENTS (SSE) EVENTSTREAM CONNECTION (ZERO-POLLING OVERHEAD)
+  // REAL-TIME FULL-DUPLEX WEBSOCKET ENGINE (ZERO HTTP API OVERHEAD)
   useEffect(() => {
-    if (!roomCode) return;
+    if (!roomCode || typeof window === "undefined") return;
 
     let isMounted = true;
+    let ws: WebSocket | null = null;
 
-    // Initial Full State Fetch on Connect
-    const fetchInitialRoomState = async () => {
+    const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const wsHost = process.env.NEXT_PUBLIC_WS_URL || `${wsProtocol}//${window.location.hostname}:3001`;
+
+    const connectWebSocket = () => {
       try {
-        const res = await fetch(`/api/arcade/room?code=${encodeURIComponent(roomCode)}`);
-        if (!res.ok || !isMounted) return;
-        const data = await res.json();
-        
-        if (Array.isArray(data.paths)) {
-          whiteboardPathsRef.current = data.paths as StrokePath[];
-          saveWhiteboardPathsToSession(data.paths);
-          setStrokeCount((prev) => prev + 1);
-        }
-        if (Array.isArray(data.chat)) {
-          setChatMessages(data.chat as RoomChatMessage[]);
-        }
+        ws = new WebSocket(`${wsHost}?room=${encodeURIComponent(roomCode)}`);
+        socketRef.current = ws;
+
+        ws.onopen = () => {
+          if (isMounted) setWsConnected(true);
+        };
+
+        ws.onmessage = (event) => {
+          if (!isMounted) return;
+          try {
+            const data = JSON.parse(event.data);
+            const { type, payload, room } = data;
+
+            if (type === "INIT_ROOM_STATE" && room) {
+              if (Array.isArray(room.paths)) {
+                whiteboardPathsRef.current = room.paths as StrokePath[];
+                saveWhiteboardPathsToSession(room.paths);
+                setStrokeCount((prev) => prev + 1);
+              }
+              if (Array.isArray(room.chat)) {
+                setChatMessages(room.chat as RoomChatMessage[]);
+              }
+            } else if (type === "WB_STROKE" && payload) {
+              whiteboardPathsRef.current.push(payload);
+              saveWhiteboardPathsToSession(whiteboardPathsRef.current);
+              setStrokeCount((prev) => prev + 1);
+            } else if (type === "WB_CLEAR") {
+              whiteboardPathsRef.current = [];
+              saveWhiteboardPathsToSession([]);
+              setStrokeCount((prev) => prev + 1);
+            } else if (type === "WB_UNDO") {
+              whiteboardPathsRef.current.pop();
+              saveWhiteboardPathsToSession(whiteboardPathsRef.current);
+              setStrokeCount((prev) => prev + 1);
+            } else if (type === "CHAT" && payload) {
+              setChatMessages((prev) => {
+                const updated = [...prev, payload];
+                if (roomCode && typeof window !== "undefined") {
+                  sessionStorage.setItem(`arcade_chat_${roomCode}`, JSON.stringify(updated));
+                }
+                return updated;
+              });
+              if (payload.sender !== playerName && !payload.isSystem) {
+                triggerChatNotification(payload.sender, payload.text);
+                if (!isChatOpen) {
+                  setUnreadChatCount((p) => p + 1);
+                }
+              }
+            } else if (type === "SNAKE_UPDATE" && payload) {
+              if (payload.playerId && payload.playerId !== playerIdRef.current) {
+                remoteSnakesRef.current[payload.playerId] = payload;
+                setStrokeCount((prev) => prev + 1);
+              }
+            } else if (type === "CURSOR_UPDATE" && payload) {
+              if (payload.playerId && payload.playerId !== playerIdRef.current) {
+                remoteCursorsRef.current[payload.playerId] = { ...payload, lastActive: Date.now() };
+                setStrokeCount((prev) => prev + 1);
+              }
+            }
+          } catch {
+            // Non-JSON frame
+          }
+        };
+
+        ws.onclose = () => {
+          if (isMounted) setWsConnected(false);
+        };
+
+        ws.onerror = () => {
+          if (isMounted) setWsConnected(false);
+        };
       } catch {
-        // Silent fallback
+        if (isMounted) setWsConnected(false);
       }
     };
-    fetchInitialRoomState();
 
-    // Establish Permanent Real-Time EventStream Connection
-    let eventSource: EventSource | null = null;
-    
-    try {
-      eventSource = new EventSource(`/api/arcade/room/stream?code=${encodeURIComponent(roomCode)}`);
-
-      eventSource.onmessage = (event) => {
-        if (!isMounted) return;
-        try {
-          const message = JSON.parse(event.data);
-          const { type, payload } = message;
-
-          if (type === "WB_STROKE" && payload) {
-            whiteboardPathsRef.current.push(payload);
-            saveWhiteboardPathsToSession(whiteboardPathsRef.current);
-            setStrokeCount((prev) => prev + 1);
-          } else if (type === "WB_CLEAR") {
-            whiteboardPathsRef.current = [];
-            saveWhiteboardPathsToSession([]);
-            setStrokeCount((prev) => prev + 1);
-          } else if (type === "WB_UNDO") {
-            whiteboardPathsRef.current.pop();
-            saveWhiteboardPathsToSession(whiteboardPathsRef.current);
-            setStrokeCount((prev) => prev + 1);
-          } else if (type === "CHAT" && payload) {
-            setChatMessages((prev) => {
-              const updated = [...prev, payload];
-              if (roomCode && typeof window !== "undefined") {
-                sessionStorage.setItem(`arcade_chat_${roomCode}`, JSON.stringify(updated));
-              }
-              return updated;
-            });
-            if (payload.sender !== playerName && !payload.isSystem) {
-              triggerChatNotification(payload.sender, payload.text);
-              if (!isChatOpen) {
-                setUnreadChatCount((p) => p + 1);
-              }
-            }
-          } else if (type === "SNAKE_UPDATE" && payload) {
-            if (payload.playerId && payload.playerId !== playerIdRef.current) {
-              remoteSnakesRef.current[payload.playerId] = payload;
-              setStrokeCount((prev) => prev + 1);
-            }
-          } else if (type === "CURSOR_UPDATE" && payload) {
-            if (payload.playerId && payload.playerId !== playerIdRef.current) {
-              remoteCursorsRef.current[payload.playerId] = { ...payload, lastActive: Date.now() };
-              setStrokeCount((prev) => prev + 1);
-            }
-          }
-        } catch {
-          // Ping signal
-        }
-      };
-    } catch {
-      // Stream fallback
-    }
+    connectWebSocket();
 
     return () => {
       isMounted = false;
-      if (eventSource) {
-        eventSource.close();
-      }
+      if (ws) ws.close();
+      socketRef.current = null;
     };
   }, [roomCode, playerName, isChatOpen, triggerChatNotification, saveWhiteboardPathsToSession]);
 
@@ -2144,6 +2156,16 @@ export default function GravityPlayground() {
 
             <span className="text-emerald-600 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px]">
               🟢 {activeUsersCount} ONLINE
+            </span>
+
+            {/* WEBSOCKET PROTOCOL STATUS BADGE */}
+            <span className={`font-bold border px-2.5 py-0.5 rounded-full text-[10px] flex items-center gap-1 transition-all ${
+              wsConnected
+                ? "bg-emerald-500/10 text-emerald-600 border-emerald-300"
+                : "bg-purple-500/10 text-purple-600 border-purple-300"
+            }`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${wsConnected ? "bg-emerald-500 animate-ping" : "bg-purple-500"}`} />
+              <span>{wsConnected ? "⚡ WEBSOCKET (0 API OVERHEAD)" : "⚡ SSE EVENTSTREAM"}</span>
             </span>
 
             {/* Room Chat Drawer Toggle Button */}
