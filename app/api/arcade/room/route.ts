@@ -128,6 +128,8 @@ export async function POST(request: NextRequest) {
       room.paths.pop();
     } else if (type === "CHAT" && payload) {
       room.chat.push(payload);
+    } else if (type === "CHAT_RESTORE" && Array.isArray(payload)) {
+      room.chat = payload;
     } else if (type === "SNAKE_UPDATE" && payload) {
       const { playerId, playerName, snake, score, color } = payload;
       if (playerId) {

@@ -211,6 +211,9 @@ export default function GravityPlayground() {
     setChatMessages(msgs);
     if (roomCode && typeof window !== "undefined") {
       sessionStorage.setItem(`arcade_chat_${roomCode}`, JSON.stringify(msgs));
+      try {
+        localStorage.setItem(`arcade_chat_${roomCode}`, JSON.stringify(msgs));
+      } catch {}
     }
   }, [roomCode]);
 
@@ -266,11 +269,28 @@ export default function GravityPlayground() {
           setStrokeCount((p) => p + 1);
         }
         if (data && Array.isArray(data.chat)) {
-          setChatMessages(data.chat);
+          if (data.chat.length > 0) {
+            saveChatMessagesToSession(data.chat);
+          } else if (typeof window !== "undefined") {
+            const localChat = sessionStorage.getItem(`arcade_chat_${cleanCode}`) || localStorage.getItem(`arcade_chat_${cleanCode}`);
+            if (localChat) {
+              try {
+                const parsedChat = JSON.parse(localChat);
+                if (Array.isArray(parsedChat) && parsedChat.length > 0) {
+                  saveChatMessagesToSession(parsedChat);
+                  fetch("/api/arcade/room", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code: cleanCode, type: "CHAT_RESTORE", payload: parsedChat }),
+                  }).catch(() => {});
+                }
+              } catch {}
+            }
+          }
         }
       })
       .catch(() => {});
-  }, [saveWhiteboardPathsToSession]);
+  }, [saveWhiteboardPathsToSession, saveChatMessagesToSession]);
 
   // Initialize Room Code, Player Handle & URL Direct Share Query Auto-Join
   useEffect(() => {
@@ -293,11 +313,10 @@ export default function GravityPlayground() {
           }
         }, 200);
       } else if (savedRoom) {
-        setRoomCode(savedRoom);
+        switchRoom(savedRoom);
       } else {
         const newRoom = generateRandomRoomCode();
-        sessionStorage.setItem("arcade_current_room_code", newRoom);
-        setRoomCode(newRoom);
+        switchRoom(newRoom);
       }
 
       if (savedPlayer) {
