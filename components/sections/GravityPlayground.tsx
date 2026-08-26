@@ -168,7 +168,7 @@ const generateRandomPlayerName = () => {
 };
 
 export default function GravityPlayground() {
-  const [activeTab, setActiveTab] = useState<"sandbox" | "snake" | "tetris" | "whiteboard">("sandbox");
+  const [activeTab, setActiveTab] = useState<"sandbox" | "snake" | "tetris" | "whiteboard">("whiteboard");
   const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("medium");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -184,6 +184,7 @@ export default function GravityPlayground() {
   const [tempNameInput, setTempNameInput] = useState<string>("");
   const [activeUsersCount, setActiveUsersCount] = useState<number>(2);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
+  const [copiedShareLink, setCopiedShareLink] = useState<boolean>(false);
 
   // Room Chat State & Session Storage Persistence
   const [chatMessages, setChatMessages] = useState<RoomChatMessage[]>([]);
@@ -202,7 +203,19 @@ export default function GravityPlayground() {
     }, 4500);
   }, []);
 
-  const [copiedShareLink, setCopiedShareLink] = useState<boolean>(false);
+  const saveChatMessagesToSession = useCallback((msgs: RoomChatMessage[]) => {
+    setChatMessages(msgs);
+    if (roomCode && typeof window !== "undefined") {
+      sessionStorage.setItem(`arcade_chat_${roomCode}`, JSON.stringify(msgs));
+    }
+  }, [roomCode]);
+
+  const saveWhiteboardPathsToSession = useCallback((paths: StrokePath[]) => {
+    whiteboardPathsRef.current = paths;
+    if (roomCode && typeof window !== "undefined") {
+      sessionStorage.setItem(`arcade_wb_paths_${roomCode}`, JSON.stringify(paths));
+    }
+  }, [roomCode]);
 
   // Helper to switch rooms cleanly across all states and endpoints
   const switchRoom = useCallback((newCode: string) => {
@@ -419,20 +432,6 @@ export default function GravityPlayground() {
         whiteboardPathsRef.current = [];
         setStrokeCount((prev) => prev + 1);
       }
-    }
-  }, [roomCode]);
-
-  const saveChatMessagesToSession = useCallback((msgs: RoomChatMessage[]) => {
-    setChatMessages(msgs);
-    if (roomCode && typeof window !== "undefined") {
-      sessionStorage.setItem(`arcade_chat_${roomCode}`, JSON.stringify(msgs));
-    }
-  }, [roomCode]);
-
-  const saveWhiteboardPathsToSession = useCallback((paths: StrokePath[]) => {
-    whiteboardPathsRef.current = paths;
-    if (roomCode && typeof window !== "undefined") {
-      sessionStorage.setItem(`arcade_wb_paths_${roomCode}`, JSON.stringify(paths));
     }
   }, [roomCode]);
 
@@ -2113,6 +2112,17 @@ export default function GravityPlayground() {
         <div className="flex items-center gap-2 flex-wrap shrink-0 self-start md:self-auto">
           <div className="flex items-center gap-1 bg-slate-100/80 backdrop-blur-xs p-1 rounded-full border border-slate-200/80 flex-wrap">
             <button
+              onClick={() => { setActiveTab("whiteboard"); setGameState("idle"); }}
+              className={`px-3 py-1.5 sm:px-4 sm:py-2 font-mono text-[11px] sm:text-xs font-semibold rounded-full flex items-center gap-1.5 transition-all ${
+                activeTab === "whiteboard"
+                  ? "bg-emerald-600 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              <PenTool className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span>WHITEBOARD</span>
+            </button>
+            <button
               onClick={() => { setActiveTab("sandbox"); setGameState("idle"); }}
               className={`px-3 py-1.5 sm:px-4 sm:py-2 font-mono text-[11px] sm:text-xs font-semibold rounded-full flex items-center gap-1.5 transition-all ${
                 activeTab === "sandbox"
@@ -2144,17 +2154,6 @@ export default function GravityPlayground() {
             >
               <Grid3X3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>TETRIS</span>
-            </button>
-            <button
-              onClick={() => { setActiveTab("whiteboard"); setGameState("idle"); }}
-              className={`px-3 py-1.5 sm:px-4 sm:py-2 font-mono text-[11px] sm:text-xs font-semibold rounded-full flex items-center gap-1.5 transition-all ${
-                activeTab === "whiteboard"
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
-              }`}
-            >
-              <PenTool className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>WHITEBOARD</span>
             </button>
           </div>
 
