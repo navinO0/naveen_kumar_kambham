@@ -9,8 +9,8 @@ export default function EventDrivenAndDistributedSystems() {
   return (
     <div className="space-y-8 my-8">
       {/* 1. Messaging Systems & Event Bus */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">MESSAGING & EVENT-DRIVEN</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -26,34 +26,34 @@ export default function EventDrivenAndDistributedSystems() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#ff5e5b] block mb-1">APACHE KAFKA</span>
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#ff5e5b] block mb-1 text-[10px] uppercase tracking-wider">APACHE KAFKA</span>
             <span className="text-[10px] text-gray-500 block mb-2">High-throughput log replay</span>
-            <p className="font-sans text-xs text-[#57534e]">
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               Partitions, offsets, consumer groups, immutable log retention for event streaming.
             </p>
           </div>
 
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#3498db] block mb-1">RABBITMQ</span>
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#3498db] block mb-1 text-[10px] uppercase tracking-wider">RABBITMQ</span>
             <span className="text-[10px] text-gray-500 block mb-2">Complex message routing</span>
-            <p className="font-sans text-xs text-[#57534e]">
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               AMQP exchanges, topics, headers, acknowledgment, dead-letter exchanges (DLX).
             </p>
           </div>
 
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#2ecc71] block mb-1">AWS SQS / SNS</span>
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#2ecc71] block mb-1 text-[10px] uppercase tracking-wider">AWS SQS / SNS</span>
             <span className="text-[10px] text-gray-500 block mb-2">Cloud managed queues</span>
-            <p className="font-sans text-xs text-[#57534e]">
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               Pub/Sub fanout (SNS) to isolated worker queues (SQS) with redrive policies.
             </p>
           </div>
 
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#e74c3c] block mb-1">DEAD-LETTER QUEUES (DLQ)</span>
+          <div className="metric-tile p-4">
+            <span className="font-bold text-amber-400 block mb-1 text-[10px] uppercase tracking-wider">DEAD-LETTER QUEUES (DLQ)</span>
             <span className="text-[10px] text-gray-500 block mb-2">Poison pill isolation</span>
-            <p className="font-sans text-xs text-[#57534e]">
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               Failed messages isolated after 3 retries for developer inspection without blocking pipeline.
             </p>
           </div>
@@ -61,8 +61,8 @@ export default function EventDrivenAndDistributedSystems() {
       </div>
 
       {/* 2. Distributed Transactions: Outbox vs Saga Pattern */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">DISTRIBUTED CONSISTENCY</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -89,31 +89,31 @@ export default function EventDrivenAndDistributedSystems() {
         </div>
 
         {/* Pattern Content */}
-        <div className="p-5 sketch-card bg-[#f6f4ee] border-2 border-[#1e1d1b] font-mono text-xs space-y-3">
+        <div className="p-5 rounded-xl bg-gradient-to-br from-[#fffef5] to-[#fff8e6] font-mono text-xs space-y-3">
           {activePattern === "outbox" ? (
             <div>
-              <div className="border-b border-[#1e1d1b] pb-2 mb-3">
+              <div className="border-b border-amber-200 pb-2 mb-3">
                 <span className="font-bold text-[#ff5e5b] text-sm block">TRANSACTIONAL OUTBOX PATTERN</span>
                 <p className="font-sans text-xs text-[#57534e] mt-0.5">
                   Guarantees that database state changes and message publishing succeed atomically in 1 transaction.
                 </p>
               </div>
-              <div className="p-3 bg-[#1e1d1b] text-[#ffe866] rounded">
-                <code>
+              <div className="terminal-card p-3 pt-8">
+                <code className="text-[#ffe866] text-xs">
                   BEGIN TX → Update Order State → Insert Event to Outbox Table → COMMIT TX → Worker Relays Outbox to Kafka
                 </code>
               </div>
             </div>
           ) : (
             <div>
-              <div className="border-b border-[#1e1d1b] pb-2 mb-3">
+              <div className="border-b border-amber-200 pb-2 mb-3">
                 <span className="font-bold text-[#3498db] text-sm block">SAGA PATTERN (COMPENSATING TRANSACTIONS)</span>
                 <p className="font-sans text-xs text-[#57534e] mt-0.5">
                   Executes a sequence of local transactions. If a step fails, Saga executes compensating rollback transactions backward.
                 </p>
               </div>
-              <div className="p-3 bg-[#1e1d1b] text-[#ffe866] rounded">
-                <code>
+              <div className="terminal-card p-3 pt-8">
+                <code className="text-[#ffe866] text-xs">
                   Step 1: Create Pending Order → Step 2: Charge Payment (FAILS ❌) → Step 3 (Compensate): Cancel Order & Release Stock
                 </code>
               </div>

@@ -206,8 +206,8 @@ export default function RequirementTransformation() {
   const current = STAGES[activeStep];
 
   return (
-    <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b] my-6 sm:my-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+    <div className="sketch-card p-6 sm:p-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
         <div>
           <span className="sticker-tag-red text-xs uppercase font-bold mb-1">INTERACTIVE STEPPER</span>
           <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -248,9 +248,9 @@ export default function RequirementTransformation() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25 }}
-        className={`p-4 sm:p-6 sketch-card border-2 border-[#1e1d1b] ${current.color} min-w-0 max-w-full overflow-hidden`}
+        className={`p-4 sm:p-6 sketch-card ${current.color} min-w-0 max-w-full overflow-hidden`}
       >
-        <div className="flex items-center justify-between border-b-2 border-dashed border-[#1e1d1b] pb-3 mb-4">
+        <div className="flex items-center justify-between  pb-3 mb-4">
           <div className="flex items-center space-x-3">
             <span className="text-2xl font-black font-mono text-[#ff5e5b]">
               #{current.step}
@@ -270,7 +270,7 @@ export default function RequirementTransformation() {
         {/* Content Renderers */}
         <div className="my-4 font-mono text-xs text-[#1e1d1b]">
           {current.content.type === "quote" && (
-            <div className="p-4 bg-white border border-[#1e1d1b] sketch-border-sm font-hand text-lg md:text-xl font-bold text-[#1e1d1b]">
+            <div className="p-4 bg-white sketch-border-sm font-hand text-lg md:text-xl font-bold text-[#1e1d1b]">
               {current.content.text}
             </div>
           )}
@@ -278,7 +278,7 @@ export default function RequirementTransformation() {
           {current.content.type === "list" && (
             <ul className="space-y-2">
               {current.content.items?.map((item, i) => (
-                <li key={i} className="flex items-start space-x-2 bg-white/80 p-2.5 border border-[#1e1d1b] sketch-border-sm font-sans font-medium text-xs">
+                <li key={i} className="flex items-start space-x-2 bg-white/80 p-2.5 sketch-border-sm font-sans font-medium text-xs">
                   <CheckCircle2 className="w-4 h-4 text-[#2ecc71] shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </li>
@@ -289,7 +289,7 @@ export default function RequirementTransformation() {
           {current.content.type === "grid" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {current.content.gridItems?.map((g, i) => (
-                <div key={i} className="p-3 bg-white border border-[#1e1d1b] sketch-border-sm">
+                <div key={i} className="p-3 bg-white sketch-border-sm">
                   <span className="font-bold text-[#ff5e5b] text-[10px] block mb-1">{g.label}</span>
                   <span className="font-sans text-xs font-medium text-[#1e1d1b]">{g.val}</span>
                 </div>
@@ -300,7 +300,7 @@ export default function RequirementTransformation() {
           {current.content.type === "tags" && (
             <div className="flex flex-wrap gap-2 py-2">
               {current.content.items?.map((t, i) => (
-                <span key={i} className="px-3 py-1.5 bg-[#ffe866] border border-[#1e1d1b] sketch-border-sm font-bold font-mono text-sm">
+                <span key={i} className="px-3 py-1.5 bg-[#ffe866] sketch-border-sm font-bold font-mono text-sm">
                   Entity: {t}
                 </span>
               ))}
@@ -319,7 +319,7 @@ export default function RequirementTransformation() {
             <div className="flex flex-wrap items-center gap-2 justify-center py-4">
               {current.content.steps?.map((step, i) => (
                 <div key={i} className="flex items-center">
-                  <span className="px-3 py-1.5 bg-white border border-[#1e1d1b] sketch-border-sm font-bold font-mono text-xs">
+                  <span className="px-3 py-1.5 bg-white sketch-border-sm font-bold font-mono text-xs">
                     {step}
                   </span>
                   {i < (current.content.steps?.length || 0) - 1 && (

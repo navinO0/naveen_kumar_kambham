@@ -46,7 +46,7 @@ export default function AboutMeSection() {
   const introPoints = [
     {
       icon: Server,
-      title: "Backend Visionary (3+ Years)",
+      title: "Full-Stack Architect & Engineer (3+ Years)",
       text: "Building highly-resilient backend ecosystems with 3+ years of high-impact engineering. My code transforms complex requirements into scalable, AI-driven logic.",
       color: "bg-[#ffe866]/30 border-[#1e1d1b]"
     },
@@ -115,6 +115,42 @@ export default function AboutMeSection() {
       summary: "Component-based UI library powering interactive single-page and server-rendered web applications.",
       useCases: ["Next.js portfolio UI", "Interactive security playgrounds and JMeter simulators"],
       whyOnlyThis: "Declarative component-driven architecture, virtual DOM reconciliation, and rich UI ecosystem."
+    },
+    { 
+      name: "Next.js", 
+      cat: "Full-Stack Framework", 
+      tag: "App Router", 
+      icon: Globe,
+      summary: "Production-grade React framework featuring App Router, Server Components, Server Actions, and streaming SSR.",
+      useCases: ["Portfolio architecture with SSR & static generation", "Server Action form processing"],
+      whyOnlyThis: "Unifies frontend interactive components and backend server endpoints in a single typesafe codebase."
+    },
+    { 
+      name: "Tailwind CSS", 
+      cat: "Design System", 
+      tag: "Styling", 
+      icon: Code2,
+      summary: "Utility-first CSS framework enabling rapid, responsive UI development with zero unused CSS in production.",
+      useCases: ["Responsive neo-brutalist & glassmorphic component styling", "Custom design tokens & dark mode"],
+      whyOnlyThis: "Eliminates naming overhead and ensures zero dead CSS bloat in production bundles."
+    },
+    { 
+      name: "Zustand & State", 
+      cat: "State Management", 
+      tag: "Client State", 
+      icon: Workflow,
+      summary: "Unopinionated, hook-based state management store providing lightweight global state without boilerplate.",
+      useCases: ["Interactive simulator state orchestration", "Global UI theme & cart management"],
+      whyOnlyThis: "Tiny 1KB footprint with predictable action dispatchers and zero Context provider re-render cascade issues."
+    },
+    { 
+      name: "Framer Motion", 
+      cat: "Animation Engine", 
+      tag: "Micro UX", 
+      icon: Sparkles,
+      summary: "Declarative motion library for React enabling fluid page transitions, spring physics, and gesture-driven UI.",
+      useCases: ["Smooth tab switches and modal animations", "Interactive magnetic snap card drag effects"],
+      whyOnlyThis: "Provides hardware-accelerated 60fps animations with straightforward React component declarative props."
     },
     { 
       name: "Node.js", 

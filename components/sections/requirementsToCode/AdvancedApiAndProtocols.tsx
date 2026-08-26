@@ -56,8 +56,8 @@ export default function AdvancedApiAndProtocols() {
   return (
     <div className="space-y-6 sm:space-y-8 my-6 sm:my-8">
       {/* 1. Protocol Selection Matrix */}
-      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">API ARCHITECTURE</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -88,33 +88,33 @@ export default function AdvancedApiAndProtocols() {
         </div>
 
         {/* Selected Protocol Card */}
-        <div className="p-4 sm:p-5 sketch-card bg-[#f6f4ee] border-2 border-[#1e1d1b] space-y-4 font-mono text-xs">
-          <div className="border-b-2 border-dashed border-[#1e1d1b] pb-2 flex justify-between items-center">
+        <div className="p-4 sm:p-5 gradient-card space-y-4 font-mono text-xs">
+          <div className=" pb-2 flex justify-between items-center">
             <h4 className="text-lg font-black text-[#1e1d1b]">{currentProto.name}</h4>
             <span className="sticker-tag text-[10px] uppercase font-bold">DECISION MATRIX</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="p-3 bg-white border border-[#1e1d1b] sketch-border-sm">
-              <span className="font-bold text-[#ff5e5b] block mb-1">PROS:</span>
+            <div className="stripe-card stripe-card-green p-3">
+              <span className="font-bold text-[#2ecc71] block mb-1">PROS:</span>
               <p className="font-sans text-xs text-[#1e1d1b]">{currentProto.pros}</p>
             </div>
-            <div className="p-3 bg-white border border-[#1e1d1b] sketch-border-sm">
-              <span className="font-bold text-[#e74c3c] block mb-1">CONS & LIMITS:</span>
+            <div className="stripe-card p-3">
+              <span className="font-bold text-[#ff5e5b] block mb-1">CONS & LIMITS:</span>
               <p className="font-sans text-xs text-[#1e1d1b]">{currentProto.cons}</p>
             </div>
           </div>
 
-          <div className="p-3 bg-[#ffe866]/50 border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#1e1d1b] block mb-1">IDEAL WHEN:</span>
+          <div className="note-card p-3">
+            <span className="font-bold text-[#1e1d1b] block mb-1 text-[10px] uppercase tracking-wider">IDEAL WHEN:</span>
             <p className="font-sans text-xs font-medium text-[#1e1d1b]">{currentProto.idealWhen}</p>
           </div>
         </div>
       </div>
 
       {/* 2. Advanced HTTP Mechanisms */}
-      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">HTTP MECHANISMS</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -128,7 +128,7 @@ export default function AdvancedApiAndProtocols() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
           {/* Idempotency & Optimistic Concurrency */}
-          <div className="p-3.5 sm:p-4 bg-[#1e1d1b] text-white rounded-lg border-2 border-[#1e1d1b] min-w-0 max-w-full overflow-hidden shadow-md">
+          <div className="p-3.5 sm:p-4 bg-[#1e1d1b] text-white rounded-lg min-w-0 max-w-full overflow-hidden shadow-md">
             <span className="text-[#ffe866] font-bold text-xs block mb-2 border-b border-[#57534e] pb-1">
               IDEMPOTENCY & OPTIMISTIC LOCKING
             </span>
@@ -148,7 +148,7 @@ if (updatedRows === 0) throw new ConcurrentUpdateConflictError();`}
           </div>
 
           {/* AbortSignal Timeout & ETags */}
-          <div className="p-3.5 sm:p-4 bg-[#1e1d1b] text-white rounded-lg border-2 border-[#1e1d1b] min-w-0 max-w-full overflow-hidden shadow-md">
+          <div className="p-3.5 sm:p-4 bg-[#1e1d1b] text-white rounded-lg min-w-0 max-w-full overflow-hidden shadow-md">
             <span className="text-[#ffe866] font-bold text-xs block mb-2 border-b border-[#57534e] pb-1">
               ABORTSIGNAL TIMEOUTS & ETAG CACHING
             </span>

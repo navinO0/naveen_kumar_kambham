@@ -1,4 +1,5 @@
 import Header from "@/components/ui/Header";
+import JourneyNav from "@/components/ui/JourneyNav";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutMeSection from "@/components/sections/AboutMeSection";
 import ExperienceResumeSection from "@/components/sections/ExperienceResumeSection";
@@ -7,6 +8,7 @@ import RequirementsToCodeSection from "@/components/sections/requirementsToCode/
 import SelectedWorkSection from "@/components/sections/SelectedWorkSection";
 import ToolWallSection from "@/components/sections/ToolWallSection";
 import SecurityPlayground from "@/components/sections/SecurityPlayground";
+import GravityPlayground from "@/components/sections/GravityPlayground";
 import ArchitecturePlayground from "@/components/sections/ArchitecturePlayground";
 import BackendStackSection from "@/components/sections/BackendStackSection";
 import ToolComparisonSection from "@/components/sections/ToolComparisonSection";
@@ -28,53 +30,89 @@ export default function Home() {
   const trenchNotes = getAllTrenchNotes();
 
   return (
-    <div className="min-h-screen flex flex-col bg-paper-grid text-[#1e1d1b]">
+    <div className="min-h-screen flex flex-col bg-[#ffffff] text-[#0f172a]">
       {/* Top Header */}
       <Header />
 
-      {/* Main Content Flow */}
-      <main className="flex-1 space-y-4">
-        {/* 1. Hero Section */}
-        <HeroSection />
+      {/* Interactive Sticky Journey Stepper Navigation */}
+      <JourneyNav />
 
-        {/* 2. About Me (Philosophy, Vision, Complete Toolbelt) */}
-        <AboutMeSection />
+      {/* Main Content Flow organized into 6 Journey Chapters */}
+      <main className="flex-1 space-y-6">
+        {/* ========================================================
+            CHAPTER 01: THE LAUNCHPAD & PHILOSOPHY
+           ======================================================== */}
+        <div id="about" className="scroll-mt-32">
+          {/* Hero Section */}
+          <HeroSection />
 
-        {/* 3. Engineering Resume & Career Timeline */}
-        <ExperienceResumeSection />
+          {/* About Me & Full-Stack Toolbelt Matrix */}
+          <AboutMeSection />
+        </div>
 
-        {/* 4. How I Think Principles */}
-        <HowIThinkSection />
+        {/* ========================================================
+            CHAPTER 02: CAREER & SYSTEMS JOURNEY
+           ======================================================== */}
+        <div id="experience" className="scroll-mt-32">
+          {/* Career Resume & Timeline Experience */}
+          <ExperienceResumeSection />
 
-        {/* 3. Major Engineering Section: How Requirements Become Code */}
-        <RequirementsToCodeSection />
+          {/* Selected Work & Technical Post-Mortems */}
+          <SelectedWorkSection projects={projects} />
+        </div>
 
-        {/* 4. Selected Work & Technical Post-Mortems */}
-        <SelectedWorkSection projects={projects} />
+        {/* ========================================================
+            CHAPTER 03: THE BLUEPRINT & ENGINEERING PIPELINE
+           ======================================================== */}
+        <div id="engineering" className="scroll-mt-32">
+          {/* How I Think Principles */}
+          <HowIThinkSection />
 
-        {/* 4. Tool Wall & JMeter Load Simulator */}
-        <ToolWallSection tools={tools} />
+          {/* Major Engineering Pipeline: How Requirements Become Code */}
+          <RequirementsToCodeSection />
+        </div>
 
-        {/* 5. Security & Defensive RBAC Playground */}
-        <SecurityPlayground />
+        {/* ========================================================
+            CHAPTER 04: PRODUCTION PLAYGROUNDS & SIMULATORS
+           ======================================================== */}
+        <div id="playgrounds" className="scroll-mt-32">
+          {/* Interactive 2D Gravity Physics & Mini Games Arcade */}
+          <GravityPlayground />
 
-        {/* 6. Architecture & System Flow Diagrams */}
-        <ArchitecturePlayground />
+          {/* JMeter Load Simulator & Tool Wall */}
+          <ToolWallSection tools={tools} />
 
-        {/* 7. Categorized Backend Stack */}
-        <BackendStackSection />
+          {/* Security RBAC & Rate Limiter Playground */}
+          <SecurityPlayground />
 
-        {/* 8. What I Use vs Why I Use It Decision Matrix */}
-        <ToolComparisonSection tools={tools} />
+          {/* System Architecture Flow Diagram Playground */}
+          <ArchitecturePlayground />
+        </div>
 
-        {/* 9. Things I'm Currently Learning Timeline */}
-        <LearningTimelineSection topics={learningTopics} />
+        {/* ========================================================
+            CHAPTER 05: TECH STACK & CONTINUOUS EVOLUTION
+           ======================================================== */}
+        <div id="stack" className="scroll-mt-32">
+          {/* Categorized Tech Stack */}
+          <BackendStackSection />
 
-        {/* 10. Notes from the Backend Trenches */}
-        <TrenchNotesSection notes={trenchNotes} />
+          {/* Tool Comparison Decision Matrix */}
+          <ToolComparisonSection tools={tools} />
 
-        {/* 11. Contact & Rate-Limit Tester */}
-        <ContactSection />
+          {/* Things I'm Currently Learning Timeline */}
+          <LearningTimelineSection topics={learningTopics} />
+
+          {/* Trench Notes */}
+          <TrenchNotesSection notes={trenchNotes} />
+        </div>
+
+        {/* ========================================================
+            CHAPTER 06: DISPATCH & DIRECT CONNECT
+           ======================================================== */}
+        <div id="contact" className="scroll-mt-32">
+          {/* Contact Form & Rate-Limited API Tester */}
+          <ContactSection />
+        </div>
       </main>
 
       {/* Footer */}

@@ -22,17 +22,22 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "navin // Backend Engineer Notebook & Portfolio",
-  description: "Official engineering log and backend portfolio of navin. Systems architecture, high-concurrency Node.js/TypeScript APIs, PostgreSQL databases, Redis distributed caching, microservices, and defensive security.",
+  title: "navin // Full-Stack Engineer Notebook & Portfolio",
+  description: "Official engineering log and full-stack portfolio of navin. Full-stack TypeScript apps, Next.js App Router, React, Tailwind CSS, high-concurrency Node.js APIs, PostgreSQL, Redis, and cloud systems.",
   keywords: [
     "navin",
+    "navin full-stack engineer",
     "navin backend engineer",
     "navin kambham",
-    "Backend Engineer Portfolio",
+    "Full-Stack Engineer Portfolio",
+    "Next.js App Router",
+    "React 19",
+    "Tailwind CSS",
+    "TypeScript Full-Stack",
+    "T3 Stack",
     "Systems Architect",
     "Node.js API Development",
     "Fastify Sub-Millisecond Routing",
-    "TypeScript",
     "PostgreSQL ACID Transactions",
     "Redis Distributed Lock SETNX",
     "BullMQ Background Queues",
@@ -58,16 +63,16 @@ export const metadata: Metadata = {
     apple: "/favicon.png",
   },
   openGraph: {
-    title: "navin // Backend Engineer Notebook & Portfolio",
-    description: "Systems architecture, high-concurrency Node.js/TypeScript APIs, PostgreSQL database design, Redis caching, and defensive security.",
+    title: "navin // Full-Stack Engineer Notebook & Portfolio",
+    description: "Full-stack web applications, React, Next.js, TypeScript, Node.js APIs, PostgreSQL database design, Redis caching, and defensive security.",
     url: "https://github.com/navinO0",
-    siteName: "navin backend portfolio",
+    siteName: "navin full-stack portfolio",
     images: [
       {
         url: "/favicon.png",
         width: 512,
         height: 512,
-        alt: "navin backend engineer avatar icon",
+        alt: "navin full-stack engineer avatar icon",
       },
     ],
     locale: "en_US",
@@ -75,8 +80,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "navin // Backend Engineer Portfolio",
-    description: "Backend-focused developer portfolio. Systems, APIs, database design, load testing, security, and production engineering.",
+    title: "navin // Full-Stack Engineer Portfolio",
+    description: "Full-stack developer portfolio. React, Next.js, Tailwind, Node.js, database design, load testing, security, and production engineering.",
     images: ["/favicon.png"],
   },
 };
@@ -91,7 +96,7 @@ export default function RootLayout({
       lang="en"
       className={`${architectsDaughter.variable} ${jetbrainsMono.variable} ${inter.variable} h-full scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-[#f6f4ee] text-[#1e1d1b] selection:bg-[#ffe866] selection:text-[#1e1d1b] antialiased">
+      <body className="min-h-full flex flex-col font-sans bg-[#ffffff] text-[#0f172a] selection:bg-[#38bdf8] selection:text-[#0f172a] antialiased">
         {children}
       </body>
     </html>

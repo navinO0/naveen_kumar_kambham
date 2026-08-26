@@ -75,8 +75,8 @@ export default function DomainAndArchitecture() {
   return (
     <div className="space-y-8 my-8">
       {/* 1. Domain Modeling */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">DOMAIN MODELING</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -93,27 +93,27 @@ export default function DomainAndArchitecture() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Noun vs Verb Extraction */}
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-mono text-xs font-bold text-[#ff5e5b] block mb-2">
+          <div className="p-4 rounded-xl bg-gradient-to-br from-[#fffef5] to-[#fff8e6]">
+            <span className="font-mono text-xs font-bold text-[#ff5e5b] block mb-3 uppercase tracking-wider">
               1. NOUN & VERB EXTRACTION
             </span>
-            <div className="space-y-2 font-mono text-xs">
-              <div className="p-2.5 bg-white border border-[#1e1d1b]">
-                <span className="text-[#3498db] font-bold block mb-1">NOUNS (Data Entities):</span>
+            <div className="space-y-3 font-mono text-xs">
+              <div className="p-3 raised-card">
+                <span className="text-[#3498db] font-bold block mb-2 text-[10px] uppercase">NOUNS (Data Entities):</span>
                 <div className="flex flex-wrap gap-1.5">
                   {["Customer", "Order", "Product", "OrderItem", "Payment"].map((n) => (
-                    <span key={n} className="px-2 py-0.5 bg-[#ffe866] border border-[#1e1d1b] font-bold">
+                    <span key={n} className="px-2.5 py-1 bg-[#ffe866] font-bold text-xs rounded-md">
                       {n}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="p-2.5 bg-white border border-[#1e1d1b]">
-                <span className="text-[#2ecc71] font-bold block mb-1">VERBS (Business Behaviors):</span>
+              <div className="p-3 raised-card">
+                <span className="text-[#2ecc71] font-bold block mb-2 text-[10px] uppercase">VERBS (Business Behaviors):</span>
                 <div className="flex flex-wrap gap-1.5">
                   {["places", "calculates total", "deducts stock", "verifies payment"].map((v) => (
-                    <span key={v} className="px-2 py-0.5 bg-green-100 text-green-900 border border-[#1e1d1b] font-bold">
+                    <span key={v} className="px-2.5 py-1 bg-emerald-100 text-emerald-900 font-bold text-xs rounded-md">
                       {v}()
                     </span>
                   ))}
@@ -123,9 +123,9 @@ export default function DomainAndArchitecture() {
           </div>
 
           {/* Relationship Tree */}
-          <div className="p-4 bg-[#1e1d1b] text-white rounded sketch-border flex flex-col justify-between font-mono text-xs">
-            <div>
-              <span className="text-[#ffe866] font-bold text-xs block mb-3 border-b border-[#57534e] pb-1">
+          <div className="p-4 terminal-card flex flex-col justify-between font-mono text-xs">
+            <div className="pt-6">
+              <span className="text-[#ffe866] font-bold text-xs block mb-3 border-b border-[#2a2f3e] pb-1">
                 2. ENTITY RELATIONSHIP & OWNERSHIP GRAPH
               </span>
               <pre className="text-[#2ecc71] text-xs leading-relaxed">
@@ -136,7 +136,7 @@ export default function DomainAndArchitecture() {
         └── Payment (1)`}
               </pre>
             </div>
-            <p className="text-[10px] text-gray-400 mt-4 border-t border-[#57534e] pt-2">
+            <p className="text-[10px] text-gray-500 mt-4 border-t border-[#2a2f3e] pt-2">
               Domain modeling dictates table foreign keys, invariant rules, and cascade deletes.
             </p>
           </div>
@@ -144,8 +144,8 @@ export default function DomainAndArchitecture() {
       </div>
 
       {/* 2. Industry Architecture Patterns */}
-      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">SYSTEM ARCHITECTURE</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -178,9 +178,9 @@ export default function DomainAndArchitecture() {
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="p-4 sm:p-5 sketch-card bg-[#f6f4ee] border-2 border-[#1e1d1b] min-w-0 max-w-full overflow-hidden"
+          className="p-4 sm:p-5 sketch-card bg-[#f6f4ee] min-w-0 max-w-full overflow-hidden"
         >
-          <div className="flex flex-col md:flex-row md:items-center justify-between pb-3 border-b-2 border-dashed border-[#1e1d1b] mb-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
             <div>
               <h4 className="font-mono font-black text-lg text-[#1e1d1b]">
                 {activePattern.title}
@@ -201,18 +201,18 @@ export default function DomainAndArchitecture() {
 
           {/* Details Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-sans text-xs">
-            <div className="p-3 bg-white border border-[#1e1d1b] sketch-border-sm">
+            <div className="stripe-card stripe-card-blue p-3">
               <span className="font-mono font-bold text-[10px] text-[#3498db] block mb-1">WHEN TO USE</span>
               <p className="text-[#1e1d1b]">{activePattern.details.whenToUse}</p>
             </div>
 
-            <div className="p-3 bg-white border border-[#1e1d1b] sketch-border-sm">
+            <div className="stripe-card stripe-card-green p-3">
               <span className="font-mono font-bold text-[10px] text-[#2ecc71] block mb-1">BENEFITS</span>
               <p className="text-[#1e1d1b]">{activePattern.details.benefits}</p>
             </div>
 
-            <div className="p-3 bg-white border border-[#1e1d1b] sketch-border-sm">
-              <span className="font-mono font-bold text-[10px] text-[#ff5e5b] block mb-1">TRADE-OFFS</span>
+            <div className="stripe-card stripe-card-amber p-3">
+              <span className="font-mono font-bold text-[10px] text-[#f59e0b] block mb-1">TRADE-OFFS</span>
               <p className="text-[#1e1d1b]">{activePattern.details.tradeoff}</p>
             </div>
           </div>

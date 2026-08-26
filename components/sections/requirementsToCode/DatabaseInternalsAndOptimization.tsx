@@ -10,8 +10,8 @@ export default function DatabaseInternalsAndOptimization() {
   return (
     <div className="space-y-8 my-8">
       {/* 1. Interactive EXPLAIN ANALYZE Bottleneck Visualizer */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">QUERY PERFORMANCE</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -35,7 +35,7 @@ export default function DatabaseInternalsAndOptimization() {
         </div>
 
         {/* Query & Explain Output Box */}
-        <div className="p-4 sm:p-5 sketch-card bg-[#1e1d1b] text-white rounded-lg border-2 border-[#1e1d1b] font-mono text-xs space-y-4 min-w-0 max-w-full overflow-hidden">
+        <div className="p-4 sm:p-5 sketch-card bg-[#1e1d1b] text-white rounded-lg font-mono text-xs space-y-4 min-w-0 max-w-full overflow-hidden">
           <div className="min-w-0 max-w-full overflow-hidden">
             <span className="text-[#ffe866] font-bold block mb-1">EXECUTED SQL QUERY:</span>
             <code className="text-[#2ecc71] font-mono text-[11px] sm:text-xs break-all block">
@@ -80,8 +80,8 @@ Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index S
       </div>
 
       {/* 2. Relational Database Concepts Grid */}
-      <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">DATABASE INTERNALS</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -94,23 +94,23 @@ Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index S
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#ff5e5b] block mb-1">MVCC (Multi-Version Concurrency)</span>
-            <p className="font-sans text-xs text-[#57534e]">
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#ff5e5b] block mb-2 text-[10px] uppercase tracking-wider">MVCC (Multi-Version Concurrency)</span>
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               PostgreSQL writes new tuple versions on UPDATE instead of locking readers, keeping reads non-blocking.
             </p>
           </div>
 
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#3498db] block mb-1">ISOLATION LEVELS</span>
-            <p className="font-sans text-xs text-[#57534e]">
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#3498db] block mb-2 text-[10px] uppercase tracking-wider">ISOLATION LEVELS</span>
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               Read Committed (default), Repeatable Read (phantom read protection), Serializable (strict serializability).
             </p>
           </div>
 
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#2ecc71] block mb-1">PGBOUNCER POOLING</span>
-            <p className="font-sans text-xs text-[#57534e]">
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#2ecc71] block mb-2 text-[10px] uppercase tracking-wider">PGBOUNCER POOLING</span>
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               Transaction-level connection pooling prevents backend process memory exhaustion under 10,000 clients.
             </p>
           </div>
@@ -120,36 +120,36 @@ Execution Time: 1.15 ms      <-- ✅ 1.15 MILLISECONDS (Composite B-Tree Index S
       {/* 3. NoSQL Placement & Caching Strategies */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
         {/* NoSQL Matrix */}
-        <div className="sketch-card p-4 sm:p-5 bg-white border-2 border-[#1e1d1b]">
+        <div className="sketch-card p-5 sm:p-6">
           <span className="sticker-tag text-[10px] uppercase font-bold mb-2">NOSQL LANDSCAPE</span>
           <h4 className="font-mono font-bold text-base text-[#1e1d1b] mb-3">NoSQL Placement Matrix</h4>
           <div className="space-y-2">
-            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <div className="stripe-card p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <span className="font-bold text-[#ff5e5b]">Document (MongoDB)</span>
-              <span className="text-[#57534e]">Flexible schema, JSON catalogs</span>
+              <span className="text-[#57534e] text-xs">Flexible schema, JSON catalogs</span>
             </div>
-            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <div className="stripe-card stripe-card-blue p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <span className="font-bold text-[#3498db]">Key-Value (Redis)</span>
-              <span className="text-[#57534e]">Sub-ms caching, rate limits, sessions</span>
+              <span className="text-[#57534e] text-xs">Sub-ms caching, rate limits, sessions</span>
             </div>
-            <div className="p-2.5 bg-[#f6f4ee] border border-[#1e1d1b] flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <div className="stripe-card stripe-card-green p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <span className="font-bold text-[#2ecc71]">Wide-Column (Cassandra)</span>
-              <span className="text-[#57534e]">High write throughput, timeseries</span>
+              <span className="text-[#57534e] text-xs">High write throughput, timeseries</span>
             </div>
           </div>
         </div>
 
         {/* Caching Patterns */}
-        <div className="sketch-card p-4 sm:p-5 bg-white border-2 border-[#1e1d1b]">
+        <div className="sketch-card p-5 sm:p-6">
           <span className="sticker-tag-red text-[10px] uppercase font-bold mb-2">CACHING PATTERNS</span>
           <h4 className="font-mono font-bold text-base text-[#1e1d1b] mb-3">Redis Caching & Stampede Defense</h4>
           <div className="space-y-2">
-            <div className="p-2.5 bg-white border border-[#1e1d1b]">
-              <span className="font-bold text-[#1e1d1b] block">Cache-Aside (Lazy Loading)</span>
+            <div className="raised-card p-2.5">
+              <span className="font-bold text-[#1e1d1b] block text-xs">Cache-Aside (Lazy Loading)</span>
               <span className="text-[11px] text-[#57534e]">App checks Redis → DB on miss → Populates Redis</span>
             </div>
-            <div className="p-2.5 bg-white border border-[#1e1d1b]">
-              <span className="font-bold text-[#1e1d1b] block">Stampede Protection</span>
+            <div className="raised-card p-2.5">
+              <span className="font-bold text-[#1e1d1b] block text-xs">Stampede Protection</span>
               <span className="text-[11px] text-[#57534e]">Distributed Mutex Lock / Probabilistic Early Expiration</span>
             </div>
           </div>

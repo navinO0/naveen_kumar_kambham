@@ -6,8 +6,8 @@ export default function SecurityByDesignAndReview() {
   return (
     <div className="space-y-8 my-8">
       {/* 1. Security by Design & Threat Modeling */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">DEFENSIVE SECURITY</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -38,21 +38,25 @@ export default function SecurityByDesignAndReview() {
         </div>
 
         {/* Threat Modeling Framework */}
-        <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm font-mono text-xs">
-          <span className="font-bold text-[#ff5e5b] block mb-2">THREAT MODELING PIPELINE</span>
+        <div className="p-4 gradient-card font-mono text-xs">
+          <span className="font-bold text-[#ff5e5b] block mb-3 text-[10px] uppercase tracking-wider">THREAT MODELING PIPELINE</span>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
-            <div className="p-2 bg-white border border-[#1e1d1b]">1. ASSET</div>
-            <div className="p-2 bg-white border border-[#1e1d1b]">2. THREAT</div>
-            <div className="p-2 bg-white border border-[#1e1d1b]">3. RISK</div>
-            <div className="p-2 bg-white border border-[#1e1d1b]">4. CONTROL</div>
-            <div className="p-2 bg-[#ffe866] border border-[#1e1d1b] font-bold">5. TEST</div>
+            {[
+              { label: "1. ASSET", cls: "stripe-card-blue" },
+              { label: "2. THREAT", cls: "stripe-card" },
+              { label: "3. RISK", cls: "stripe-card-amber" },
+              { label: "4. CONTROL", cls: "stripe-card-green" },
+              { label: "5. TEST", cls: "stripe-card-purple" },
+            ].map((s) => (
+              <div key={s.label} className={`stripe-card ${s.cls} p-2 text-center font-bold`}>{s.label}</div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* 2. Code Review ("What I look for in a PR") */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">PULL REQUEST AUDIT</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -78,18 +82,22 @@ export default function SecurityByDesignAndReview() {
             "Is the transaction boundary tight enough?",
             "Is there an index supporting this WHERE query?",
             "Will this payload pass schema validation?",
-          ].map((q, idx) => (
-            <div key={idx} className="p-3 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm flex items-start space-x-2">
-              <HelpCircle className="w-4 h-4 text-[#ff5e5b] shrink-0 mt-0.5" />
-              <span className="font-bold text-[#1e1d1b]">"{q}"</span>
-            </div>
-          ))}
+          ].map((q, idx) => {
+            const stripes = ["stripe-card", "stripe-card-blue", "stripe-card-green", "stripe-card-amber", "stripe-card-purple", "stripe-card", "stripe-card-blue", "stripe-card-green", "stripe-card-amber"];
+            const pills = ["index-pill", "index-pill-blue", "index-pill-green", "index-pill-yellow", "index-pill-dark", "index-pill", "index-pill-blue", "index-pill-green", "index-pill-yellow"];
+            return (
+              <div key={idx} className={`stripe-card ${stripes[idx]} p-3 flex items-start gap-2.5`}>
+                <span className={`index-pill ${pills[idx]} shrink-0 mt-0.5`}>{idx + 1}</span>
+                <span className="font-bold text-[#1e1d1b] text-[11px] leading-relaxed">"{q}"</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* 3. Engineering Trade-offs Matrix */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">DECISION MATRIX</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -102,28 +110,28 @@ export default function SecurityByDesignAndReview() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-          <div className="p-4 bg-white border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#ff5e5b] block mb-1">SQLITE (WAL)</span>
-            <span className="text-green-700 block">+ Zero config, sub-ms local reads</span>
-            <span className="text-red-700 block">- Limited multi-node concurrent writes</span>
+          <div className="stripe-card p-4">
+            <span className="font-bold text-[#ff5e5b] block mb-2">SQLITE (WAL)</span>
+            <span className="text-green-700 block text-xs font-sans">+ Zero config, sub-ms local reads</span>
+            <span className="text-red-600 block text-xs font-sans">- Limited multi-node concurrent writes</span>
           </div>
 
-          <div className="p-4 bg-white border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#3498db] block mb-1">POSTGRESQL</span>
-            <span className="text-green-700 block">+ ACID transactions, JSONB, concurrency</span>
-            <span className="text-red-700 block">- Requires connection pool infra</span>
+          <div className="stripe-card stripe-card-blue p-4">
+            <span className="font-bold text-[#3498db] block mb-2">POSTGRESQL</span>
+            <span className="text-green-700 block text-xs font-sans">+ ACID transactions, JSONB, concurrency</span>
+            <span className="text-red-600 block text-xs font-sans">- Requires connection pool infra</span>
           </div>
 
-          <div className="p-4 bg-white border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#2ecc71] block mb-1">REDIS CACHING</span>
-            <span className="text-green-700 block">+ In-memory speed, sub-ms responses</span>
-            <span className="text-red-700 block">- Cache invalidation complexity</span>
+          <div className="stripe-card stripe-card-green p-4">
+            <span className="font-bold text-[#2ecc71] block mb-2">REDIS CACHING</span>
+            <span className="text-green-700 block text-xs font-sans">+ In-memory speed, sub-ms responses</span>
+            <span className="text-red-600 block text-xs font-sans">- Cache invalidation complexity</span>
           </div>
         </div>
       </div>
 
       {/* 4. Final Statement Banner */}
-      <div className="sketch-card p-8 bg-[#1e1d1b] text-white border-2 border-[#1e1d1b] text-center relative overflow-hidden">
+      <div className="sketch-card p-8 bg-[#1e1d1b] text-white text-center relative overflow-hidden">
         <span className="sticker-tag-red text-xs uppercase font-bold mb-3 inline-block">
           THE ENGINEERING SUMMARY
         </span>

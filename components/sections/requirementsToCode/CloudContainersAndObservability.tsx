@@ -6,8 +6,8 @@ export default function CloudContainersAndObservability() {
   return (
     <div className="space-y-8 my-8">
       {/* 1. Production Cloud Topology (AWS) */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">CLOUD ARCHITECTURE</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -35,8 +35,8 @@ export default function CloudContainersAndObservability() {
       </div>
 
       {/* 2. Containers & Kubernetes Orchestration */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">ORCHESTRATION</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -49,26 +49,26 @@ export default function CloudContainersAndObservability() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#ff5e5b] block mb-1">MULTI-STAGE DOCKERFILE</span>
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#ff5e5b] block mb-1 text-[10px] uppercase tracking-wider">MULTI-STAGE DOCKERFILE</span>
             <span className="text-[10px] text-gray-500 block mb-2">Image Optimization</span>
-            <p className="font-sans text-xs text-[#57534e]">
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               Compiles TypeScript in build stage and copies only node_modules into dist, reducing image size from 1.2GB to 85MB.
             </p>
           </div>
 
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#3498db] block mb-1">PROBES & RESOURCE LIMITS</span>
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#3498db] block mb-1 text-[10px] uppercase tracking-wider">PROBES & RESOURCE LIMITS</span>
             <span className="text-[10px] text-gray-500 block mb-2">Liveness & Readiness</span>
-            <p className="font-sans text-xs text-[#57534e]">
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               Readiness probe `/api/health` ensures traffic is routed only after DB connections are warm.
             </p>
           </div>
 
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-            <span className="font-bold text-[#2ecc71] block mb-1">HPA AUTO-SCALING</span>
+          <div className="metric-tile p-4">
+            <span className="font-bold text-[#2ecc71] block mb-1 text-[10px] uppercase tracking-wider">HPA AUTO-SCALING</span>
             <span className="text-[10px] text-gray-500 block mb-2">Horizontal Pod Autoscaler</span>
-            <p className="font-sans text-xs text-[#57534e]">
+            <p className="font-sans text-xs text-gray-300 leading-relaxed">
               Automatically scales Pod replicas from 3 to 30 when CPU utilization exceeds 70%.
             </p>
           </div>
@@ -78,12 +78,14 @@ export default function CloudContainersAndObservability() {
       {/* 3. Security Scanning Pipeline & Observability Stack */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 font-mono text-xs">
         {/* Security Pipeline */}
-        <div className="sketch-card p-5 bg-white border-2 border-[#1e1d1b]">
+        <div className="glass-card p-5">
           <span className="sticker-tag-red text-[10px] uppercase font-bold mb-2">DEVSECOPS PIPELINE</span>
           <h4 className="font-mono font-bold text-base text-[#1e1d1b] mb-3">Automated Security Gates</h4>
           <div className="flex flex-wrap items-center gap-1.5 font-mono text-[11px]">
             {["Code", "SAST (Snyk)", "Dependency Scan", "Container Scan (Trivy)", "DAST (OWASP ZAP)", "Deploy"].map((s, idx) => (
-              <span key={s} className="px-2 py-1 bg-[#f6f4ee] border border-[#1e1d1b]">
+              <span key={s} className={`px-2 py-1 rounded font-bold ${
+                idx === 5 ? "bg-[#2ecc71] text-white" : "stripe-card stripe-card-blue"
+              }`}>
                 {s} {idx < 5 ? "→" : "🔒"}
               </span>
             ))}
@@ -91,21 +93,21 @@ export default function CloudContainersAndObservability() {
         </div>
 
         {/* Observability Stack */}
-        <div className="sketch-card p-5 bg-white border-2 border-[#1e1d1b]">
+        <div className="glass-card p-5">
           <span className="sticker-tag text-[10px] uppercase font-bold mb-2">TELEMETRY STACK</span>
           <h4 className="font-mono font-bold text-base text-[#1e1d1b] mb-3">Logs, Metrics & Distributed Traces</h4>
-          <div className="space-y-1.5 text-xs font-sans">
-            <div className="flex justify-between border-b border-gray-200 pb-1">
-              <span className="font-bold font-mono text-[#ff5e5b]">Logs:</span>
-              <span>OpenSearch / ELK / Loki + Correlation IDs</span>
+          <div className="space-y-2 text-xs font-sans">
+            <div className="stripe-card stripe-card-blue p-2.5 flex justify-between items-center">
+              <span className="font-bold font-mono text-[#3498db]">Logs:</span>
+              <span className="text-[#57534e] text-xs">OpenSearch / ELK / Loki + Correlation IDs</span>
             </div>
-            <div className="flex justify-between border-b border-gray-200 pb-1">
-              <span className="font-bold font-mono text-[#3498db]">Metrics:</span>
-              <span>Prometheus + Grafana dashboards</span>
+            <div className="stripe-card stripe-card-green p-2.5 flex justify-between items-center">
+              <span className="font-bold font-mono text-[#2ecc71]">Metrics:</span>
+              <span className="text-[#57534e] text-xs">Prometheus + Grafana dashboards</span>
             </div>
-            <div className="flex justify-between pb-1">
-              <span className="font-bold font-mono text-[#2ecc71]">Tracing:</span>
-              <span>OpenTelemetry + Jaeger distributed context propagation</span>
+            <div className="stripe-card stripe-card-amber p-2.5 flex justify-between items-center">
+              <span className="font-bold font-mono text-[#f59e0b]">Tracing:</span>
+              <span className="text-[#57534e] text-xs">OpenTelemetry + Jaeger distributed context propagation</span>
             </div>
           </div>
         </div>

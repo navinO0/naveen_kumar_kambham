@@ -205,9 +205,9 @@ export default function MoneyTransferCaseStudy() {
   const currentStep = CASE_STEPS.find((s) => s.id === activeStepId) || CASE_STEPS[0];
 
   return (
-    <div className="sketch-card p-4 sm:p-6 bg-white border-2 border-[#1e1d1b] my-6 sm:my-8">
+    <div className="sketch-card p-6 sm:p-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
         <div>
           <span className="sticker-tag-red text-xs uppercase font-bold mb-1">
             END-TO-END CASE STUDY
@@ -249,9 +249,9 @@ export default function MoneyTransferCaseStudy() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="p-4 sm:p-6 sketch-card border-2 border-[#1e1d1b] bg-[#f6f4ee] min-w-0 max-w-full overflow-hidden"
+        className="p-4 sm:p-6 sketch-card bg-[#f6f4ee] min-w-0 max-w-full overflow-hidden"
       >
-        <div className="flex flex-col md:flex-row md:items-center justify-between border-b-2 border-dashed border-[#1e1d1b] pb-3 mb-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between  pb-3 mb-4">
           <div>
             <span className="font-mono text-xs font-bold text-[#ff5e5b] block mb-1">
               {currentStep.phase}
@@ -277,7 +277,7 @@ export default function MoneyTransferCaseStudy() {
         {/* Details list */}
         <div className="space-y-2 mb-4 font-mono text-xs">
           {currentStep.details.map((detail, idx) => (
-            <div key={idx} className="flex items-start space-x-2 p-2.5 bg-white border border-[#1e1d1b] sketch-border-sm">
+            <div key={idx} className="flex items-start space-x-2 p-2.5 bg-white sketch-border-sm">
               <CheckCircle2 className="w-4 h-4 text-[#2ecc71] shrink-0 mt-0.5" />
               <span className="font-sans text-xs font-medium text-[#1e1d1b]">{detail}</span>
             </div>

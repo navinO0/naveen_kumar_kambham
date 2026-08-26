@@ -114,7 +114,7 @@ export default function HeroSection() {
             transition={{ duration: 0.4, delay: 0.1 }}
             className="text-base sm:text-lg md:text-xl text-[#57534e] max-w-3xl leading-relaxed mb-6 font-medium"
           >
-            backend-focused developer working with APIs, databases, authentication, security, performance, and the occasional production fire.
+            full-stack engineer crafting pixel-perfect, responsive UIs (React, Next.js, Tailwind) powered by resilient backend systems (Node.js, TypeScript, PostgreSQL, Redis, Docker).
           </motion.p>
 
           {/* Handwritten Graffiti Annotation */}
@@ -234,7 +234,7 @@ export default function HeroSection() {
                 <div className="flex justify-between items-center text-[11px]">
                   <span className="text-[#57534e] font-medium">CORE STACK:</span>
                   <span className="font-bold text-[#1e1d1b] bg-[#ffe866] px-1.5 py-0.5 rounded border border-[#1e1d1b]">
-                    Node • TS • Postgres • Redis
+                    React • Next.js • TS • Node • Postgres
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-[11px]">

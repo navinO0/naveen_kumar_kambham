@@ -1,159 +1,164 @@
 "use client";
 
-import { CheckCircle2, ShieldCheck, Zap, AlertTriangle, FileCode2 } from "lucide-react";
+import { Zap, CheckCircle2 } from "lucide-react";
+
+const FUNCTIONAL = [
+  "Create customer order and record cart items",
+  "Update user profile & delivery addresses",
+  "Process payment charge via credit card gateway",
+  "Generate monthly PDF invoice reports",
+];
+
+const NON_FUNCTIONAL = [
+  { label: "Response Time", value: "p99 latency < 200ms" },
+  { label: "Availability", value: "99.9% uptime SLA" },
+  { label: "Security", value: "OWASP Top 10 + RBAC" },
+  { label: "Auditability", value: "Immutable audit logs" },
+];
+
+const GWT_SCENARIOS = [
+  {
+    tag: "SCENARIO #1 — HAPPY PATH",
+    title: "Valid Reset Request",
+    accent: "from-sky-100 to-indigo-50",
+    icon: "✓",
+    iconBg: "bg-sky-500",
+    steps: [
+      { key: "G", label: "GIVEN", color: "text-sky-700 bg-sky-50", text: "a registered user email" },
+      { key: "W", label: "WHEN", color: "text-amber-700 bg-amber-50", text: "a valid reset request is submitted" },
+      { key: "T", label: "THEN", color: "text-emerald-700 bg-emerald-50", text: "generate hashed token with 15m TTL & dispatch email" },
+    ],
+    footer: "→ Influences API Handler & Redis TTL",
+  },
+  {
+    tag: "SCENARIO #2 — EXPIRED TOKEN",
+    title: "Expired Reset Attempt",
+    accent: "from-rose-100 to-red-50",
+    icon: "×",
+    iconBg: "bg-red-500",
+    steps: [
+      { key: "G", label: "GIVEN", color: "text-sky-700 bg-sky-50", text: "an expired or revoked reset token" },
+      { key: "W", label: "WHEN", color: "text-amber-700 bg-amber-50", text: "the user submits new password" },
+      { key: "T", label: "THEN", color: "text-red-700 bg-red-50", text: 'reject with 400 Bad Request (`TOKEN_EXPIRED`)' },
+    ],
+    footer: "→ Influences Zod & DB Token validation",
+  },
+  {
+    tag: "SCENARIO #3 — BOT ATTACK",
+    title: "Rate Limit Exceeded",
+    accent: "from-violet-100 to-purple-50",
+    icon: "!",
+    iconBg: "bg-violet-500",
+    steps: [
+      { key: "G", label: "GIVEN", color: "text-sky-700 bg-sky-50", text: "repeated reset attempts within 60s" },
+      { key: "W", label: "WHEN", color: "text-amber-700 bg-amber-50", text: "rate limit threshold is exceeded" },
+      { key: "T", label: "THEN", color: "text-violet-700 bg-violet-50", text: "throttle with HTTP 429 Too Many Requests" },
+    ],
+    footer: "→ Influences Redis Rate Limiter middleware",
+  },
+];
 
 export default function FunctionalVsNonFunctional() {
   return (
-    <div className="space-y-8 my-8">
-      {/* 1. Functional vs Non-Functional Comparison */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
-          <div>
-            <span className="sticker-tag mb-1 text-xs font-bold">REQUIREMENT TAXONOMY</span>
-            <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
-              Functional vs Non-Functional Requirements
-            </h3>
-          </div>
-          <div className="font-hand text-sm text-[#ff5e5b] font-bold mt-2 md:mt-0">
-            "The endpoint working is not the whole requirement."
-          </div>
+    <div className="space-y-20 my-10">
+
+      {/* ── 1. Functional vs Non-Functional ── */}
+      <div>
+        {/* Section Label */}
+        <div className="flex items-center gap-3 mb-8">
+          <span className="sticker-tag uppercase text-xs font-bold">REQUIREMENT TAXONOMY</span>
         </div>
+        <h3 className="text-2xl md:text-3xl font-black font-mono text-[#1e1d1b] mb-2">
+          Functional vs Non-Functional
+        </h3>
+        <p className="text-sm text-[#57534e] font-sans mb-10 max-w-lg">
+          "The endpoint working" is not the whole requirement. Both dimensions define the contract.
+        </p>
 
-        {/* Visual Comparison Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Functional Card */}
-          <div className="p-5 sketch-card bg-[#e0f2fe]/40 border-2 border-[#075985]">
-            <div className="flex items-center justify-between border-b border-[#075985] pb-2 mb-3">
-              <span className="font-mono font-black text-sm text-[#075985] uppercase">
-                WHAT THE SYSTEM DOES
-              </span>
-              <span className="sticker-tag text-[10px] bg-sky-100 text-sky-900 border-sky-800 font-mono">
-                FUNCTIONAL
-              </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Functional column */}
+          <div>
+            <div className="flex items-center gap-2 mb-5">
+              <span className="w-2 h-8 rounded-full bg-sky-500 inline-block shrink-0" />
+              <div>
+                <p className="font-mono font-black text-sm text-[#1e1d1b] uppercase tracking-wide">WHAT THE SYSTEM DOES</p>
+                <p className="font-mono text-[10px] text-sky-600 uppercase font-bold">FUNCTIONAL</p>
+              </div>
             </div>
-
-            <p className="text-xs text-[#57534e] font-sans mb-4">
-              Core features, business capabilities, user inputs, and output behaviors.
-            </p>
-
-            <ul className="space-y-2 font-mono text-xs text-[#1e1d1b]">
-              <li className="flex items-center space-x-2 p-2 bg-white border border-[#075985] sketch-border-sm">
-                <span className="text-[#075985] font-bold">›</span>
-                <span>Create customer order and record cart items</span>
-              </li>
-              <li className="flex items-center space-x-2 p-2 bg-white border border-[#075985] sketch-border-sm">
-                <span className="text-[#075985] font-bold">›</span>
-                <span>Update user profile & delivery addresses</span>
-              </li>
-              <li className="flex items-center space-x-2 p-2 bg-white border border-[#075985] sketch-border-sm">
-                <span className="text-[#075985] font-bold">›</span>
-                <span>Process payment charge via credit card gateway</span>
-              </li>
-              <li className="flex items-center space-x-2 p-2 bg-white border border-[#075985] sketch-border-sm">
-                <span className="text-[#075985] font-bold">›</span>
-                <span>Generate monthly PDF invoice reports</span>
-              </li>
-            </ul>
+            <div className="space-y-2">
+              {FUNCTIONAL.map((item, i) => (
+                <div key={i} className="flex items-start gap-3 py-3 px-4 rounded-xl bg-sky-50">
+                  <CheckCircle2 className="w-4 h-4 text-sky-500 shrink-0 mt-0.5" />
+                  <span className="font-mono text-xs text-[#1e1d1b]">{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Non-Functional Card */}
-          <div className="p-5 sketch-card bg-[#fef9c3]/50 border-2 border-[#854d0e]">
-            <div className="flex items-center justify-between border-b border-[#854d0e] pb-2 mb-3">
-              <span className="font-mono font-black text-sm text-[#854d0e] uppercase">
-                HOW WELL THE SYSTEM BEHAVES
-              </span>
-              <span className="sticker-tag text-[10px] bg-yellow-100 text-yellow-900 border-yellow-800 font-mono">
-                NON-FUNCTIONAL
-              </span>
+          {/* Non-Functional column */}
+          <div>
+            <div className="flex items-center gap-2 mb-5">
+              <span className="w-2 h-8 rounded-full bg-amber-500 inline-block shrink-0" />
+              <div>
+                <p className="font-mono font-black text-sm text-[#1e1d1b] uppercase tracking-wide">HOW WELL IT BEHAVES</p>
+                <p className="font-mono text-[10px] text-amber-600 uppercase font-bold">NON-FUNCTIONAL</p>
+              </div>
             </div>
-
-            <p className="text-xs text-[#57534e] font-sans mb-4">
-              System qualities, performance limits, security boundaries, and operational constraints.
-            </p>
-
-            <ul className="space-y-2 font-mono text-xs text-[#1e1d1b]">
-              <li className="flex items-center space-x-2 p-2 bg-white border border-[#854d0e] sketch-border-sm">
-                <span className="text-[#854d0e] font-bold">›</span>
-                <span>Response Time: p99 latency &lt; 200ms</span>
-              </li>
-              <li className="flex items-center space-x-2 p-2 bg-white border border-[#854d0e] sketch-border-sm">
-                <span className="text-[#854d0e] font-bold">›</span>
-                <span>Availability: 99.9% uptime SLA guarantees</span>
-              </li>
-              <li className="flex items-center space-x-2 p-2 bg-white border border-[#854d0e] sketch-border-sm">
-                <span className="text-[#854d0e] font-bold">›</span>
-                <span>Security: OWASP Top 10 + RBAC bitmask enforcement</span>
-              </li>
-              <li className="flex items-center space-x-2 p-2 bg-white border border-[#854d0e] sketch-border-sm">
-                <span className="text-[#854d0e] font-bold">›</span>
-                <span>Auditability: Immutable audit logs for state changes</span>
-              </li>
-            </ul>
+            <div className="space-y-2">
+              {NON_FUNCTIONAL.map((item, i) => (
+                <div key={i} className="flex items-center justify-between py-3 px-4 rounded-xl bg-[#1e1d1b]">
+                  <div className="flex items-center gap-3">
+                    <Zap className="w-4 h-4 text-[#ffe866] shrink-0" />
+                    <span className="font-mono text-xs font-bold text-[#ffe866]">{item.label}</span>
+                  </div>
+                  <span className="font-sans text-xs text-gray-300 text-right">{item.value}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 2. Acceptance Criteria (Given-When-Then Gherkin) */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
-          <div>
-            <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">PRECISION SPECIFICATIONS</span>
-            <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
-              Acceptance Criteria (Given-When-Then)
-            </h3>
-            <p className="text-xs text-[#57534e] font-sans mt-0.5">
-              Turning vague business requests into testable engineering behavior.
-            </p>
-          </div>
-          <span className="font-hand text-xs text-[#ff5e5b] font-bold">
-            // vague requirement: "Users should be able to reset password"
-          </span>
+      {/* ── 2. Acceptance Criteria / GWT ── */}
+      <div>
+        <div className="flex items-center gap-3 mb-8">
+          <span className="sticker-tag-red uppercase text-xs font-bold">PRECISION SPECIFICATIONS</span>
         </div>
+        <h3 className="text-2xl md:text-3xl font-black font-mono text-[#1e1d1b] mb-2">
+          Acceptance Criteria (Given-When-Then)
+        </h3>
+        <p className="font-hand text-sm text-[#ff5e5b] font-bold mb-10">
+          // vague requirement: "Users should be able to reset password"
+        </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 font-mono text-xs">
-          {/* Scenario 1 */}
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm flex flex-col justify-between">
-            <div>
-              <span className="text-[10px] font-bold text-[#ff5e5b] uppercase block mb-1">SCENARIO #1: HAPPY PATH</span>
-              <h4 className="font-bold text-[#1e1d1b] mb-3">Valid Reset Request</h4>
-              <div className="space-y-1.5 text-[11px] leading-relaxed">
-                <div><span className="text-sky-700 font-bold">GIVEN</span> a registered user email</div>
-                <div><span className="text-amber-700 font-bold">WHEN</span> a valid reset request is submitted</div>
-                <div><span className="text-green-700 font-bold">THEN</span> generate hashed token with 15m TTL & dispatch email</div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {GWT_SCENARIOS.map((scenario, si) => (
+            <div key={si} className={`rounded-2xl bg-gradient-to-br ${scenario.accent} p-5 space-y-3`}>
+              <div className="flex items-center gap-2.5">
+                <span className={`w-7 h-7 rounded-full ${scenario.iconBg} text-white flex items-center justify-center text-xs font-black shrink-0`}>
+                  {scenario.icon}
+                </span>
+                <div>
+                  <p className="font-mono text-[9px] font-bold text-[#57534e] uppercase tracking-widest">{scenario.tag}</p>
+                  <p className="font-mono font-bold text-sm text-[#1e1d1b]">{scenario.title}</p>
+                </div>
               </div>
-            </div>
-            <span className="mt-3 text-[10px] text-[#57534e] pt-2 border-t border-dashed border-[#1e1d1b]">→ Influences API Handler & Redis TTL</span>
-          </div>
 
-          {/* Scenario 2 */}
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm flex flex-col justify-between">
-            <div>
-              <span className="text-[10px] font-bold text-[#ff5e5b] uppercase block mb-1">SCENARIO #2: EXPIRED TOKEN</span>
-              <h4 className="font-bold text-[#1e1d1b] mb-3">Expired Reset Attempt</h4>
-              <div className="space-y-1.5 text-[11px] leading-relaxed">
-                <div><span className="text-sky-700 font-bold">GIVEN</span> an expired or revoked reset token</div>
-                <div><span className="text-amber-700 font-bold">WHEN</span> the user submits new password</div>
-                <div><span className="text-red-700 font-bold">THEN</span> reject request with 400 Bad Request (`TOKEN_EXPIRED`)</div>
+              <div className="space-y-2 pt-1">
+                {scenario.steps.map((step) => (
+                  <div key={step.key} className={`flex items-start gap-2.5 rounded-lg px-3 py-2 ${step.color}`}>
+                    <span className="font-mono font-black text-[10px] shrink-0 pt-0.5">{step.label}</span>
+                    <span className="font-sans text-[11px] leading-relaxed">{step.text}</span>
+                  </div>
+                ))}
               </div>
-            </div>
-            <span className="mt-3 text-[10px] text-[#57534e] pt-2 border-t border-dashed border-[#1e1d1b]">→ Influences Zod & DB Token validation</span>
-          </div>
 
-          {/* Scenario 3 */}
-          <div className="p-4 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm flex flex-col justify-between">
-            <div>
-              <span className="text-[10px] font-bold text-[#ff5e5b] uppercase block mb-1">SCENARIO #3: BOT ATTACK</span>
-              <h4 className="font-bold text-[#1e1d1b] mb-3">Rate Limit Exceeded</h4>
-              <div className="space-y-1.5 text-[11px] leading-relaxed">
-                <div><span className="text-sky-700 font-bold">GIVEN</span> repeated reset attempts within 60s</div>
-                <div><span className="text-amber-700 font-bold">WHEN</span> rate limit threshold is exceeded</div>
-                <div><span className="text-red-700 font-bold">THEN</span> throttle further attempts with HTTP 429 Too Many Requests</div>
-              </div>
+              <p className="font-mono text-[10px] text-[#57534e] pt-1">{scenario.footer}</p>
             </div>
-            <span className="mt-3 text-[10px] text-[#57534e] pt-2 border-t border-dashed border-[#1e1d1b]">→ Influences Redis Rate Limiter middleware</span>
-          </div>
+          ))}
         </div>
       </div>
+
     </div>
   );
 }

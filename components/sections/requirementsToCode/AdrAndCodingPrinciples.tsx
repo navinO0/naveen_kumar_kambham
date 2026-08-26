@@ -70,8 +70,8 @@ export default function AdrAndCodingPrinciples() {
   return (
     <div className="space-y-8 my-8">
       {/* 1. ADR Section */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag mb-1 text-xs font-bold">ARCHITECTURE DECISION RECORDS</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -102,30 +102,30 @@ export default function AdrAndCodingPrinciples() {
         </div>
 
         {/* Active ADR Box */}
-        <div className="p-5 sketch-card bg-white border-2 border-[#1e1d1b] space-y-4">
-          <div className="border-b-2 border-dashed border-[#1e1d1b] pb-3">
+        <div className="p-5 rounded-xl bg-gradient-to-br from-[#fffef5] to-[#fef9e7] space-y-4">
+          <div className=" pb-3">
             <span className="sticker-tag-red text-[10px] uppercase font-bold mb-1">DECISION RECORD</span>
             <h4 className="font-mono font-black text-lg text-[#1e1d1b]">{activeAdr.title}</h4>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
-            <div className="p-3 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
+            <div className="stripe-card p-3">
               <span className="font-bold text-[#ff5e5b] block mb-1">DECISION MADE:</span>
-              <p className="text-[#1e1d1b] font-bold">{activeAdr.decision}</p>
+              <p className="text-[#1e1d1b] font-bold font-sans text-xs">{activeAdr.decision}</p>
             </div>
 
-            <div className="p-3 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
+            <div className="stripe-card stripe-card-blue p-3">
               <span className="font-bold text-[#3498db] block mb-1">CONTEXT & NEED:</span>
               <p className="text-[#57534e] font-sans text-xs">{activeAdr.context}</p>
             </div>
 
-            <div className="p-3 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
+            <div className="stripe-card stripe-card-green p-3">
               <span className="font-bold text-[#2ecc71] block mb-1">PRIMARY REASON:</span>
               <p className="text-[#57534e] font-sans text-xs">{activeAdr.reason}</p>
             </div>
 
-            <div className="p-3 bg-[#f6f4ee] border border-[#1e1d1b] sketch-border-sm">
-              <span className="font-bold text-[#e74c3c] block mb-1">ACCEPTED TRADE-OFF:</span>
+            <div className="stripe-card stripe-card-amber p-3">
+              <span className="font-bold text-[#f59e0b] block mb-1">ACCEPTED TRADE-OFF:</span>
               <p className="text-[#57534e] font-sans text-xs">{activeAdr.tradeoff}</p>
             </div>
           </div>
@@ -133,8 +133,8 @@ export default function AdrAndCodingPrinciples() {
       </div>
 
       {/* 2. Coding Principles */}
-      <div className="sketch-card p-6 bg-white border-2 border-[#1e1d1b]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b-2 border-dashed border-[#1e1d1b] mb-6">
+      <div className="sketch-card p-6 sm:p-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
             <span className="sticker-tag-red mb-1 text-xs uppercase font-bold">ENGINEERING RULES</span>
             <h3 className="text-xl md:text-2xl font-black font-mono text-[#1e1d1b]">
@@ -147,21 +147,35 @@ export default function AdrAndCodingPrinciples() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {PRINCIPLES.map((p, idx) => (
-            <div key={idx} className="p-4 sketch-card bg-white border border-[#1e1d1b] flex flex-col justify-between">
-              <div>
-                <span className="font-mono text-xs font-bold text-[#1e1d1b] block mb-1">
-                  #{idx + 1} {p.name}
-                </span>
-                <p className="font-hand text-sm text-[#ff5e5b] font-bold mb-2">
-                  {p.quote}
-                </p>
-                <p className="text-xs text-[#57534e] font-sans leading-relaxed">
-                  {p.desc}
-                </p>
+          {PRINCIPLES.map((p, idx) => {
+            const bgPalette = [
+              "from-sky-50 to-blue-50",
+              "from-amber-50 to-yellow-50",
+              "from-emerald-50 to-green-50",
+              "from-violet-50 to-purple-50",
+              "from-rose-50 to-red-50",
+              "from-sky-50 to-blue-50",
+              "from-amber-50 to-yellow-50",
+              "from-emerald-50 to-green-50",
+            ];
+            const pillClass = ["index-pill-blue", "index-pill-yellow", "index-pill-green", "index-pill-dark", "index-pill", "index-pill-blue", "index-pill-yellow", "index-pill-green"][idx % 8];
+            return (
+              <div key={idx} className={`p-4 rounded-xl bg-gradient-to-br ${bgPalette[idx % 8]} flex flex-col justify-between transition-transform hover:-translate-y-0.5 hover:shadow-md`}>
+                <div>
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <span className={`index-pill ${pillClass}`}>#{idx + 1}</span>
+                    <span className="font-mono text-xs font-bold text-[#1e1d1b]">{p.name}</span>
+                  </div>
+                  <p className="font-hand text-sm text-[#ff5e5b] font-bold mb-2">
+                    {p.quote}
+                  </p>
+                  <p className="text-xs text-[#57534e] font-sans leading-relaxed">
+                    {p.desc}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

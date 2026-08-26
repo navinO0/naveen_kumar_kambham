@@ -87,10 +87,9 @@
 }
 
 .sketch-card {
-  background-color: #fcfbfa;
-  border: 2px solid #1e1d1b;
-  border-radius: 20px 12px 18px 12px / 12px 18px 12px 20px;
-  box-shadow: 4px 4px 0px #1e1d1b;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(30,29,27,0.07), 0 1px 4px rgba(30,29,27,0.04);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   min-width: 0;
   max-width: 100%;
@@ -98,14 +97,20 @@
 
 @media (min-width: 640px) {
   .sketch-card {
-    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    border-radius: 24px;
   }
 }
 
 .sketch-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px #1e1d1b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(30,29,27,0.1), 0 2px 8px rgba(30,29,27,0.05);
 }
+
+/* Section Band Backgrounds — alternating zone colors */
+.band-cream { background-color: #f8f7f3; }
+.band-white { background-color: #ffffff; }
+.band-dark  { background-color: #0f1117; }
+.band-warm  { background-color: #fffcf0; }
 
 .sketch-button {
   background-color: #ffe866;
@@ -201,6 +206,197 @@
 ::-webkit-scrollbar-thumb {
   background: #1e1d1b;
   border-radius: 4px;
+}
+
+/* ============================================
+   NEW CARD VARIANT SYSTEM
+   ============================================ */
+
+/* Glass Card - frosted translucent surface */
+.glass-card {
+  background: rgba(252, 251, 250, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(30, 29, 27, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.glass-card:hover {
+  box-shadow: 0 8px 32px rgba(30, 29, 27, 0.14), inset 0 1px 0 rgba(255,255,255,0.6);
+  transform: translateY(-2px);
+}
+
+/* Terminal Dark Card */
+.terminal-card {
+  background: #0f1117;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+  font-family: var(--font-mono), monospace;
+  position: relative;
+  overflow: hidden;
+}
+.terminal-card::before {
+  content: '● ● ●';
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-size: 10px;
+  color: #57534e;
+  letter-spacing: 4px;
+}
+
+/* Gradient Accent Card */
+.gradient-card {
+  background: linear-gradient(135deg, #fffef5 0%, #fff8e6 50%, #fef3c7 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(30,29,27,0.07);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.gradient-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30,29,27,0.11);
+}
+
+/* Accent Stripe Card — left colored border stripe only */
+.stripe-card {
+  background: #ffffff;
+  border: none;
+  border-left: 4px solid #ff5e5b;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 0 1px 8px rgba(30,29,27,0.06);
+  transition: border-left-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.stripe-card:hover {
+  box-shadow: 0 4px 16px rgba(30,29,27,0.1);
+  transform: translateX(2px);
+}
+.stripe-card-blue { border-left-color: #3498db !important; }
+.stripe-card-green { border-left-color: #2ecc71 !important; }
+.stripe-card-yellow { border-left-color: #ffe866 !important; }
+.stripe-card-amber { border-left-color: #f59e0b !important; }
+.stripe-card-purple { border-left-color: #8b5cf6 !important; }
+
+/* Metric Tile — solid dark block with accent value */
+.metric-tile {
+  background: #1e1d1b;
+  border-radius: 12px;
+  box-shadow: 3px 3px 0px rgba(255,232,102,0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.metric-tile:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: 5px 5px 0px rgba(255,232,102,0.6);
+}
+
+/* Neon Glow Card */
+.neon-card {
+  background: #0f1117;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(52,152,219,0.12);
+  transition: box-shadow 0.2s ease;
+}
+.neon-card:hover {
+  box-shadow: 0 0 24px rgba(52,152,219,0.22);
+}
+.neon-card-red {
+  box-shadow: 0 0 12px rgba(255,94,91,0.1);
+}
+.neon-card-green {
+  box-shadow: 0 0 12px rgba(46,204,113,0.1);
+}
+
+/* Pinned Note Card */
+.note-card {
+  background: #fffef0;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(212,200,90,0.15);
+  position: relative;
+  overflow: hidden;
+}
+.note-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ffe866, #f59e0b, #ffe866);
+}
+
+/* Outlined Accent Box */
+.accent-box {
+  background: transparent;
+  border: 2px dashed rgba(30,29,27,0.3);
+  border-radius: 10px;
+  padding: 1rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.accent-box:hover {
+  border-color: #ff5e5b;
+  background: rgba(255,94,91,0.03);
+}
+
+/* Raised Card — subtle elevation shadow, no border */
+.raised-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(30,29,27,0.06), 0 6px 18px rgba(30,29,27,0.08);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.raised-card:hover {
+  box-shadow: 0 4px 8px rgba(30,29,27,0.1), 0 12px 30px rgba(30,29,27,0.12);
+  transform: translateY(-2px);
+}
+
+/* Index Pill Badge */
+.index-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff5e5b;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  font-family: var(--font-mono), monospace;
+  flex-shrink: 0;
+}
+.index-pill-yellow { background: #ffe866; color: #1e1d1b; }
+.index-pill-blue { background: #3498db; color: #ffffff; }
+.index-pill-green { background: #2ecc71; color: #1e1d1b; }
+.index-pill-dark { background: #1e1d1b; color: #ffe866; }
+
+/* Timeline Track & Journey Node Utilities */
+.timeline-track {
+  position: relative;
+}
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 20px;
+  width: 2px;
+  background: linear-gradient(180deg, #ff5e5b 0%, #2563eb 50%, #ffe866 100%);
+  z-index: 1;
+}
+
+.timeline-node {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes timeline-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 94, 91, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 94, 91, 0);
+  }
+}
+
+.timeline-pulse-active {
+  animation: timeline-pulse 2s infinite;
 }
 
 /* Accessibility: Respect Prefers-Reduced-Motion */
