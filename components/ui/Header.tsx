@@ -32,10 +32,10 @@ export default function Header() {
           <a href="#work" className="hover:text-[#0f172a] transition-colors">
             work
           </a>
-          <a href="#gravity" className="text-sky-600 hover:text-sky-700 bg-sky-50/80 hover:bg-sky-100 px-2.5 py-1 rounded-full font-bold border border-sky-200/60 flex items-center gap-1 transition-all">
+          <Link href="/playground" className="text-sky-600 hover:text-sky-700 bg-sky-50/80 hover:bg-sky-100 px-2.5 py-1 rounded-full font-bold border border-sky-200/60 flex items-center gap-1 transition-all">
             <Gamepad2 className="w-3.5 h-3.5 text-sky-600" />
             <span>playground</span>
-          </a>
+          </Link>
           <a href="#stack" className="hover:text-[#0f172a] transition-colors">
             stack
           </a>
@@ -82,14 +82,14 @@ export default function Header() {
           >
             [0] engineering pipeline
           </a>
-          <a
-            href="#gravity"
+          <Link
+            href="/playground"
             onClick={() => setMobileMenuOpen(false)}
             className="bg-sky-50 text-sky-700 font-bold px-2 py-1.5 rounded flex items-center gap-1.5 border border-sky-200"
           >
             <Gamepad2 className="w-4 h-4 text-sky-600" />
             <span>[+] arcade playground & whiteboard</span>
-          </a>
+          </Link>
           <a
             href="#work"
             onClick={() => setMobileMenuOpen(false)}

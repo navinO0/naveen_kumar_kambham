@@ -296,7 +296,7 @@ export default function GravityPlayground() {
 
   const handleShareDirectLink = () => {
     if (typeof window === "undefined") return;
-    const shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomCode}&mode=whiteboard&fullscreen=true#playground`;
+    const shareUrl = `${window.location.origin}/playground?room=${encodeURIComponent(roomCode)}&mode=whiteboard`;
     navigator.clipboard.writeText(shareUrl);
     setCopiedShareLink(true);
     setTimeout(() => setCopiedShareLink(false), 2500);
@@ -490,7 +490,7 @@ export default function GravityPlayground() {
         updated.pop();
         saveWhiteboardPathsToSession(updated);
         setStrokeCount((prev) => prev + 1);
-      } else if (type === "CHAT_MESSAGE" && payload) {
+      } else if ((type === "CHAT" || type === "CHAT_MESSAGE") && payload) {
         setChatMessages((prev) => {
           const updated = [...prev, payload];
           if (roomCode && typeof window !== "undefined") {
@@ -693,7 +693,9 @@ export default function GravityPlayground() {
         .then((res) => res.json())
         .then((data) => {
           if (data && Array.isArray(data.paths)) {
-            if (data.paths.length > whiteboardPathsRef.current.length) {
+            const currentJson = JSON.stringify(whiteboardPathsRef.current);
+            const serverJson = JSON.stringify(data.paths);
+            if (currentJson !== serverJson) {
               whiteboardPathsRef.current = data.paths;
               saveWhiteboardPathsToSession(data.paths);
               setStrokeCount((p) => p + 1);
@@ -701,7 +703,19 @@ export default function GravityPlayground() {
           }
           if (data && Array.isArray(data.chat)) {
             setChatMessages((prev) => {
-              if (data.chat.length > prev.length) {
+              const currentJson = JSON.stringify(prev);
+              const serverJson = JSON.stringify(data.chat);
+              if (currentJson !== serverJson) {
+                if (data.chat.length > prev.length) {
+                  const lastMsg = data.chat[data.chat.length - 1];
+                  if (lastMsg.sender !== playerName && !lastMsg.isSystem) {
+                    triggerChatNotification(lastMsg.sender, lastMsg.text);
+                    if (!isChatOpen) setUnreadChatCount((u) => u + (data.chat.length - prev.length));
+                  }
+                }
+                if (roomCode && typeof window !== "undefined") {
+                  sessionStorage.setItem(`arcade_chat_${roomCode}`, JSON.stringify(data.chat));
+                }
                 return data.chat;
               }
               return prev;
@@ -2726,7 +2740,7 @@ export default function GravityPlayground() {
 
           {/* REAL-TIME SESSION-STORAGE ROOM CHAT DRAWER */}
           {isChatOpen && (
-            <div className="absolute bottom-4 left-4 z-50 w-[320px] sm:w-[390px] h-[480px] sm:h-[530px] max-h-[82vh] bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-white font-mono animate-in fade-in slide-in-from-bottom-3 duration-200">
+            <div className="fixed inset-x-2 bottom-2 sm:absolute sm:bottom-4 sm:left-4 sm:right-auto z-[9999999] w-auto sm:w-[390px] max-w-[calc(100vw-16px)] h-[60vh] sm:h-[530px] max-h-[80vh] bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-white font-mono animate-in fade-in slide-in-from-bottom-3 duration-200">
               {/* Chat Drawer Header */}
               <div className="p-3 bg-slate-800/90 border-b border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
