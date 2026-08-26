@@ -313,33 +313,43 @@ export default function GravityPlayground() {
   const nextPieceRef = useRef<{ shape: number[][]; color: string } | null>(null);
   const tetrisTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Fullscreen Toggle Handler
+  // Fullscreen Toggle Handler (With iPhone / iOS Safari Support)
   const toggleFullscreen = () => {
-    if (!containerRef.current) return;
-    if (!document.fullscreenElement && !isFullscreen) {
-      if (containerRef.current.requestFullscreen) {
-        containerRef.current.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => setIsFullscreen(true));
-      } else {
-        setIsFullscreen(true);
+    setIsFullscreen((prev) => {
+      const nextState = !prev;
+      if (nextState && containerRef.current && containerRef.current.requestFullscreen) {
+        containerRef.current.requestFullscreen().catch(() => {});
+      } else if (!nextState && document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
       }
-    } else {
-      if (document.exitFullscreen && document.fullscreenElement) {
-        document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => setIsFullscreen(false));
-      } else {
-        setIsFullscreen(false);
-      }
-    }
+      return nextState;
+    });
   };
 
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      if (document.fullscreenElement) {
+        setIsFullscreen(true);
+      }
     };
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     return () => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
   }, []);
+
+  // Lock body scroll when in Fullscreen Overlay Mode (Essential for iOS / Safari Mobile)
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (isFullscreen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isFullscreen]);
 
   // Session Storage Persistence & Room Sync (Chat & Whiteboard)
   useEffect(() => {
@@ -2076,12 +2086,12 @@ export default function GravityPlayground() {
         </div>
       </div>
 
-      {/* Main Canvas Box Container - Supports Fullscreen Overlay Mode */}
+      {/* Main Canvas Box Container - Supports Fullscreen Overlay Mode (iOS Safari Compatible) */}
       <div
         ref={containerRef}
         className={`bg-slate-50 border-y sm:border border-slate-200/80 p-2 sm:p-6 relative overflow-hidden shadow-xs w-full transition-all duration-300 ${
           isFullscreen
-            ? "fixed inset-0 z-[9999] rounded-none w-screen h-screen flex flex-col justify-between"
+            ? "fixed inset-0 top-0 left-0 right-0 bottom-0 z-[999999] rounded-none w-screen h-screen h-[100dvh] max-h-[100dvh] bg-slate-900 text-white flex flex-col justify-between p-2 sm:p-4 touch-none"
             : "rounded-none sm:rounded-3xl"
         }`}
       >
@@ -2196,6 +2206,18 @@ export default function GravityPlayground() {
                 </span>
               )}
             </button>
+
+            {/* FLOATING MOBILE & DESKTOP EXIT FULLSCREEN BUTTON */}
+            {isFullscreen && (
+              <button
+                onClick={toggleFullscreen}
+                className="bg-rose-600 hover:bg-rose-700 text-white font-mono text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full border border-rose-400 shadow-md flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 shrink-0"
+                title="Exit Fullscreen Mode"
+              >
+                <X className="w-3.5 h-3.5" />
+                <span>EXIT FULLSCREEN ✕</span>
+              </button>
+            )}
           </div>
 
           {/* Player Codename Handle */}
