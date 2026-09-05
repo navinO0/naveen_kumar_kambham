@@ -1,26 +1,9 @@
 "use client";
 
-import { Code2, Database, Shield, Terminal, Cpu, Server, Cloud, GitBranch, Zap, Triangle, Layers } from "lucide-react";
+import { Code2, Database, Shield, Terminal, Cpu, Server, Cloud, GitBranch, Zap, Layers } from "lucide-react";
 
 // Tech companies are actively hiring for these right now (2024-2025)
 const STACK_GROUPS = [
-  {
-    category: "T3 Stack (Full-Stack TS)",
-    icon: Triangle,
-    accent: "bg-violet-600",
-    label: "ECOSYSTEM",
-    demand: "🔥 HIGHEST",
-    demandColor: "text-violet-700 bg-violet-50",
-    featured: true,
-    items: [
-      { name: "TypeScript", badge: "End-to-End Typesafe", desc: "Strict types from DB schema → API layer → frontend component. No `any`. No guessing." },
-      { name: "tRPC", badge: "📈 Rising Fast", desc: "Fully typesafe APIs with zero code generation — client knows the exact shape of every response." },
-      { name: "Next.js 15 App Router", badge: "🔥 Top Demand", desc: "Server Components, Server Actions, Route Handlers, Streaming — backend logic in the same codebase." },
-      { name: "Prisma ORM", badge: "Most Adopted", desc: "Type-safe DB client with auto-generated types from schema — migrations, relation queries, transactions." },
-      { name: "NextAuth.js / Auth.js", badge: "Standard", desc: "JWT + session providers, OAuth 2.0 flows, database adapters — auth that doesn't leak credentials." },
-      { name: "Tailwind CSS", badge: "Industry Standard", desc: "Utility-first CSS with zero dead styles in prod — collocated with component logic." },
-    ],
-  },
   {
     category: "Frontend & UI Engineering",
     icon: Layers,
@@ -149,7 +132,6 @@ const STACK_GROUPS = [
 const DEMAND_STATS = [
   { label: "React / Next.js", pct: 96, color: "bg-cyan-500" },
   { label: "TypeScript", pct: 94, color: "bg-sky-500" },
-  { label: "T3 / Full-Stack TS", pct: 91, color: "bg-violet-600" },
   { label: "Tailwind CSS", pct: 90, color: "bg-teal-500" },
   { label: "PostgreSQL", pct: 88, color: "bg-amber-500" },
   { label: "Docker / K8s", pct: 85, color: "bg-orange-500" },
@@ -200,51 +182,9 @@ export default function BackendStackSection() {
         <p className="font-sans text-[10px] text-gray-600 mt-4">Source: LinkedIn, Indeed, Glassdoor job posting analysis</p>
       </div>
 
-      {/* Featured T3 Stack Banner */}
-      {STACK_GROUPS.filter((g) => g.featured).map((group) => {
-        const IconComp = group.icon;
-        return (
-          <div key={group.category} className="mb-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-violet-900/90 to-[#0f1117] text-white shadow-xl">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-violet-700/50">
-              <div className="flex items-center gap-3">
-                <span className="w-10 h-10 rounded-xl bg-violet-500 flex items-center justify-center shrink-0">
-                  <IconComp className="w-5 h-5 text-white" />
-                </span>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-mono font-black text-lg text-white">{group.category}</h3>
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-violet-500 text-white">
-                      {group.label}
-                    </span>
-                  </div>
-                  <p className="text-xs text-violet-200 font-sans mt-0.5">End-to-end type safety from database to UI</p>
-                </div>
-              </div>
-              <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 self-start sm:self-auto">
-                MARKET DEMAND: {group.demand}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {group.items.map((item) => (
-                <div key={item.name} className="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors backdrop-blur-sm">
-                  <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="font-mono font-bold text-sm text-violet-200">{item.name}</span>
-                    <span className="text-[9px] font-bold text-violet-300 bg-violet-500/20 px-2 py-0.5 rounded-full font-mono">
-                      {item.badge}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-300 font-sans leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })}
-
-      {/* Remaining Stack Groups Grid */}
+      {/* Tech Stack Groups Grid (3x3) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {STACK_GROUPS.filter((g) => !g.featured).map((group) => {
+        {STACK_GROUPS.map((group) => {
           const IconComp = group.icon;
           return (
             <div key={group.category} className="space-y-3">

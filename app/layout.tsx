@@ -42,7 +42,6 @@ export const metadata: Metadata = {
     "React 19",
     "Tailwind CSS",
     "TypeScript Full-Stack",
-    "T3 Stack",
     "Systems Architect",
     "Node.js API Development",
     "Fastify Sub-Millisecond Routing",

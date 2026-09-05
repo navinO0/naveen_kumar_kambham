@@ -21,7 +21,6 @@ import {
   GitBranch,
   FileText,
   Globe,
-  Sparkles,
   Lock,
   Search,
   Share2,
@@ -147,7 +146,7 @@ export default function AboutMeSection() {
       name: "Framer Motion", 
       cat: "Animation Engine", 
       tag: "Micro UX", 
-      icon: Sparkles,
+      icon: Layers,
       summary: "Declarative motion library for React enabling fluid page transitions, spring physics, and gesture-driven UI.",
       useCases: ["Smooth tab switches and modal animations", "Interactive magnetic snap card drag effects"],
       whyOnlyThis: "Provides hardware-accelerated 60fps animations with straightforward React component declarative props."
@@ -221,7 +220,7 @@ export default function AboutMeSection() {
       tag: "NoSQL", 
       icon: Database,
       summary: "Document-oriented NoSQL database providing schema flexibility for dynamic multi-tenant attributes.",
-      useCases: ["BloodLink emergency blood seeker request storage", "Unstructured audit log history"],
+      useCases: ["Atelier manufacturing dynamic production metadata", "Unstructured audit log history"],
       whyOnlyThis: "Ideal for rapidly changing document structures where strict relational schema migrations would slow down early feature iterations."
     },
     { 
@@ -318,7 +317,7 @@ export default function AboutMeSection() {
       name: "Antigravity", 
       cat: "Agentic AI Framework", 
       tag: "Agents", 
-      icon: Sparkles,
+      icon: Bot,
       summary: "Agentic AI framework for multi-step prompt orchestration, tool invocation, and structured agent execution loops.",
       useCases: ["AI technical interview simulator agent workflows", "Automated post-mortem case study analysis"],
       whyOnlyThis: "Provides robust state management for autonomous multi-step agent reasoning loops with native tool-calling capabilities."

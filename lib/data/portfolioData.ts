@@ -43,23 +43,23 @@ export const projects: Project[] = [
   },
   {
     id: "hrms-lite",
-    name: "HRMS Lite (hrms-v1)",
-    oneLine: "Lightweight Human Resource Management System, employee attendance tracking, role-based access control, and payroll calculations.",
+    name: "Atelier HRMS & Piece-Rate Payroll Engine (hrms-v1)",
+    oneLine: "Enterprise manufacturing workforce management, auto-checkout shift regularization, piece-rate calculation, and automated payroll ledgers.",
     year: 2025,
     backendResponsibilities: [
-      "Implemented granular RBAC middleware (Admin vs HR Manager vs Employee permission scopes)",
-      "Engineered attendance log ingestion API with timestamp deduplication",
-      "Designed payroll engine calculating tax deductions, leaves, and net salary payouts",
-      "Built JWT session revocation system using Redis blacklists for instant user offboarding"
+      "Architected Next.js 16 Server Actions for employee shift clock-ins/outs, auto-checkout detection, and OT overrides",
+      "Engineered attendance regularization workflow enabling dispute submission, manager reviews, and punch auditing",
+      "Built dual compensation payroll engine computing both salaried hours and craft piece-rate output (units × unit price)",
+      "Designed production order assignment pipeline linking factory technicians to production orders and timesheet verifications"
     ],
-    stack: ["Fastify", "TypeScript", "PostgreSQL", "Prisma", "Redis", "JWT"],
-    interestingProblem: "Biometric punch-in devices burst 10,000 requests in a 15-minute window every morning at 9:00 AM, causing database locks on the attendance table.",
-    whatBroke: "Overlapping INSERT queries for employee attendance logs hit deadlocks and returned 500 server errors under peak morning rush.",
-    whatIChanged: "Switched to batching punch-in events in Redis lists and bulk-inserting into PostgreSQL in 5-second transactional batches (INSERT ... ON CONFLICT DO NOTHING).",
-    whyIChoseIt: "Fastify provided sub-millisecond route handling, and Redis buffering absorbed high-frequency burst traffic seamlessly.",
-    whatILearned: "Burst traffic shouldn't hit relational databases directly; buffer high-frequency writes in memory first.",
-    githubUrl: "https://github.com/navinO0/hrms-v1-backend",
-    liveUrl: "https://hrms-v1.vance.dev"
+    stack: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Sequelize ORM", "Zod", "Tailwind CSS v4"],
+    interestingProblem: "Manufacturing employees working piece-rate shifts occasionally forgot to clock out, causing erroneous overtime calculations and payroll ledger imbalances.",
+    whatBroke: "Unclosed attendance shifts evaluated to multi-day durations, corrupting automated weekly payroll ledger payouts and require manual database patches.",
+    whatIChanged: "Implemented automated end-of-shift auto-checkout markers, paired with an Attendance Regularization state machine where employees submit regularized check-outs with reasons for administrative approval.",
+    whyIChoseIt: "Sequelize ORM with PostgreSQL transaction isolation guaranteed ACID consistency for payroll records, while Next.js Server Actions ensured end-to-end type safety.",
+    whatILearned: "In production factory workforce management, human error is inevitable; workflows must provide automated fail-safes and auditable regularization paths.",
+    githubUrl: "https://github.com/navinO0/hrms-atlier",
+    liveUrl: "https://hrms-atlier.vercel.app"
   },
   {
     id: "garment-production",
@@ -80,26 +80,6 @@ export const projects: Project[] = [
     whatILearned: "Never generate binary documents or heavy PDFs synchronously inside an HTTP API request route handler.",
     githubUrl: "https://github.com/navinO0/garment-production-invoice-engine",
     liveUrl: "https://garment-api.vance.dev"
-  },
-  {
-    id: "bloodlink",
-    name: "BloodLink (Life-Saving Platform)",
-    oneLine: "Real-time blood donation platform connecting donors with seekers, donor 90-day cooling period enforcement, and geo-location search.",
-    year: 2024,
-    backendResponsibilities: [
-      "Built WebSocket real-time notification engine connecting blood seekers with nearby matching donors",
-      "Implemented automated 90-day donor cooling period state machine to prevent health risk re-donations",
-      "Engineered admin verification dashboard for donation validation and emergency escalation",
-      "Integrated GIS geo-radius search for immediate donor proximity lookup"
-    ],
-    stack: ["Next.js", "Node.js", "Fastify", "Socket.io", "MongoDB", "Redis", "Google Cloud VPS"],
-    interestingProblem: "Seekers were receiving duplicate emergency notifications when multiple nearby donors clicked 'Accept' simultaneously.",
-    whatBroke: "Lack of atomic locks on donation requests allowed multiple donors to claim a single emergency request.",
-    whatIChanged: "Added Redis distributed lock (`SETNX`) on donation request IDs, ensuring only the first accepting donor claims the request.",
-    whyIChoseIt: "Fastify + Socket.io provided ultra-low latency push notifications critical for emergency medical requests.",
-    whatILearned: "In life-critical applications, push notification delivery speed and concurrency isolation are non-negotiable.",
-    githubUrl: "https://github.com/navinO0/blood-app-server",
-    liveUrl: "https://bloodlinkhelp.netlify.app/"
   },
   {
     id: "smart-kitchen-ordering",

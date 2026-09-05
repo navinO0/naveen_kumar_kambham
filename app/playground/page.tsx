@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import GravityPlayground from "@/components/sections/GravityPlayground";
-import { ArrowLeft, Sparkles, Gamepad2, PenTool } from "lucide-react";
+import { ArrowLeft, Gamepad2, PenTool } from "lucide-react";
 
 export const metadata = {
   title: "Gravity Arcade & Real-Time Whiteboard | Collaborative Playground",
@@ -26,7 +26,7 @@ export default function PlaygroundPage() {
             <span>BACK TO PORTFOLIO</span>
           </Link>
           <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-slate-400 pl-3 border-l border-slate-800">
-            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+            <Gamepad2 className="w-3.5 h-3.5 text-purple-400" />
             <span>FULLSCREEN COLLABORATIVE SUITE</span>
           </div>
         </div>

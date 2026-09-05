@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Compass, Sparkles, Building2, Workflow, Gamepad2, Cpu, Mail } from "lucide-react";
+import { Rocket, Compass, Building2, Workflow, Gamepad2, Cpu, Mail } from "lucide-react";
 
 const CHAPTERS = [
-  { id: "about", label: "01. Launchpad & Philosophy", short: "01. Launchpad", icon: Sparkles, color: "bg-[#ffe866]" },
+  { id: "about", label: "01. Launchpad & Philosophy", short: "01. Launchpad", icon: Rocket, color: "bg-[#ffe866]" },
   { id: "experience", label: "02. Career & Systems Journey", short: "02. Journey", icon: Building2, color: "bg-[#ff5e5b] text-white" },
   // Original: { id: "playgrounds", label: "04. Gravity Arcade & Playgrounds", short: "04. Gravity Arcade", icon: Gamepad2, color: "bg-[#10b981] text-white" },
   { id: "playgrounds", label: "04. Production Simulators", short: "04. Simulators", icon: Gamepad2, color: "bg-[#10b981] text-white" },

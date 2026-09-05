@@ -8,7 +8,6 @@ import {
   FolderGit2, 
   ArrowUpRight, 
   Wrench,
-  Sparkles,
   Layers
 } from "lucide-react";
 
@@ -56,7 +55,7 @@ const experiencesData: ExperienceCompany[] = [
     nodeBg: "bg-sky-600 text-white ring-4 ring-sky-100",
     summary: "Architecting custom, production-grade enterprise backends, React/Next.js frontend UIs, real-time collaboration engines, e-commerce platforms, and specialized B2B/B2C workflow systems for tech startups and international clients.",
     stats: [
-      { label: "Production Systems", val: "7 Apps" },
+      { label: "Production Systems", val: "7 Systems" },
       { label: "Ingestion Batch", val: "10k / 5s" },
       { label: "Latency Delta", val: "< 5ms" }
     ],
@@ -86,27 +85,29 @@ const experiencesData: ExperienceCompany[] = [
       },
       {
         id: "freelance-hrms",
-        title: "🏢 HRMS Lite (hrms-v1)",
-        titleSub: "Human Resource Management System",
-        oneLiner: "Lightweight HRMS backend with biometric attendance ingestion, granular RBAC, automated payroll calculation, and instant JWT session revocation.",
-        overview: "Built to solve high-frequency morning rush bottlenecks when thousands of employees check in simultaneously via biometric devices, preventing database deadlock crashes while keeping employee data strictly governed.",
-        categoryTag: "concurrency",
-        keyMetric: "10,000 Punch-ins -> 5s Batch Insert",
+        title: "🏢 Atelier HRMS & Piece-Rate Payroll System (hrms-v1)",
+        titleSub: "Manufacturing Workforce Management & Shift Regularization Platform",
+        oneLiner: "Enterprise manufacturing workforce management engine with shift clocking, auto-checkout regularization, piece-rate wage calculation, and automated payroll ledgers.",
+        overview: "Architected and delivered a full-stack workforce and payroll management system for garment ateliers and manufacturing facilities. Combines biometric-style shift tracking with dual compensation models (salaried hours + craft piece-rate output), automated checkout regularization workflows, and instant multi-tier payroll ledger generation.",
+        categoryTag: "fintech",
+        keyMetric: "Piece-Rate + Shift Wage Engine | Auto-Regularization",
         architectureDiagram: [
-          "10,000+ Biometric Devices",
-          "Redis Ingestion List Queue",
-          "5-Second Cron Ingestion Worker",
-          "PostgreSQL Batch Insert (ON CONFLICT DO NOTHING)",
-          "Automated Payroll Ledger Update"
+          "Employee Shift Punch / Auto-Checkout Trigger",
+          "Zod Schema Validation & Session Cookie Auth",
+          "Attendance Regularization & Overtime Calculation",
+          "Piece-Rate (Units × Price) + Hours Wage Aggregation",
+          "PostgreSQL Ledger Commit via Sequelize Transactions"
         ],
         responsibilities: [
-          "Engineered a biometric punch-in ingestion queue using Redis lists, buffering 10,000+ morning 9:00 AM check-in events into 5-second transactional PostgreSQL batch inserts (`INSERT ... ON CONFLICT DO NOTHING`)",
-          "Implemented granular Role-Based Access Control (RBAC) middleware enforcing strict permission boundaries across Admin, HR Manager, and Employee roles",
-          "Designed automated payroll calculation engine evaluating tax deductions, leaves, unpaid mark-offs, and net monthly payouts",
-          "Built a JWT session revocation blacklist in Redis for instant employee offboarding and immediate credential invalidation"
+          "Architected Next.js 16 Server Actions backend handling employee shift clock-ins/outs with automatic checkout detection and overtime hour overrides (`overrideOtHours`)",
+          "Engineered attendance regularization workflow allowing employees to submit checkout dispute requests with reasons, approved or rejected via administrative audit controls",
+          "Implemented dual compensation payroll calculator supporting both fixed hourly/salaried tiers and craft piece-rate earnings (`pieceCount × unitPrice`) directly coupled to daily shifts",
+          "Built production order assignment system (`Order` & `Assignment` models) linking factory technicians to work orders with timesheet entries, task notes, and photo evidence",
+          "Constructed organizational hierarchy models (Departments, Custom Employment Types, and Pay Structures) backed by PostgreSQL connection pooling and Sequelize ORM migrations",
+          "Secured administrative operations with HTTP-only cookie sessions, Zod runtime schema validation across 15+ server actions, and instant manual punch editing with audit tracking"
         ],
-        technicalDetails: "Fastify, TypeScript, PostgreSQL, Prisma, Redis in-memory queues, JWT authentication.",
-        github: "https://github.com/navinO0/hrms-v1-backend"
+        technicalDetails: "Next.js 16, React 19, TypeScript, PostgreSQL, Sequelize ORM, Zod schemas, Server Actions, Tailwind CSS v4, Sonner.",
+        github: "https://github.com/navinO0/hrms-atlier"
       },
       {
         id: "freelance-garment",
@@ -123,23 +124,6 @@ const experiencesData: ExperienceCompany[] = [
         ],
         technicalDetails: "Node.js, Express, PostgreSQL, Redis, BullMQ, PDFKit, Zod schemas.",
         github: "https://github.com/navinO0/garment-production-invoice-engine"
-      },
-      {
-        id: "freelance-bloodlink",
-        title: "🩸 BloodLink Emergency Matching Platform",
-        oneLiner: "Real-time emergency blood donation matching platform connecting seekers with nearby verified donors, donor health cooling state machine, and GIS radius search.",
-        overview: "A mission-critical life-saving application built for rapid emergency response, enforcing donor health safety while guaranteeing zero duplicate claims when emergency notifications trigger.",
-        categoryTag: "realtime",
-        keyMetric: "Sub-Second Emergency Notification Push",
-        responsibilities: [
-          "Built WebSocket real-time push notification service dispatching immediate emergency alerts to matching blood donors within a specified geographic radius",
-          "Implemented an automated 90-day donor cooling period state machine to enforce health safety and restrict re-donations before eligibility",
-          "Engineered Redis atomic locks (`SETNX`) on emergency donation requests to prevent duplicate acceptances when multiple donors respond simultaneously",
-          "Built an administrative verification dashboard for authenticating medical requests and managing user access"
-        ],
-        technicalDetails: "Next.js, React, Node.js, Fastify, Socket.io, MongoDB, Redis, Google Cloud VPS.",
-        github: "https://github.com/navinO0/blood-app-server",
-        liveUrl: "https://bloodlinkhelp.netlify.app/"
       },
       {
         id: "freelance-smart-kitchen",
@@ -276,189 +260,245 @@ const experiencesData: ExperienceCompany[] = [
 
 export default function ExperienceResumeSection() {
   return (
-    <section id="experience" className="py-16 md:py-24 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto bg-white">
-      {/* Minimalist Section Header */}
+    <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-10 w-full max-w-[1700px] mx-auto bg-slate-50/80 border-y border-slate-200/90 rounded-3xl my-8">
+      {/* Section Header */}
       <div className="mb-14 max-w-3xl">
         <div className="flex items-center gap-2 mb-3">
-          <span className="font-mono text-[11px] font-semibold uppercase tracking-widest text-sky-600 bg-sky-50 px-3 py-1 rounded-full">
+          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-sky-700 bg-sky-100 border border-sky-300/80 px-3 py-1 rounded-full">
             JOURNEY & CAREER TIMELINE
           </span>
-          <span className="font-mono text-[11px] font-medium text-slate-400">
-            // MINIMALIST NARRATIVE
+          <span className="font-mono text-[11px] font-medium text-slate-500">
+            // FULL-STACK ENGINEERING NARRATIVE
           </span>
         </div>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 font-mono tracking-tight">
           engineering resume <span className="text-xl md:text-2xl text-sky-600 font-normal ml-2 font-sans">(full-stack journey)</span>
         </h2>
-        <p className="text-base text-slate-500 font-sans mt-3 font-normal leading-relaxed">
-          A continuous, chronological progression of engineering milestones, systems architected, and real-world code deliverables.
+        <p className="text-base text-slate-600 font-sans mt-3 font-normal leading-relaxed">
+          A continuous, chronological progression of production milestones, high-concurrency systems architected, and verified engineering deliverables.
         </p>
       </div>
 
-      {/* MINIMALIST VERTICAL TIMELINE TRACK */}
+      {/* VERTICAL TIMELINE TRACK */}
       <div className="relative pl-6 sm:pl-10 space-y-16">
-        {/* Sleek Vertical Connecting Line */}
-        <div className="absolute left-2 sm:left-4 top-4 bottom-4 w-[2px] bg-slate-200 rounded-full" />
+        {/* Sleek Vertical Connecting Line with high contrast */}
+        <div className="absolute left-2 sm:left-4 top-4 bottom-4 w-[3px] bg-slate-300 rounded-full" />
 
         {experiencesData.map((exp, expIdx) => (
           <div key={exp.id} className="relative group">
             {/* Timeline Pulsing Node */}
-            <div className={`absolute -left-[27px] sm:-left-[35px] top-1.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-transform group-hover:scale-110 z-10 ${exp.nodeBg}`}>
+            <div className={`absolute -left-[29px] sm:-left-[39px] top-2 w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-mono text-xs sm:text-sm font-bold border-2 border-white shadow-md transition-transform group-hover:scale-110 z-10 ${exp.nodeBg}`}>
               0{expIdx + 1}
             </div>
 
-            {/* MINIMALIST WHITE CARD SURFACE */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300">
+            {/* HIGH-CONTRAST WHITE CARD SURFACE */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 border-2 border-slate-200/90 shadow-md shadow-slate-200/50 hover:shadow-lg transition-all duration-300">
               
               {/* ERA HEADER */}
-              <div className="pb-6 border-b border-slate-100 mb-8">
+              <div className="pb-6 border-b-2 border-slate-100 mb-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <span className={`px-3 py-0.5 text-[10px] font-mono font-bold uppercase rounded-full bg-gradient-to-r ${exp.accentGradient} text-white`}>
+                      <span className={`px-3 py-1 text-[11px] font-mono font-bold uppercase rounded-full bg-gradient-to-r ${exp.accentGradient} text-white shadow-xs`}>
                         {exp.phaseLabel}
                       </span>
-                      <span className="font-mono text-xs font-medium text-slate-500 flex items-center gap-1.5 bg-slate-100 px-3 py-0.5 rounded-full">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                      <span className="font-mono text-xs font-semibold text-slate-700 flex items-center gap-1.5 bg-slate-100 border border-slate-200/80 px-3 py-1 rounded-full">
+                        <Calendar className="w-3.5 h-3.5 text-slate-500" />
                         {exp.period}
                       </span>
                     </div>
 
-                    <h3 className="text-2xl sm:text-3xl font-bold font-mono text-slate-900 flex items-center gap-2.5">
+                    <h3 className="text-2xl sm:text-3xl font-black font-mono text-slate-900 flex items-center gap-2.5">
                       <Building2 className="w-6 h-6 text-sky-600 shrink-0" />
                       <span>{exp.company}</span>
                     </h3>
-                    <p className="text-base font-mono font-medium text-sky-600 mt-1">
+                    <p className="text-base font-mono font-bold text-sky-600 mt-1">
                       // {exp.role}
                     </p>
                   </div>
 
-                  {/* Minimal Stat Pills */}
-                  <div className="flex flex-wrap gap-2 shrink-0 self-start md:self-auto">
+                  {/* High-Contrast Stat Pills */}
+                  <div className="flex flex-wrap gap-2.5 shrink-0 self-start md:self-auto">
                     {exp.stats.map((st, i) => (
-                      <div key={i} className="bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-100 text-center">
-                        <span className="font-mono text-[9px] text-slate-400 block uppercase font-medium">{st.label}</span>
-                        <span className="font-mono text-xs font-bold text-slate-900">{st.val}</span>
+                      <div key={i} className="bg-slate-50 border-2 border-slate-200/90 px-4 py-2.5 rounded-xl text-center shadow-2xs">
+                        <span className="font-mono text-[10px] text-slate-500 block uppercase font-bold tracking-wider">{st.label}</span>
+                        <span className="font-mono text-sm font-black text-slate-900">{st.val}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Summary narrative */}
-                <p className="text-sm font-sans text-slate-600 leading-relaxed font-normal bg-slate-50/70 p-4 rounded-2xl border border-slate-100">
+                <p className="text-sm font-sans text-slate-700 leading-relaxed font-normal bg-slate-50 border border-slate-200 p-4 rounded-2xl">
                   "{exp.summary}"
                 </p>
               </div>
 
-              {/* PROJECTS DELIVERED IN THIS ERA */}
+              {/* PROJECTS DELIVERED IN THIS ERA (ONE PER ROW) */}
               <div className="space-y-6">
-                <span className="font-mono text-xs font-semibold uppercase text-slate-400 tracking-wider block">
-                  SYSTEMS & APPS DELIVERED ({exp.projects.length}):
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold uppercase text-slate-900 tracking-wider flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-sky-600" />
+                    SYSTEMS & APPS DELIVERED ({exp.projects.length}) — FULL-WIDTH DETAILED BREAKDOWN:
+                  </span>
+                </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Single Column Stack: ONE PROJECT PER ROW */}
+                <div className="flex flex-col space-y-8">
                   {exp.projects.map((proj) => (
                     <div
                       key={proj.id}
-                      className="bg-slate-50/50 hover:bg-slate-50 p-6 rounded-2xl border border-slate-100 transition-all duration-200 flex flex-col justify-between"
+                      className="bg-[#fcfdfe] hover:bg-white rounded-2xl border-2 border-slate-200 hover:border-sky-500/80 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col"
                     >
-                      <div>
-                        {/* Top Category & Metric */}
-                        <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
-                          <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full">
+                      {/* Project Header Bar with distinct surface */}
+                      <div className="bg-slate-100/80 border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex items-center gap-2.5 flex-wrap">
+                          <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-sky-800 bg-sky-100 border border-sky-300 px-3 py-1 rounded-full">
                             {proj.categoryTag.replace("_", " ")}
                           </span>
                           {proj.keyMetric && (
-                            <span className="font-mono text-[10px] font-semibold text-slate-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-100">
+                            <span className="font-mono text-[11px] font-bold text-amber-900 bg-amber-100/90 px-3 py-1 rounded-full border border-amber-300 flex items-center gap-1.5 shadow-2xs">
                               ⚡ {proj.keyMetric}
                             </span>
                           )}
                         </div>
 
-                        {/* Title & Links */}
-                        <div className="flex items-start justify-between mb-2 gap-2">
-                          <div>
-                            <h4 className="font-mono font-bold text-lg md:text-xl text-slate-900">
-                              {proj.title}
-                            </h4>
-                            {proj.titleSub && (
-                              <span className="text-xs font-sans text-slate-500 font-medium block">
-                                {proj.titleSub}
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            {proj.github && (
-                              <a
-                                href={proj.github}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="p-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-900 hover:text-white transition-colors"
-                                title="View Repository"
-                              >
-                                <FolderGit2 className="w-4 h-4" />
-                              </a>
-                            )}
-                            {proj.liveUrl && (
-                              <a
-                                href={proj.liveUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="p-2 rounded-xl bg-slate-900 text-white hover:bg-sky-600 transition-colors"
-                                title="Live Demo"
-                              >
-                                <ArrowUpRight className="w-4 h-4" />
-                              </a>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* One Liner */}
-                        <p className="text-xs font-mono text-slate-600 font-medium mb-3 bg-white p-3 rounded-xl border border-slate-100">
-                          /* {proj.oneLiner} */
-                        </p>
-
-                        {/* Overview */}
-                        <p className="text-xs md:text-sm font-sans text-slate-600 leading-relaxed mb-4 font-normal">
-                          {proj.overview}
-                        </p>
-
-                        {/* Visual Data Pipeline */}
-                        {proj.architectureDiagram && (
-                          <div className="my-3 p-3.5 bg-slate-900 text-slate-200 rounded-xl font-mono text-xs space-y-1">
-                            <span className="text-[10px] text-sky-400 font-semibold uppercase block mb-1">
-                              🗺️ DATA PIPELINE:
-                            </span>
-                            {proj.architectureDiagram.map((st, sti) => (
-                              <div key={sti} className="flex items-center gap-2 text-[11px]">
-                                <span className="text-sky-400 font-bold">{sti + 1}.</span>
-                                <span>{st}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Deliverables Checklist */}
-                        <div className="my-3 space-y-2">
-                          <span className="font-mono text-[11px] font-semibold uppercase text-slate-400 block">
-                            ARCHITECTURAL RESPONSIBILITIES & DELIVERABLES:
-                          </span>
-                          <ul className="space-y-2">
-                            {proj.responsibilities.map((resp, ri) => (
-                              <li key={ri} className="flex items-start gap-2.5 text-xs font-sans text-slate-700 leading-relaxed font-normal">
-                                <CheckCircle2 className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
-                                <span>{resp}</span>
-                              </li>
-                            ))}
-                          </ul>
+                        {/* Direct Action Links */}
+                        <div className="flex items-center gap-2 shrink-0">
+                          {proj.github && (
+                            <a
+                              href={proj.github}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-3 py-1.5 rounded-xl bg-slate-900 text-white border border-slate-900 hover:bg-slate-800 text-xs font-mono font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
+                              title="View GitHub Repository"
+                            >
+                              <FolderGit2 className="w-3.5 h-3.5 text-sky-400" />
+                              <span>Repository</span>
+                            </a>
+                          )}
+                          {proj.liveUrl && (
+                            <a
+                              href={proj.liveUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-3 py-1.5 rounded-xl bg-sky-600 text-white border border-sky-600 hover:bg-sky-500 text-xs font-mono font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
+                              title="View Live App"
+                            >
+                              <span>Live Platform</span>
+                              <ArrowUpRight className="w-3.5 h-3.5" />
+                            </a>
+                          )}
                         </div>
                       </div>
 
-                      {/* Tech Details Footer */}
-                      <div className="mt-4 pt-3 border-t border-slate-100 font-mono text-[11px] text-slate-500 flex items-center gap-1.5">
-                        <Wrench className="w-3.5 h-3.5 text-sky-600 shrink-0" />
-                        <span><strong className="text-slate-800">Stack:</strong> {proj.technicalDetails}</span>
+                      {/* Main Project Card Content */}
+                      <div className="p-6 sm:p-8">
+                        {/* Title & Subtitle */}
+                        <div className="mb-4">
+                          <h4 className="font-mono font-black text-xl sm:text-2xl text-slate-900">
+                            {proj.title}
+                          </h4>
+                          {proj.titleSub && (
+                            <span className="text-sm font-sans text-slate-600 font-semibold block mt-1">
+                              {proj.titleSub}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* High-Contrast One-Liner Box */}
+                        <div className="bg-slate-100/90 border border-slate-300 p-4 rounded-xl font-mono text-xs sm:text-sm text-slate-800 font-medium mb-6 leading-relaxed">
+                          <span className="text-sky-600 font-bold mr-1.5">/*</span>
+                          {proj.oneLiner}
+                          <span className="text-sky-600 font-bold ml-1.5">*/</span>
+                        </div>
+
+                        {/* 2-Column Responsive Body: Left Narrative & Deliverables | Right Architecture & Pipeline */}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                          {/* Left Column: Overview & Responsibilities (7 cols) */}
+                          <div className={proj.architectureDiagram ? "lg:col-span-7 space-y-5" : "lg:col-span-12 space-y-5"}>
+                            <div>
+                              <span className="font-mono text-[11px] font-bold uppercase text-slate-500 tracking-wider block mb-2">
+                                SYSTEM OVERVIEW:
+                              </span>
+                              <p className="text-sm sm:text-base font-sans text-slate-700 leading-relaxed font-normal">
+                                {proj.overview}
+                              </p>
+                            </div>
+
+                            {/* Architectural Responsibilities & Deliverables */}
+                            <div className="pt-2">
+                              <span className="font-mono text-[11px] font-bold uppercase text-slate-900 tracking-wider block mb-3">
+                                ARCHITECTURAL RESPONSIBILITIES & CODE DELIVERABLES:
+                              </span>
+                              <ul className="space-y-2.5">
+                                {proj.responsibilities.map((resp, ri) => (
+                                  <li key={ri} className="flex items-start gap-2.5 text-xs sm:text-sm font-sans text-slate-800 leading-relaxed font-normal">
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                    <span>{resp}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {/* Roles Breakdown if present (e.g. Govt eNibandan) */}
+                            {proj.rolesBreakdown && proj.rolesBreakdown.length > 0 && (
+                              <div className="mt-4 p-4 bg-slate-100/80 border border-slate-200 rounded-xl space-y-2">
+                                <span className="font-mono text-[11px] font-bold uppercase text-slate-900 block">
+                                  MULTI-ROLE PERMISSION & WORKFLOW BREAKDOWN:
+                                </span>
+                                <ul className="space-y-1.5">
+                                  {proj.rolesBreakdown.map((role, rbi) => (
+                                    <li key={rbi} className="text-xs font-sans text-slate-700 flex items-start gap-2">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-sky-500 mt-1.5 shrink-0" />
+                                      <span>{role}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Right Column: High-Contrast Visual Data Pipeline (5 cols) */}
+                          {proj.architectureDiagram && (
+                            <div className="lg:col-span-5 flex flex-col justify-between">
+                              <div className="bg-slate-950 text-slate-100 border border-slate-800 rounded-2xl p-5 shadow-md">
+                                <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                                  <span className="text-xs text-sky-400 font-mono font-bold uppercase flex items-center gap-1.5">
+                                    <span>🗺️</span>
+                                    <span>DATA PIPELINE & TRANSACTION FLOW</span>
+                                  </span>
+                                  <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded">
+                                    {proj.architectureDiagram.length} STAGES
+                                  </span>
+                                </div>
+
+                                <div className="space-y-2.5 font-mono text-xs">
+                                  {proj.architectureDiagram.map((st, sti) => (
+                                    <div key={sti} className="relative">
+                                      <div className="flex items-center gap-2.5 bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl hover:border-sky-500/50 transition-colors">
+                                        <span className="w-5 h-5 rounded-full bg-sky-950 text-sky-400 border border-sky-600/40 text-[10px] font-bold flex items-center justify-center shrink-0">
+                                          {sti + 1}
+                                        </span>
+                                        <span className="text-slate-200 text-xs font-medium">{st}</span>
+                                      </div>
+                                      {sti < proj.architectureDiagram!.length - 1 && (
+                                        <div className="w-[2px] h-2.5 bg-sky-500/30 ml-4.5 my-0.5" />
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Card Footer: Tech Stack Bar */}
+                      <div className="bg-slate-100/90 border-t border-slate-200 px-6 sm:px-8 py-3.5 font-mono text-xs text-slate-800 flex flex-wrap items-center gap-2">
+                        <Wrench className="w-4 h-4 text-sky-600 shrink-0" />
+                        <strong className="text-slate-900 font-bold uppercase text-[11px] tracking-wider">Tech Stack:</strong>
+                        <span className="text-slate-700 font-medium">{proj.technicalDetails}</span>
                       </div>
                     </div>
                   ))}

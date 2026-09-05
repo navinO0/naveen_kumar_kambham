@@ -14,7 +14,6 @@ import {
   Cpu,
   Database,
   Layers,
-  Sparkles,
   HelpCircle,
   Flame
 } from "lucide-react";

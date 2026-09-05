@@ -36,8 +36,8 @@ export default function SelectedWorkSection({ projects }: SelectedWorkProps) {
             <div
               key={proj.id}
               onClick={() => setActiveProjectId(proj.id)}
-              className={`sketch-card p-6 cursor-pointer relative transition-all ${
-                isSelected ? "border-[#ff5e5b] bg-[#fffdfa] ring-2 ring-[#ff5e5b]/30" : ""
+              className={`sketch-card p-6 cursor-pointer relative transition-all border-2 ${
+                isSelected ? "border-[#ff5e5b] bg-[#fffdfa] ring-2 ring-[#ff5e5b]/30 shadow-md" : "border-slate-200 hover:border-slate-400 hover:bg-slate-50/60 shadow-sm"
               }`}
             >
               {/* Top Row: Title & Year */}

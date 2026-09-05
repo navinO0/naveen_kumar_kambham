@@ -18,7 +18,7 @@ const ADRS = [
     title: "ADR-002: REST API Contracts vs GraphQL",
     decision: "Use REST APIs with Next.js Route Handlers and Zod validation.",
     context: "Exposing clean HTTP endpoints with standard status codes, caching, and rate limiting.",
-    alternatives: ["GraphQL (Apollo/Relay)", "gRPC over HTTP/2", "tRPC"],
+    alternatives: ["GraphQL (Apollo/Relay)", "gRPC over HTTP/2", "JSON-RPC"],
     reason: "Standard HTTP semantics (200, 400, 401, 403, 429), straightforward client fetching, easy cURL testing.",
     tradeoff: "Multiple requests needed if fetching unrelated complex entity trees.",
   },
