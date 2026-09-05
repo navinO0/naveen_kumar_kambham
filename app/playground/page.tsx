@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import GravityPlayground from "@/components/sections/GravityPlayground";
 import { ArrowLeft, Sparkles, Gamepad2, PenTool } from "lucide-react";
 
@@ -9,6 +10,9 @@ export const metadata = {
 };
 
 export default function PlaygroundPage() {
+  // Temporarily disabled - redirects to home while preserving all code below
+  redirect("/");
+
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col font-sans selection:bg-purple-500 selection:text-white">
       {/* Top Header Bar */}

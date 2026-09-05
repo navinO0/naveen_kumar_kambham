@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Terminal, Menu, X, ShieldAlert, Gamepad2 } from "lucide-react";
+// import { Gamepad2 } from "lucide-react";
+import { Terminal, Menu, X, ShieldAlert } from "lucide-react";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,10 +33,12 @@ export default function Header() {
           <a href="#work" className="hover:text-[#0f172a] transition-colors">
             work
           </a>
+          {/* Temporarily disabled playground:
           <Link href="/playground" className="text-sky-600 hover:text-sky-700 bg-sky-50/80 hover:bg-sky-100 px-2.5 py-1 rounded-full font-bold border border-sky-200/60 flex items-center gap-1 transition-all">
             <Gamepad2 className="w-3.5 h-3.5 text-sky-600" />
             <span>playground</span>
           </Link>
+          */}
           <a href="#stack" className="hover:text-[#0f172a] transition-colors">
             stack
           </a>
@@ -82,6 +85,7 @@ export default function Header() {
           >
             [0] engineering pipeline
           </a>
+          {/* Temporarily disabled playground:
           <Link
             href="/playground"
             onClick={() => setMobileMenuOpen(false)}
@@ -90,6 +94,7 @@ export default function Header() {
             <Gamepad2 className="w-4 h-4 text-sky-600" />
             <span>[+] arcade playground & whiteboard</span>
           </Link>
+          */}
           <a
             href="#work"
             onClick={() => setMobileMenuOpen(false)}

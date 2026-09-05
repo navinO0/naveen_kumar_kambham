@@ -8,7 +8,7 @@ import RequirementsToCodeSection from "@/components/sections/requirementsToCode/
 import SelectedWorkSection from "@/components/sections/SelectedWorkSection";
 import ToolWallSection from "@/components/sections/ToolWallSection";
 import SecurityPlayground from "@/components/sections/SecurityPlayground";
-import GravityPlayground from "@/components/sections/GravityPlayground";
+// import GravityPlayground from "@/components/sections/GravityPlayground";
 import ArchitecturePlayground from "@/components/sections/ArchitecturePlayground";
 import BackendStackSection from "@/components/sections/BackendStackSection";
 import ToolComparisonSection from "@/components/sections/ToolComparisonSection";
@@ -76,8 +76,8 @@ export default function Home() {
             CHAPTER 04: PRODUCTION PLAYGROUNDS & SIMULATORS
            ======================================================== */}
         <div id="playgrounds" className="scroll-mt-32">
-          {/* Interactive 2D Gravity Physics & Mini Games Arcade */}
-          <GravityPlayground />
+          {/* Interactive 2D Gravity Physics & Mini Games Arcade (Temporarily disabled - code preserved) */}
+          {/* <GravityPlayground /> */}
 
           {/* JMeter Load Simulator & Tool Wall */}
           <ToolWallSection tools={tools} />

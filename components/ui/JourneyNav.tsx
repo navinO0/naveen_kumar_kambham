@@ -6,9 +6,8 @@ import { Compass, Sparkles, Building2, Workflow, Gamepad2, Cpu, Mail } from "luc
 const CHAPTERS = [
   { id: "about", label: "01. Launchpad & Philosophy", short: "01. Launchpad", icon: Sparkles, color: "bg-[#ffe866]" },
   { id: "experience", label: "02. Career & Systems Journey", short: "02. Journey", icon: Building2, color: "bg-[#ff5e5b] text-white" },
-  { id: "engineering", label: "03. Blueprint & Pipeline", short: "03. Pipeline", icon: Workflow, color: "bg-[#2563eb] text-white" },
-  { id: "playgrounds", label: "04. Gravity Arcade & Playgrounds", short: "04. Gravity Arcade", icon: Gamepad2, color: "bg-[#10b981] text-white" },
-  { id: "stack", label: "05. Tech Stack & Evolution", short: "05. Stack", icon: Cpu, color: "bg-[#8b5cf6] text-white" },
+  // Original: { id: "playgrounds", label: "04. Gravity Arcade & Playgrounds", short: "04. Gravity Arcade", icon: Gamepad2, color: "bg-[#10b981] text-white" },
+  { id: "playgrounds", label: "04. Production Simulators", short: "04. Simulators", icon: Gamepad2, color: "bg-[#10b981] text-white" },
   { id: "contact", label: "06. Dispatch & Connect", short: "06. Dispatch", icon: Mail, color: "bg-[#1e1d1b] text-white" },
 ];
 
