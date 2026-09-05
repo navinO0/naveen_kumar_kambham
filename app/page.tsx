@@ -6,6 +6,7 @@ import ExperienceResumeSection from "@/components/sections/ExperienceResumeSecti
 import HowIThinkSection from "@/components/sections/HowIThinkSection";
 import RequirementsToCodeSection from "@/components/sections/requirementsToCode/RequirementsToCodeSection";
 import SelectedWorkSection from "@/components/sections/SelectedWorkSection";
+import HobbyAILabSection from "@/components/sections/HobbyAILabSection";
 import ToolWallSection from "@/components/sections/ToolWallSection";
 import SecurityPlayground from "@/components/sections/SecurityPlayground";
 // import GravityPlayground from "@/components/sections/GravityPlayground";
@@ -59,6 +60,14 @@ export default function Home() {
 
           {/* Selected Work & Technical Post-Mortems */}
           <SelectedWorkSection projects={projects} />
+        </div>
+
+        {/* ========================================================
+            CHAPTER 02.5: HOBBY R&D & APPLIED AI SYSTEMS LAB
+           ======================================================== */}
+        <div id="ai-lab" className="scroll-mt-32">
+          {/* Dedicated Applied AI Case Study & Underwriting Sandbox */}
+          <HobbyAILabSection />
         </div>
 
         {/* ========================================================

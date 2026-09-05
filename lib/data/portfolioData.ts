@@ -140,6 +140,28 @@ export const projects: Project[] = [
     whatILearned: "High-value physical asset reservations must always have strict automatic expiration timeouts.",
     githubUrl: "https://github.com/example/premutation-land-module",
     liveUrl: "https://mpwebgis-demo.vance.dev"
+  },
+  {
+    id: "insure-ai",
+    name: "InsureAI — Intelligent Policy Underwriting & Semantic RAG Engine",
+    oneLine: "Applied AI underwriting & advisory copilot eliminating insurance agent memory limits and human error through an automated 48-point policy clause checker, PostgreSQL pgvector RAG, and an 8-factor deterministic scoring engine.",
+    year: 2025,
+    backendResponsibilities: [
+      "Engineered an automated 48-point policy clause audit engine that scans 50+ page legal contracts (room rent caps, AYUSH limits, robotic surgeries, restoration triggers, and PED exclusions) to eliminate agent memory fatigue and human error",
+      "Architected an 8-factor deterministic mathematical scoring engine in TypeScript evaluating Claim Settlement Ratios, hospital density, PED waiting period penalties, affordability ratios, and Tier-1 city room rent caps",
+      "Built semantic RAG pipeline in PostgreSQL with pgvector (768-dim embeddings) and custom legal PDF regex normalizer converting unstructured clauses into structured Markdown hierarchies",
+      "Engineered zero-buffering WebSocket streaming architecture using Fastify and native Node.js http.request packet consumers, reducing token delivery latency by over 60% compared to buffered HTTP clients",
+      "Implemented client disconnect safeguards using AbortController maps and mid-stream PostgreSQL checkpoints (persisting every 20 tokens) to eliminate orphaned GPU execution waste",
+      "Orchestrated dual-provider AI inference supporting local offline inference (Ollama Qwen 2.5 with 128k context) for health data privacy, paired with Gemini 2.0 Flash cloud fallback and concurrency-throttled queue"
+    ],
+    stack: ["Fastify", "TypeScript", "PostgreSQL", "pgvector", "Prisma ORM", "Socket.io", "Ollama (Qwen 2.5)", "Gemini 2.0 Flash", "Docker", "Redis", "Next.js", "Zod"],
+    interestingProblem: "Insurance agents and brokers face insurmountable cognitive overload: no human can memorize 50–100+ pages of dense legal wordings across 30+ competing health policies. When customers raise complex inquiries (e.g. robotic surgery caps, AYUSH coverage, PED waiting periods, or room rent proportionate deductions), human agents either misremember or guess—leading to dangerous human error, policy mis-selling, and catastrophic claim rejections during medical emergencies.",
+    whatBroke: "Relying on generative LLMs alone resulted in qualitative hallucinations (praising policies with predatory room rent caps). Ingesting raw PDFs directly into vector search poisoned embeddings with repetitive page headers, footers, and CIN/UIN numbers, while standard axios streaming caused bursty, delayed token delivery across client sockets.",
+    whatIChanged: "Engineered an automated 48-point policy audit engine and decoupled decision logic from text generation by building an 8-factor deterministic mathematical scoring engine in TypeScript. Ingested policy wordings through a custom regex pipeline into 768-dim pgvector chunks, and replaced buffered HTTP clients with a native Node.js HTTP packet parser streaming directly over WebSockets with AbortController disconnect cancellation.",
+    whyIChoseIt: "Fastify and WebSockets delivered sub-50ms event latency avoiding serverless function execution timeouts, pgvector eliminated external vector DB costs by collocating 768-dim embeddings with relational medical profiles in PostgreSQL, and Ollama/Gemini dual inference guaranteed privacy-first local processing with reliable cloud fallback.",
+    whatILearned: "In high-stakes financial and medical domains, never delegate quantitative scoring or eligibility decisions to probabilistic LLMs; use deterministic mathematical code for evaluation, and use LLMs strictly as conversational advocates to explain the clauses and cost impact.",
+    githubUrl: "https://github.com/navinO0/insure-ai",
+    liveUrl: "https://insure-ai.vance.dev"
   }
 ];
 
@@ -614,6 +636,12 @@ export const trenchNotes: TrenchNote[] = [
     id: "note-4",
     quote: "Burst traffic shouldn't hit relational databases directly.",
     context: "Buffer high-frequency write traffic in Redis memory queues first, then flush in transactional batches to PostgreSQL.",
+    category: "architecture"
+  },
+  {
+    id: "note-5",
+    quote: "Never delegate quantitative scoring or eligibility decisions to probabilistic LLMs.",
+    context: "In high-stakes legal, medical, or financial domains, calculate mathematical rules and penalties deterministically in code first; use the LLM strictly as an advocate to explain the math and policy clauses to the user.",
     category: "architecture"
   }
 ];

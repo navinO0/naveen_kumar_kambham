@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Rocket, Compass, Building2, Workflow, Gamepad2, Cpu, Mail } from "lucide-react";
+import { Rocket, Compass, Building2, Workflow, Gamepad2, Cpu, Mail, Brain } from "lucide-react";
 
 const CHAPTERS = [
   { id: "about", label: "01. Launchpad & Philosophy", short: "01. Launchpad", icon: Rocket, color: "bg-[#ffe866]" },
   { id: "experience", label: "02. Career & Systems Journey", short: "02. Journey", icon: Building2, color: "bg-[#ff5e5b] text-white" },
+  { id: "ai-lab", label: "03. Hobby AI Systems Lab", short: "03. AI Lab", icon: Brain, color: "bg-[#6366f1] text-white" },
   // Original: { id: "playgrounds", label: "04. Gravity Arcade & Playgrounds", short: "04. Gravity Arcade", icon: Gamepad2, color: "bg-[#10b981] text-white" },
   { id: "playgrounds", label: "04. Production Simulators", short: "04. Simulators", icon: Gamepad2, color: "bg-[#10b981] text-white" },
   { id: "contact", label: "06. Dispatch & Connect", short: "06. Dispatch", icon: Mail, color: "bg-[#1e1d1b] text-white" },
